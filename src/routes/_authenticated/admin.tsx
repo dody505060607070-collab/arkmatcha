@@ -253,6 +253,7 @@ type Order = {
   whatsapp: string | null;
   email: string | null;
   city: string;
+  governorate: string | null;
   address: string;
   building: string | null;
   notes: string | null;
