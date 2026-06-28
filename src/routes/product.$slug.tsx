@@ -48,6 +48,10 @@ function ProductPage() {
   const [activeImage, setActiveImage] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  if (!product) {
+    throw notFound();
+  }
+
   const gallery = useMemo(() => {
     const base = getProductGallery(product);
     return Array.from(new Set([...base, brandAssets.matchaPowder]));
