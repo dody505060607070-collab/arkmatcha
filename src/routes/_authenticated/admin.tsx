@@ -271,7 +271,12 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
         <Field label="Ingredients"><textarea rows={2} value={form.ingredients} onChange={(e) => setForm({ ...form, ingredients: e.target.value })} className={input} /></Field>
         <Field label="Storage"><textarea rows={2} value={form.storage} onChange={(e) => setForm({ ...form, storage: e.target.value })} className={input} /></Field>
       </div>
-      <div className="mt-5 flex justify-end">
+      <div className="mt-5 flex justify-between gap-3">
+        {onDelete ? (
+          <button onClick={onDelete} className="inline-flex items-center gap-1.5 text-sm px-3 py-2 rounded-lg border border-red-200 text-red-700 bg-red-50 hover:bg-red-100">
+            <Trash2 className="h-4 w-4" /> Delete
+          </button>
+        ) : <span />}
         <button onClick={save} disabled={saving} className="btn-primary disabled:opacity-60">{saving ? "Saving..." : "Save"}</button>
       </div>
     </div>
