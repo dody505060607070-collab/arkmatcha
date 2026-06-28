@@ -36,7 +36,7 @@ function AuthPage() {
     supabase.auth.getUser().then(async ({ data }) => {
       if (!data.user) return;
       const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", data.user.id);
-      if ((roles ?? []).some((r) => r.role === "admin") || await ensureAdminRole(data.user.id, data.user.email)) {
+      if ((roles ?? []).some((r) => r.role === "admin")) {
         navigate({ to: "/admin" });
       }
     });
