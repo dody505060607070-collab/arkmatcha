@@ -122,12 +122,13 @@ function ProductPage() {
           <h1 className="mb-3 font-serif text-4xl md:text-5xl">{product.name}</h1>
           <Stars className="mb-4" />
           <div className="mb-6 font-serif text-2xl text-[color:var(--forest)]">
-            {product.price != null ? (
+            {product.price_visible !== false && product.price != null ? (
               `EGP ${Number(product.price).toFixed(2)}`
             ) : (
               <span className="text-base italic text-[color:var(--muted-foreground)]">Price coming soon</span>
             )}
           </div>
+
           <p className="leading-relaxed text-[color:var(--muted-foreground)]">{product.description}</p>
 
           <div className="mt-7 flex items-center gap-4">
