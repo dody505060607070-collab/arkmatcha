@@ -133,11 +133,7 @@
 
   body {
     min-height: 100vh;
-    background-color: var(--color-background);
-    background-image:
-      radial-gradient(circle at top left, color-mix(in oklab, var(--petal) 56%, transparent) 0, transparent 34%),
-      radial-gradient(circle at top right, color-mix(in oklab, var(--pale) 68%, transparent) 0, transparent 40%),
-      linear-gradient(180deg, color-mix(in oklab, white 48%, var(--cream) 52%) 0%, var(--background) 40%, color-mix(in oklab, var(--pale) 30%, var(--background) 70%) 100%);
+    background-color: #ffffff;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "ss02";
