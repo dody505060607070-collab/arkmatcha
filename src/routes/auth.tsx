@@ -19,7 +19,7 @@ function AuthPage() {
   const navigate = useNavigate();
   const { e } = Route.useSearch();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [email, setEmail] = useState(ADMIN_EMAIL);
+  const [email, setEmail] = useState<string>(DEFAULT_ADMIN_EMAIL);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
