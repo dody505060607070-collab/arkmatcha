@@ -61,18 +61,10 @@ function Home() {
         </div>
       </section>
 
-      <section className="px-3">
-        <div className="container-soft">
-          <div className="rounded-[999px] border border-[color:var(--border)] bg-[color:var(--forest)] px-5 py-3 text-center text-xs uppercase tracking-[0.28em] text-[color:var(--cream)] shadow-sm">
-            {settings?.coming_soon_text ?? "Launching Soon"}
-          </div>
-        </div>
-      </section>
-
-      <section id="ritual" className="container-soft py-16 md:py-20">
-        <div className="mb-10 text-center">
+      <section id="ritual" className="container-soft py-12 md:py-16">
+        <div className="mb-8 text-center">
           <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[color:var(--petal-strong)]">Choose Your Ritual</p>
-          <h2 className="font-serif text-4xl md:text-5xl">Two elegant tins for calm daily moments.</h2>
+          <h2 className="font-serif text-3xl md:text-5xl">Two elegant tins for calm daily moments.</h2>
         </div>
 
         <div className="grid gap-8 md:grid-cols-2">
@@ -113,29 +105,30 @@ function Home() {
         </div>
       </section>
 
-      <section className="bg-[color:var(--pale)]/70">
-        <div className="container-soft py-16 md:py-20">
-          <div className="mb-10 text-center">
-            <h2 className="font-serif text-4xl">Why Ark Matcha</h2>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-5">
+      {/* Reviews marquee — thin slider that keeps moving across the page */}
+      <ReviewsMarquee />
+
+      {/* Why Ark Matcha — compact pill row */}
+      <section className="container-soft py-6 md:py-8">
+        <div className="soft-panel px-4 py-4 md:px-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-xs text-[color:var(--forest)] md:text-sm">
             {[
               { icon: Leaf, label: "Ceremonial Grade" },
-              { icon: Sparkles, label: "Smooth Natural Energy" },
+              { icon: Sparkles, label: "Smooth Energy" },
               { icon: MapPin, label: "Made in Japan" },
               { icon: Package, label: "Beautifully Packed" },
-              { icon: Sun, label: "Made for Daily Rituals" },
-            ].map((feature) => (
-              <div key={feature.label} className="soft-panel px-5 py-6 text-center">
-                <feature.icon className="mx-auto mb-3 h-6 w-6 text-[color:var(--petal-strong)]" />
-                <p className="text-sm font-medium">{feature.label}</p>
-              </div>
+              { icon: Sun, label: "Daily Ritual" },
+            ].map((f) => (
+              <span key={f.label} className="inline-flex items-center gap-1.5">
+                <f.icon className="h-3.5 w-3.5 text-[color:var(--petal-strong)]" />
+                <span className="whitespace-nowrap">{f.label}</span>
+              </span>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="container-soft py-16 md:py-20">
+      <section className="container-soft py-12 md:py-16">
         <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_420px] md:items-center">
           <div>
             <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[color:var(--petal-strong)]">Simple. Clean. Ceremonial.</p>
@@ -165,15 +158,39 @@ function Home() {
         </div>
       </section>
 
-      <section className="border-y border-[color:var(--border)] bg-[color:var(--cream)]/70">
-        <div className="container-soft py-16 text-center md:py-20">
-          <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[color:var(--petal-strong)]">Brand Story</p>
-          <h2 className="mb-5 font-serif text-3xl md:text-4xl">Matcha Made Simple</h2>
-          <p className="mx-auto max-w-3xl leading-relaxed text-[color:var(--muted-foreground)]">{settings?.brand_story}</p>
-        </div>
-      </section>
-
       <Newsletter />
     </main>
   );
 }
+
+const REVIEWS = [
+  { text: "Smoothest matcha I've ever had — calm energy all morning.", name: "Hana, Cairo" },
+  { text: "Beautifully packed and the color is so vibrant.", name: "Omar, Alexandria" },
+  { text: "My new daily ritual. It just feels premium.", name: "Lina, Dubai" },
+  { text: "Tastes clean, no bitterness. Worth every gram.", name: "Sara, Riyadh" },
+  { text: "Perfect for a soft latte in the afternoon.", name: "Youssef, Cairo" },
+  { text: "Honestly the best ceremonial matcha I've tried.", name: "Mariam, Giza" },
+];
+
+function ReviewsMarquee() {
+  const items = [...REVIEWS, ...REVIEWS];
+  return (
+    <section
+      aria-label="Customer reviews"
+      className="overflow-hidden border-y border-[color:var(--border)] py-3"
+      style={{ background: "color-mix(in oklab, white 60%, var(--petal) 40%)" }}
+    >
+      <div className="marquee-track gap-10 text-xs text-[color:var(--forest)] md:text-sm">
+        {items.map((r, i) => (
+          <span key={i} className="inline-flex shrink-0 items-center gap-2">
+            <span className="text-[color:var(--petal-strong)]">★★★★★</span>
+            <span className="opacity-85">“{r.text}”</span>
+            <span className="opacity-60">— {r.name}</span>
+            <span className="px-3 text-[color:var(--petal-strong)]">•</span>
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
