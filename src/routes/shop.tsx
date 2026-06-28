@@ -34,9 +34,8 @@ function Shop() {
 
         <div className="mt-8 grid grid-cols-2 gap-4 md:mt-10 md:gap-8">
           {products.map((product) => {
-            const label = product.size?.includes("50")
-              ? "Ceremonial Grade Matcha 50g"
-              : "Ceremonial Grade Matcha 30g";
+            const label = product.name;
+
             return (
               <Link
                 key={product.id}

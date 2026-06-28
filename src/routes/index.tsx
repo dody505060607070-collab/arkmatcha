@@ -68,9 +68,7 @@ function Home() {
 
         <div className="mt-4 grid grid-cols-2 gap-4 md:mt-6 md:gap-8">
           {products.map((product) => {
-            const label = product.size?.includes("50")
-              ? "Ceremonial Grade Matcha 50g"
-              : "Ceremonial Grade Matcha 30g";
+            const label = product.name;
             return (
               <Link
                 key={product.id}
@@ -86,6 +84,7 @@ function Home() {
                       loading="lazy"
                       className="aspect-square w-full object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-[1.04]"
                     />
+
                   </div>
                 ) : null}
                 <span className="mt-2 block text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
