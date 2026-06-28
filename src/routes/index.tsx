@@ -42,9 +42,15 @@ function Home() {
               <img
                 src={heroTins.url}
                 alt="Ark Matcha ceremonial grade tins"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                width={800}
+                height={800}
                 className="block h-full w-full object-contain"
               />
             </div>
+
             <div className="flex flex-col items-start justify-center gap-3 p-4 md:gap-5 md:p-10">
               <span className="text-[9px] uppercase tracking-[0.25em] text-[color:var(--olive)] md:text-[11px] md:tracking-[0.3em]">
                 Ceremonial · Japan
