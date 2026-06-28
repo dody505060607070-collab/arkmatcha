@@ -92,14 +92,17 @@ function Home() {
                 </div>
               </div>
 
-              <div className="soft-panel overflow-hidden p-4">
-                <img
-                  src={getProductImage(product.slug, product.image_url)}
-                  alt={product.name}
-                  loading="lazy"
-                  className="h-[280px] w-full rounded-[1.5rem] object-cover"
-                />
-              </div>
+              {product.image_visible !== false ? (
+                <div className="soft-panel overflow-hidden p-4">
+                  <img
+                    src={getProductImage(product.slug, product.image_url)}
+                    alt={product.name}
+                    loading="lazy"
+                    className="h-[280px] w-full rounded-[1.5rem] object-cover"
+                  />
+                </div>
+              ) : null}
+
             </Link>
           ))}
         </div>
