@@ -14,6 +14,22 @@ export const Route = createFileRoute("/auth")({
 const ADMIN_EMAILS = ["arkmatcha@gmail.com", "dody505060607070@gmail.com"] as const;
 const DEFAULT_ADMIN_EMAIL = ADMIN_EMAILS[0];
 
+function isAllowedAdminEmail(email?: string | null) {
+  return !!email && (ADMIN_EMAILS as readonly string[]).includes(email.trim().toLowerCase());
+}
+
+async function ensureAdminRole(userId: string, email?: string | null) {
+  if (!isAllowedAdminEmail(email)) return false;
+  const { error } = await supabase
+    .from("user_roles")
+    .upsert({ user_id: userId, role: "admin" }, { onConflict: "user_id,role" });
+  if (error) {
+    console.error("Admin role repair failed", error);
+    return false;
+  }
+  return true;
+}
+
 
 function AuthPage() {
   const navigate = useNavigate();
@@ -31,7 +47,7 @@ function AuthPage() {
     supabase.auth.getUser().then(async ({ data }) => {
       if (!data.user) return;
       const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", data.user.id);
-      if ((roles ?? []).some((r) => r.role === "admin")) {
+      if ((roles ?? []).some((r) => r.role === "admin") || await ensureAdminRole(data.user.id, data.user.email)) {
         navigate({ to: "/admin" });
       }
     });
@@ -47,9 +63,10 @@ function AuthPage() {
 
     setLoading(true);
     if (mode === "signin") {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       setLoading(false);
       if (error) { toast.error(error.message); return; }
+      if (data.user) await ensureAdminRole(data.user.id, data.user.email);
       navigate({ to: "/admin" });
     } else {
       const { error } = await supabase.auth.signUp({
