@@ -1,10 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/lib/cart";
 import { settingsQuery } from "@/lib/queries";
+import { GOVERNORATES, shippingFor } from "@/lib/egypt-governorates";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/checkout")({
@@ -24,7 +24,8 @@ const schema = z.object({
   phone: z.string().trim().min(5).max(40),
   whatsapp: z.string().trim().max(40).optional().or(z.literal("")),
   email: z.string().trim().email("Invalid email").max(254).optional().or(z.literal("")),
-  city: z.string().trim().min(1).max(80),
+  governorate: z.string().trim().min(1, "Please select your governorate").max(80),
+  city: z.string().trim().min(1, "Please enter your city or area").max(80),
   address: z.string().trim().min(5, "Please enter your full address").max(400),
   building: z.string().trim().max(200).optional().or(z.literal("")),
   notes: z.string().trim().max(1000).optional().or(z.literal("")),
@@ -35,8 +36,8 @@ function CheckoutPage() {
   const items = useCart((s) => s.items);
   const subtotal = useCart((s) => s.subtotal());
   const clear = useCart((s) => s.clear);
-  const { data: s } = useQuery(settingsQuery);
-  const shipping = Number(s?.shipping_fee ?? 0);
+  const [governorate, setGovernorate] = useState<string>("");
+  const shipping = governorate ? shippingFor(governorate) : 0;
   const total = subtotal + (items.length > 0 ? shipping : 0);
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
