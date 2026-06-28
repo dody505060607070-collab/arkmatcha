@@ -62,9 +62,9 @@
   --cream: oklch(0.955 0.022 84);
   --stone: oklch(0.915 0.022 80);
   --olive: oklch(0.64 0.08 122);
-  --blush: oklch(0.87 0.055 24);
-  --petal: oklch(0.9 0.06 15);
-  --petal-strong: oklch(0.73 0.12 12);
+  --blush: oklch(0.86 0.05 140);
+  --petal: oklch(0.91 0.04 140);
+  --petal-strong: var(--matcha);
 
   --background: #ECF3E3;
   --foreground: var(--forest);
