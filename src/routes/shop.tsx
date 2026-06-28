@@ -44,7 +44,7 @@ function Shop() {
                 className="group block reveal"
               >
                 {product.image_visible !== false ? (
-                  <div className="overflow-hidden rounded-2xl bg-white">
+                  <div className="relative overflow-hidden rounded-2xl bg-white">
                     <img
                       src={getProductImage(product.slug, product.image_url)}
                       alt={label}
@@ -52,8 +52,18 @@ function Shop() {
                       decoding="async"
                       width={600}
                       height={600}
-                      className="aspect-square w-full object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-[1.04]"
+                      className={`aspect-square w-full object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-[1.04] ${product.in_stock === false ? "opacity-60 grayscale" : ""}`}
                     />
+                    {product.in_stock === false && (
+                      <span className="absolute left-2 top-2 rounded-full bg-red-600 px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
+                        Sold out
+                      </span>
+                    )}
+                    {product.in_stock !== false && (product.discount_percentage ?? 0) > 0 && (
+                      <span className="absolute left-2 top-2 rounded-full bg-[color:var(--matcha)] px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
+                        -{product.discount_percentage}%
+                      </span>
+                    )}
                   </div>
                 ) : null}
 
@@ -64,9 +74,20 @@ function Shop() {
                   {label}
                 </h3>
                 {product.price_visible !== false && product.price ? (
-                  <p className="mt-1 text-sm text-[color:var(--petal-strong)] md:text-base">
-                    LE {Number(product.price).toFixed(2)} EGP
-                  </p>
+                  (product.discount_percentage ?? 0) > 0 ? (
+                    <p className="mt-1 text-sm md:text-base">
+                      <span className="text-[color:var(--petal-strong)]">
+                        LE {(Number(product.price) * (1 - product.discount_percentage / 100)).toFixed(2)} EGP
+                      </span>
+                      <span className="ml-2 text-xs text-[color:var(--muted-foreground)] line-through">
+                        {Number(product.price).toFixed(2)}
+                      </span>
+                    </p>
+                  ) : (
+                    <p className="mt-1 text-sm text-[color:var(--petal-strong)] md:text-base">
+                      LE {Number(product.price).toFixed(2)} EGP
+                    </p>
+                  )
                 ) : (
                   <p className="mt-1 text-xs text-[color:var(--petal-strong)] opacity-70">
                     Price coming soon

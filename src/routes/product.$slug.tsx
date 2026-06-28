@@ -69,6 +69,11 @@ function ProductPage() {
   const selectedColor = KIT_COLORS.find((c) => c.id === colorId) ?? KIT_COLORS[0];
   const kitImage = gallery[selectedColor.index] ?? gallery[0];
 
+  const discountPct = product.discount_percentage ?? 0;
+  const effectivePrice = product.price != null && discountPct > 0
+    ? Number(product.price) * (1 - discountPct / 100)
+    : product.price != null ? Number(product.price) : null;
+
   function addToCart() {
     const colorSuffix = isKit ? ` — ${selectedColor.label}` : "";
     add(
@@ -77,7 +82,7 @@ function ProductPage() {
         slug: currentProduct.slug,
         name: `${currentProduct.name}${colorSuffix}`,
         size: currentProduct.size,
-        price: currentProduct.price,
+        price: effectivePrice,
         image: isKit ? kitImage : getProductImage(currentProduct.slug, currentProduct.image_url),
       },
       quantity,
@@ -191,11 +196,29 @@ function ProductPage() {
           <h1 className="mb-3 font-serif text-3xl md:text-4xl">{product.name}</h1>
           <div className="mb-6 font-serif text-2xl text-[color:var(--petal-strong)]">
             {product.price_visible !== false && product.price != null ? (
-              `EGP ${Number(product.price).toFixed(2)}`
+              discountPct > 0 ? (
+                <span className="flex flex-wrap items-baseline gap-3">
+                  <span>EGP {effectivePrice!.toFixed(2)}</span>
+                  <span className="text-base text-[color:var(--muted-foreground)] line-through">
+                    {Number(product.price).toFixed(2)}
+                  </span>
+                  <span className="rounded-full bg-[color:var(--matcha)] px-2 py-0.5 text-[10px] uppercase tracking-widest text-white">
+                    -{discountPct}%
+                  </span>
+                </span>
+              ) : (
+                `EGP ${Number(product.price).toFixed(2)}`
+              )
             ) : (
               <span className="text-base italic text-[color:var(--muted-foreground)]">Price coming soon</span>
             )}
           </div>
+
+          {!product.in_stock && (
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-red-50 border border-red-200 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-red-700">
+              ✕ Sold out
+            </div>
+          )}
 
           <div className="flex items-center gap-4">
             <div className="flex items-center overflow-hidden rounded-full border border-[color:var(--border)] bg-white">
@@ -208,7 +231,7 @@ function ProductPage() {
               </button>
             </div>
             <button onClick={addToCart} className="btn-primary flex-1" disabled={!product.in_stock}>
-              {product.in_stock ? "Add to Cart" : "Out of stock"}
+              {product.in_stock ? "Add to Cart" : "Sold out"}
             </button>
           </div>
 
