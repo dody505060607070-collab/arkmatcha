@@ -1,14 +1,14 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, ShoppingBag, X } from "lucide-react";
+import { BookOpenText, Grid2X2, House, Menu, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
 
 const links = [
-  { to: "/", label: "Home" },
-  { to: "/catalog", label: "Catalog" },
-  { to: "/blog", label: "Blog" },
-  { to: "/cart", label: "Cart" },
-];
+  { to: "/", label: "Home", icon: House },
+  { to: "/catalog", label: "Catalog", icon: Grid2X2 },
+  { to: "/blog", label: "Blog", icon: BookOpenText },
+  { to: "/cart", label: "Cart", icon: ShoppingBag },
+] as const;
 
 export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -16,73 +16,81 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 bg-[color:var(--cream)]/85 backdrop-blur border-b border-[color:var(--border)]">
-      <div className="container-soft flex items-center justify-between h-16">
-        <Link to="/" className="font-serif text-2xl tracking-tight text-[color:var(--forest)]">
-          Ark <span className="italic font-normal">Matcha</span>
-        </Link>
-        <nav className="hidden md:flex items-center gap-8 text-sm">
-          {links.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className={`relative transition-colors ${
-                pathname === l.to
-                  ? "text-[color:var(--forest)]"
-                  : "text-[color:var(--muted-foreground)] hover:text-[color:var(--forest)]"
-              }`}
-            >
-              {l.label}
-              {l.to === "/cart" && count > 0 && (
-                <span className="ml-1 text-xs">({count})</span>
-              )}
-            </Link>
-          ))}
-          <Link to="/auth" className="text-xs uppercase tracking-widest text-[color:var(--olive)] hover:text-[color:var(--forest)]">
-            Admin
+    <header className="sticky top-0 z-40 px-3 pt-3">
+      <div className="container-soft">
+        <div className="glass-bubble grid grid-cols-[minmax(0,1fr)_auto] items-center px-3 py-2 sm:flex sm:justify-between">
+          <Link to="/" className="min-w-0 truncate font-serif text-xl text-[color:var(--forest)] sm:text-2xl">
+            Ark <span className="italic font-normal">Matcha</span>
           </Link>
-        </nav>
-        <div className="flex items-center gap-3 md:hidden">
-          <Link to="/cart" className="relative p-2">
-            <ShoppingBag className="h-5 w-5" />
-            {count > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 text-[10px] bg-[color:var(--forest)] text-[color:var(--cream)] rounded-full px-1.5">
-                {count}
-              </span>
-            )}
-          </Link>
-          <button
-            aria-label="Menu"
-            onClick={() => setOpen((v) => !v)}
-            className="p-2"
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-      </div>
-      {open && (
-        <div className="md:hidden border-t border-[color:var(--border)] bg-[color:var(--cream)]">
-          <div className="container-soft py-4 flex flex-col gap-3">
-            {links.map((l) => (
-              <Link
-                key={l.to}
-                to={l.to}
-                onClick={() => setOpen(false)}
-                className="py-1 text-base"
-              >
-                {l.label}
-              </Link>
-            ))}
-            <Link
-              to="/auth"
-              onClick={() => setOpen(false)}
-              className="py-1 text-xs uppercase tracking-widest text-[color:var(--olive)]"
-            >
-              Admin Login
+
+          <nav className="hidden items-center gap-2 md:flex">
+            {links.map((link) => {
+              const Icon = link.icon;
+              const active = pathname === link.to;
+              const isCart = link.to === "/cart";
+
+              return (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="glass-bubble px-4 py-2 text-sm text-[color:var(--forest)]"
+                  style={{
+                    background: active
+                      ? "color-mix(in oklab, white 48%, var(--petal) 52%)"
+                      : undefined,
+                  }}
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <span>{link.label}</span>
+                  {isCart && count > 0 ? <span className="text-xs">{count}</span> : null}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="flex items-center gap-2 md:hidden">
+            <Link to="/cart" className="glass-bubble relative h-10 w-10 text-[color:var(--forest)]" aria-label="Cart">
+              <ShoppingBag className="h-4 w-4" />
+              {count > 0 ? (
+                <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[color:var(--forest)] px-1 text-[10px] text-[color:var(--cream)]">
+                  {count}
+                </span>
+              ) : null}
             </Link>
+            <button
+              aria-label="Menu"
+              onClick={() => setOpen((v) => !v)}
+              className="glass-bubble h-10 w-10 text-[color:var(--forest)]"
+              type="button"
+            >
+              {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
           </div>
         </div>
-      )}
+
+        {open ? (
+          <div className="mt-3 soft-panel p-3 md:hidden">
+            <nav className="grid grid-cols-2 gap-2">
+              {links.map((link) => {
+                const Icon = link.icon;
+                const isCart = link.to === "/cart";
+                return (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setOpen(false)}
+                    className="glass-bubble justify-start px-4 py-3 text-sm text-[color:var(--forest)]"
+                  >
+                    <Icon className="h-4 w-4 shrink-0" />
+                    <span>{link.label}</span>
+                    {isCart && count > 0 ? <span className="ml-auto text-xs">{count}</span> : null}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        ) : null}
+      </div>
     </header>
   );
 }
