@@ -76,7 +76,10 @@ function Home() {
                     />
                   </div>
                 ) : null}
-                <h3 className="mt-3 text-sm font-medium text-[color:var(--petal-strong)] md:text-base">
+                <span className="mt-2 block text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
+                  Ark Matcha
+                </span>
+                <h3 className="mt-0.5 text-sm font-medium text-[color:var(--petal-strong)] md:text-base">
                   {label}
                 </h3>
                 {product.price_visible !== false && product.price ? (

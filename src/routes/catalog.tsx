@@ -73,7 +73,10 @@ function CatalogPage() {
               <span>{product.size}</span>
             </div>
 
-            <h2 className="mt-4 font-serif text-2xl text-[color:var(--forest)]">{product.name}</h2>
+            <span className="mt-2 block text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
+              Ark Matcha
+            </span>
+            <h2 className="mt-0.5 font-serif text-2xl text-[color:var(--forest)]">{product.name}</h2>
             <Stars className="mt-2" />
             <p className="mt-3 text-sm leading-relaxed text-[color:var(--muted-foreground)]">{product.short_description}</p>
             <div className="mt-4 font-serif text-xl text-[color:var(--forest)]">
