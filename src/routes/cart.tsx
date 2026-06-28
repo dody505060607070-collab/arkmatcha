@@ -31,7 +31,7 @@ function CartPage() {
       <main className="container-soft py-24 text-center">
         <h1 className="font-serif text-4xl mb-4">Your cart is empty</h1>
         <p className="text-[color:var(--muted-foreground)] mb-8">Choose your ritual to get started.</p>
-        <Link to="/catalog" className="btn-primary inline-flex">Shop Matcha</Link>
+        <Link to="/" className="btn-primary inline-flex">Shop Matcha</Link>
       </main>
     );
   }

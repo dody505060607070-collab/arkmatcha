@@ -95,7 +95,7 @@ function CheckoutPage() {
     return (
       <main className="container-soft py-24 text-center">
         <h1 className="font-serif text-3xl mb-3">Your cart is empty</h1>
-        <Link to="/catalog" className="btn-primary inline-flex mt-4">Shop Matcha</Link>
+        <Link to="/" className="btn-primary inline-flex mt-4">Shop Matcha</Link>
       </main>
     );
   }

@@ -1,12 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { BookOpenText, Grid2X2, House, Menu, Search, ShoppingBag, X } from "lucide-react";
+import { BookOpenText, House, Menu, Search, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
 import { brandAssets } from "@/lib/brand-assets";
 
 const links = [
   { to: "/", label: "Home", icon: House },
-  { to: "/catalog", label: "Catalog", icon: Grid2X2 },
   { to: "/blog", label: "Blog", icon: BookOpenText },
   { to: "/cart", label: "Cart", icon: ShoppingBag },
 ] as const;
