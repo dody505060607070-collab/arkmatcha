@@ -113,12 +113,28 @@ function CheckoutPage() {
             <label className="block"><span className="text-sm">Phone number *</span><input name="phone" required className={input} /></label>
             <label className="block"><span className="text-sm">WhatsApp number</span><input name="whatsapp" className={input} /></label>
             <label className="block"><span className="text-sm">Email</span><input type="email" name="email" className={input} /></label>
-            <label className="block"><span className="text-sm">City *</span><input name="city" required className={input} /></label>
+            <label className="block sm:col-span-2">
+              <span className="text-sm">Governorate * <span className="text-[color:var(--muted-foreground)]">(shipping is added based on your governorate)</span></span>
+              <select
+                name="governorate"
+                required
+                value={governorate}
+                onChange={(e) => setGovernorate(e.target.value)}
+                className={input}
+              >
+                <option value="">Select your governorate…</option>
+                {GOVERNORATES.map((g) => (
+                  <option key={g.value} value={g.value}>{g.label} — EGP {g.shipping}</option>
+                ))}
+              </select>
+            </label>
+            <label className="block"><span className="text-sm">City / area *</span><input name="city" required className={input} /></label>
             <label className="block"><span className="text-sm">Building / apartment</span><input name="building" className={input} /></label>
           </div>
           <label className="block"><span className="text-sm">Full address *</span><textarea name="address" required rows={3} className={input} /></label>
           <label className="block"><span className="text-sm">Order notes</span><textarea name="notes" rows={3} className={input} /></label>
         </div>
+
         <aside className="h-fit rounded-2xl bg-[color:var(--pale)] p-6 border border-[color:var(--border)]">
           <h2 className="font-serif text-xl mb-4">Your order</h2>
           <ul className="space-y-3 text-sm mb-5">
