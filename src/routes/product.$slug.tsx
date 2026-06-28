@@ -38,12 +38,20 @@ export const Route = createFileRoute("/product/$slug")({
   component: ProductPage,
 });
 
+const KIT_SLUG = "ark-matcha-kit";
+const KIT_COLORS = [
+  { id: "white", label: "White", swatch: "#F2F2F0", index: 0 },
+  { id: "pink", label: "Pink", swatch: "#F1CFCB", index: 1 },
+  { id: "butter", label: "Butter", swatch: "#F4E3B0", index: 2 },
+];
+
 function ProductPage() {
   const { slug } = Route.useParams();
   const { data: product } = useSuspenseQuery(productQuery(slug));
   const { data: products } = useSuspenseQuery(productsQuery);
   const add = useCart((s) => s.add);
   const [quantity, setQuantity] = useState(1);
+  const [colorId, setColorId] = useState(KIT_COLORS[0].id);
   const navigate = useNavigate();
   const scrollerRef = useRef<HTMLDivElement>(null);
 
@@ -51,27 +59,30 @@ function ProductPage() {
     throw notFound();
   }
 
+  const isKit = product.slug === KIT_SLUG;
   const gallery = useMemo(() => {
     const base = getProductGallery(product);
-    // Dedupe while preserving order
     return Array.from(new Set(base.length ? base : [getProductImage(product.slug, product.image_url)]));
   }, [product]);
 
   const currentProduct = product;
+  const selectedColor = KIT_COLORS.find((c) => c.id === colorId) ?? KIT_COLORS[0];
+  const kitImage = gallery[selectedColor.index] ?? gallery[0];
 
   function addToCart() {
+    const colorSuffix = isKit ? ` — ${selectedColor.label}` : "";
     add(
       {
-        productId: currentProduct.id,
+        productId: isKit ? `${currentProduct.id}:${selectedColor.id}` : currentProduct.id,
         slug: currentProduct.slug,
-        name: currentProduct.name,
+        name: `${currentProduct.name}${colorSuffix}`,
         size: currentProduct.size,
         price: currentProduct.price,
-        image: getProductImage(currentProduct.slug, currentProduct.image_url),
+        image: isKit ? kitImage : getProductImage(currentProduct.slug, currentProduct.image_url),
       },
       quantity,
     );
-    toast.success(`${currentProduct.name} added to cart`);
+    toast.success(`${currentProduct.name}${colorSuffix} added to cart`);
   }
 
   function scrollBy(dir: 1 | -1) {
@@ -79,6 +90,7 @@ function ProductPage() {
     if (!el) return;
     el.scrollBy({ left: dir * el.clientWidth, behavior: "smooth" });
   }
+
 
   return (
     <main className="container-soft py-8 md:py-12">
