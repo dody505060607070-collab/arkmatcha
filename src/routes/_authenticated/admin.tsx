@@ -13,6 +13,7 @@ import {
   Settings as SettingsIcon,
   LogOut,
   Search,
+  RefreshCcw,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { productsQuery, settingsQuery, type Product, type SiteSettings } from "@/lib/queries";
@@ -272,14 +273,30 @@ function OrdersAdmin() {
   const [filter, setFilter] = useState<"all" | Order["status"]>("all");
   const [q, setQ] = useState("");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
-    const { data } = await supabase.from("orders").select("*").order("created_at", { ascending: false });
+    setError(null);
+    const { data, error } = await supabase.from("orders").select("*").order("created_at", { ascending: false });
+    if (error) {
+      setOrders([]);
+      setError(error.message);
+      toast.error(error.message);
+      setLoading(false);
+      return;
+    }
     setOrders((data ?? []) as unknown as Order[]);
     setLoading(false);
   }
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    const channel = supabase
+      .channel("admin-orders-live")
+      .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => load())
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
 
   async function setStatus(id: string, status: Order["status"]) {
     const { error } = await supabase.from("orders").update({ status }).eq("id", id);
@@ -309,8 +326,15 @@ function OrdersAdmin() {
           <option value="all">All statuses</option>
           {STATUSES.map((s) => <option key={s} value={s}>{statusLabel(s)}</option>)}
         </select>
+        <button type="button" onClick={load} disabled={loading} className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-[color:var(--border)] text-sm disabled:opacity-60">
+          <RefreshCcw className="h-4 w-4" /> Refresh
+        </button>
       </div>
-      {loading ? <p className="text-sm text-[color:var(--muted-foreground)]">Loading...</p> : filtered.length === 0 ? (
+      {error ? (
+        <div className="rounded-2xl bg-white border border-[color:var(--border)] p-5 text-sm text-red-700">
+          Orders could not load: {error}
+        </div>
+      ) : loading ? <p className="text-sm text-[color:var(--muted-foreground)]">Loading...</p> : filtered.length === 0 ? (
         <p className="text-sm text-[color:var(--muted-foreground)]">No orders yet.</p>
       ) : (
         <div className="space-y-4">
