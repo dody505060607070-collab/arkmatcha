@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "/" },
-      { rel: "preload", as: "image", href: heroTins.url, fetchpriority: "high" },
+      { rel: "preload", as: "image", href: heroFlatlay.url, fetchpriority: "high" },
     ],
   }),
 
