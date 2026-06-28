@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as CatalogRouteImport } from './routes/catalog'
+import { Route as CartRouteImport } from './routes/cart'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
@@ -17,6 +18,11 @@ import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 const CatalogRoute = CatalogRouteImport.update({
   id: '/catalog',
   path: '/catalog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartRoute = CartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogRoute = BlogRouteImport.update({
@@ -38,12 +44,14 @@ const ProductSlugRoute = ProductSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
+  '/cart': typeof CartRoute
   '/catalog': typeof CatalogRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
+  '/cart': typeof CartRoute
   '/catalog': typeof CatalogRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/blog': typeof BlogRoute
+  '/cart': typeof CartRoute
   '/catalog': typeof CatalogRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/blog' | '/catalog' | '/product/$slug'
+  fullPaths: '/' | '/blog' | '/cart' | '/catalog' | '/product/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/blog' | '/catalog' | '/product/$slug'
-  id: '__root__' | '/' | '/blog' | '/catalog' | '/product/$slug'
+  to: '/' | '/blog' | '/cart' | '/catalog' | '/product/$slug'
+  id: '__root__' | '/' | '/blog' | '/cart' | '/catalog' | '/product/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BlogRoute: typeof BlogRoute
+  CartRoute: typeof CartRoute
   CatalogRoute: typeof CatalogRoute
   ProductSlugRoute: typeof ProductSlugRoute
 }
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/catalog'
       fullPath: '/catalog'
       preLoaderRoute: typeof CatalogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog': {
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BlogRoute: BlogRoute,
+  CartRoute: CartRoute,
   CatalogRoute: CatalogRoute,
   ProductSlugRoute: ProductSlugRoute,
 }
