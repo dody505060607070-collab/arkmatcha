@@ -119,6 +119,9 @@ function ProductPage() {
             </span>
             <span className="text-[10px] uppercase tracking-[0.28em] text-[color:var(--olive)]">{product.size}</span>
           </div>
+          <span className="block text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
+            Ark Matcha
+          </span>
           <h1 className="mb-3 font-serif text-4xl md:text-5xl">{product.name}</h1>
           <Stars className="mb-4" />
           <div className="mb-6 font-serif text-2xl text-[color:var(--forest)]">
