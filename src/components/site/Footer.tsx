@@ -18,13 +18,13 @@ export function Footer() {
     <footer className="mt-14 px-3 pb-4 pt-2">
       <div className="container-soft">
         <div
-          className="grid grid-cols-1 gap-3 rounded-[999px] border px-4 py-3 text-xs text-[color:var(--forest)] shadow-sm backdrop-blur md:grid-cols-[auto_minmax(0,1fr)_auto_auto] md:items-center"
+          className="grid grid-cols-1 gap-3 rounded-[999px] border px-4 py-3 text-xs text-[color:var(--forest)] shadow-sm backdrop-blur md:grid-cols-[minmax(0,1fr)_auto_auto] md:items-center"
           style={{
             background: "color-mix(in oklab, white 54%, var(--petal) 46%)",
             borderColor: "color-mix(in oklab, white 46%, var(--petal) 54%)",
           }}
         >
-          <div className="text-[color:var(--petal-strong)] md:justify-self-start">#PureRitual</div>
+
 
           <div className="min-w-0 text-center font-medium md:text-left">
             <span className="font-serif text-sm">Ark Matcha</span>
