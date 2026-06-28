@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { productsQuery, settingsQuery } from "@/lib/queries";
 import { getProductImage } from "@/lib/brand-assets";
+import matchaSpread from "@/assets/matcha-spread.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
