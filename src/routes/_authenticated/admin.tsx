@@ -160,7 +160,6 @@ function ProductEditor({ product }: { product: Product }) {
     price_visible: product.price_visible ?? true,
     ingredients: product.ingredients,
     storage: product.storage,
-    key_benefits: product.key_benefits.join("\n"),
   });
 
   const [saving, setSaving] = useState(false);
@@ -182,7 +181,6 @@ function ProductEditor({ product }: { product: Product }) {
         price_visible: form.price_visible,
         ingredients: form.ingredients,
         storage: form.storage,
-        key_benefits: form.key_benefits.split("\n").map((s) => s.trim()).filter(Boolean),
         updated_at: new Date().toISOString(),
       })
       .eq("id", product.id);
@@ -226,7 +224,7 @@ function ProductEditor({ product }: { product: Product }) {
         <Field label="Gallery images (one URL per line — swiped on product page)" className="md:col-span-2"><textarea rows={4} value={form.gallery} placeholder={"https://...\nhttps://..."} onChange={(e) => setForm({ ...form, gallery: e.target.value })} className={input} /></Field>
         <Field label="Short description" className="md:col-span-2"><textarea rows={2} value={form.short_description} onChange={(e) => setForm({ ...form, short_description: e.target.value })} className={input} /></Field>
         <Field label="Full description" className="md:col-span-2"><textarea rows={4} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className={input} /></Field>
-        <Field label="Key benefits (one per line)" className="md:col-span-2"><textarea rows={5} value={form.key_benefits} onChange={(e) => setForm({ ...form, key_benefits: e.target.value })} className={input} /></Field>
+        
         <Field label="Ingredients"><textarea rows={2} value={form.ingredients} onChange={(e) => setForm({ ...form, ingredients: e.target.value })} className={input} /></Field>
         <Field label="Storage"><textarea rows={2} value={form.storage} onChange={(e) => setForm({ ...form, storage: e.target.value })} className={input} /></Field>
       </div>
@@ -435,10 +433,6 @@ function ContentAdmin() {
   const { data: s, refetch } = useSettings();
   const [form, setForm] = useState<Partial<SiteSettings>>({});
   useEffect(() => { if (s) setForm({
-    hero_headline: s.hero_headline,
-    hero_subheadline: s.hero_subheadline,
-    hero_image: s.hero_image,
-    coming_soon_text: s.coming_soon_text,
     brand_story: s.brand_story,
     footer_text: s.footer_text,
   }); }, [s]);
@@ -448,58 +442,9 @@ function ContentAdmin() {
     <div>
       <h1 className="font-serif text-3xl mb-6">Website Content</h1>
       <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)] grid gap-4 max-w-2xl">
-        <Field label="Hero headline"><input value={form.hero_headline ?? ""} onChange={(e) => setForm({ ...form, hero_headline: e.target.value })} className={input} /></Field>
-        <Field label="Hero subheadline"><textarea rows={2} value={form.hero_subheadline ?? ""} onChange={(e) => setForm({ ...form, hero_subheadline: e.target.value })} className={input} /></Field>
-        <Field label="Hero image URL"><input value={form.hero_image ?? ""} onChange={(e) => setForm({ ...form, hero_image: e.target.value })} className={input} placeholder="Leave blank to show default illustration" /></Field>
-        <Field label="Coming Soon / Launching Soon banner"><input value={form.coming_soon_text ?? ""} onChange={(e) => setForm({ ...form, coming_soon_text: e.target.value })} className={input} /></Field>
-        <Field label="Brand story"><textarea rows={4} value={form.brand_story ?? ""} onChange={(e) => setForm({ ...form, brand_story: e.target.value })} className={input} /></Field>
+        <Field label="Brand story (shown on Blog page)"><textarea rows={6} value={form.brand_story ?? ""} onChange={(e) => setForm({ ...form, brand_story: e.target.value })} className={input} /></Field>
         <Field label="Footer text"><input value={form.footer_text ?? ""} onChange={(e) => setForm({ ...form, footer_text: e.target.value })} className={input} /></Field>
         <div><button onClick={() => saveSettings(form, refetch)} className="btn-primary">Save</button></div>
-      </div>
-    </div>
-  );
-}
-
-function NutritionAdmin() {
-  const { data: products = [] } = useQuery(productsQuery);
-  const qc = useQueryClient();
-  return (
-    <div>
-      <h1 className="font-serif text-3xl mb-6">Nutrition Facts</h1>
-      <div className="space-y-6">
-        {products.map((p) => <NutritionEditor key={p.id} product={p} onSaved={() => qc.invalidateQueries({ queryKey: ["products"] })} />)}
-      </div>
-    </div>
-  );
-}
-
-function NutritionEditor({ product, onSaved }: { product: Product; onSaved: () => void }) {
-  const [form, setForm] = useState(product.nutrition);
-  const [saving, setSaving] = useState(false);
-  const fields: Array<keyof typeof form> = ["serving", "energy", "protein", "fat", "sugar", "carbs"];
-  const input = "w-full px-3 py-2 rounded-lg bg-white border border-[color:var(--border)] text-sm";
-
-  async function save() {
-    setSaving(true);
-    const { error } = await supabase.from("products").update({ nutrition: form, updated_at: new Date().toISOString() }).eq("id", product.id);
-    setSaving(false);
-    if (error) { toast.error(error.message); return; }
-    toast.success("Saved");
-    onSaved();
-  }
-
-  return (
-    <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)]">
-      <h2 className="font-serif text-xl mb-4">{product.name}</h2>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {fields.map((k) => (
-          <Field key={k} label={k}>
-            <input value={form[k] ?? ""} onChange={(e) => setForm({ ...form, [k]: e.target.value })} className={input} />
-          </Field>
-        ))}
-      </div>
-      <div className="mt-4 flex justify-end">
-        <button onClick={save} disabled={saving} className="btn-primary disabled:opacity-60">{saving ? "Saving..." : "Save"}</button>
       </div>
     </div>
   );
