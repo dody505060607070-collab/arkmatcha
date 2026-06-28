@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { productsQuery, settingsQuery } from "@/lib/queries";
-import { TinIllustration } from "@/components/site/TinIllustration";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Leaf, Package, Sparkles, Sun, MapPin, ArrowRight } from "lucide-react";
 import { Newsletter } from "@/components/site/Newsletter";
-import { Leaf, Sparkles, Package, MapPin, Sun } from "lucide-react";
+import { productsQuery, settingsQuery } from "@/lib/queries";
+import { brandAssets, getProductImage } from "@/lib/brand-assets";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,135 +28,123 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const { data: products = [] } = useQuery(productsQuery);
-  const { data: settings } = useQuery(settingsQuery);
+  const { data: products } = useSuspenseQuery(productsQuery);
+  const { data: settings } = useSuspenseQuery(settingsQuery);
 
   return (
     <main>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[color:var(--pale)]">
-        <div className="container-soft grid md:grid-cols-2 gap-12 items-center py-16 md:py-24">
-          <div className="order-2 md:order-1">
-            <p className="text-xs tracking-[0.3em] uppercase text-[color:var(--olive)] mb-5">
-              Ceremonial Grade · Made in Japan
-            </p>
-            <h1 className="font-serif text-5xl md:text-6xl leading-[1.05] text-[color:var(--forest)]">
-              {settings?.hero_headline ?? "Pure Ritual. Smooth Energy."}
-            </h1>
-            <p className="mt-6 text-lg text-[color:var(--muted-foreground)] max-w-md">
+      <section className="container-soft py-6 md:py-8">
+        <h1 className="sr-only">{settings?.hero_headline ?? "Pure Ritual. Smooth Energy."}</h1>
+        <div className="soft-panel overflow-hidden p-3 md:p-4">
+          <picture>
+            <source media="(max-width: 767px)" srcSet={settings?.hero_image || brandAssets.heroMobile} />
+            <img
+              src={settings?.hero_image || brandAssets.heroDesktop}
+              alt="Ark Matcha hero showing the 30g and 50g ceremonial grade tins"
+              className="w-full rounded-[1.5rem] object-cover object-top max-h-[330px] md:max-h-[460px]"
+            />
+          </picture>
+          <div className="grid gap-4 px-2 py-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:px-4">
+            <p className="min-w-0 text-sm leading-relaxed text-[color:var(--muted-foreground)]">
               {settings?.hero_subheadline ??
                 "Ceremonial grade matcha in two elegant sizes, crafted for calm daily moments."}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/catalog" className="btn-primary">Shop Matcha</Link>
-              <a href="#ritual" className="btn-ghost">Explore the Ritual</a>
+            <div className="flex flex-wrap gap-3 md:justify-end">
+              <Link to="/catalog" className="btn-primary">
+                Shop Matcha
+              </Link>
+              <a href="#ritual" className="btn-ghost">
+                Explore the Ritual
+              </a>
             </div>
           </div>
-          <div className="order-1 md:order-2 relative">
-            {settings?.hero_image ? (
-              <img
-                src={settings.hero_image}
-                alt="Ark Matcha ceremonial ritual"
-                className="w-full h-[420px] md:h-[520px] object-cover rounded-3xl shadow-lg"
-              />
-            ) : (
-              <div className="relative aspect-[4/5] md:aspect-square rounded-3xl bg-gradient-to-br from-[color:var(--stone)] via-[color:var(--cream)] to-[color:var(--pale)] flex items-end justify-center p-8 shadow-inner">
-                <div className="flex gap-4 items-end">
-                  <TinIllustration variant="30g" className="w-32 md:w-44" />
-                  <TinIllustration variant="50g" className="w-40 md:w-56" />
-                </div>
-                <div className="absolute top-6 left-6 text-xs tracking-widest text-[color:var(--olive)] uppercase">
-                  Two Sizes · 30g & 50g
-                </div>
-              </div>
-            )}
+        </div>
+      </section>
+
+      <section className="px-3">
+        <div className="container-soft">
+          <div className="rounded-[999px] border border-[color:var(--border)] bg-[color:var(--forest)] px-5 py-3 text-center text-xs uppercase tracking-[0.28em] text-[color:var(--cream)] shadow-sm">
+            {settings?.coming_soon_text ?? "Launching Soon"}
           </div>
         </div>
       </section>
 
-      {/* Coming soon banner */}
-      <section className="bg-[color:var(--forest)] text-[color:var(--cream)]">
-        <div className="container-soft py-4 text-center text-sm tracking-widest uppercase">
-          {settings?.coming_soon_text ?? "Launching Soon"}
+      <section id="ritual" className="container-soft py-16 md:py-20">
+        <div className="mb-10 text-center">
+          <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[color:var(--petal-strong)]">Choose Your Ritual</p>
+          <h2 className="font-serif text-4xl md:text-5xl">Two elegant tins for calm daily moments.</h2>
         </div>
-      </section>
 
-      {/* Products */}
-      <section id="ritual" className="container-soft py-20">
-        <div className="text-center mb-12">
-          <p className="text-xs tracking-[0.3em] uppercase text-[color:var(--olive)] mb-3">
-            Two Sizes
-          </p>
-          <h2 className="font-serif text-4xl md:text-5xl">Choose Your Ritual</h2>
-        </div>
-        <div className="grid md:grid-cols-2 gap-8">
-          {products.map((p) => (
+        <div className="grid gap-8 md:grid-cols-2">
+          {products.map((product, index) => (
             <Link
-              key={p.id}
+              key={product.id}
               to="/product/$slug"
-              params={{ slug: p.slug }}
-              className="group rounded-3xl bg-[color:var(--card)] p-8 md:p-10 transition-all hover:-translate-y-1 hover:shadow-xl shadow-sm border border-[color:var(--border)]"
+              params={{ slug: product.slug }}
+              className="product-sachet grid gap-6 p-6 transition-transform hover:-translate-y-1 md:grid-cols-[minmax(0,1fr)_220px] md:items-center md:p-8"
             >
-              <div className={`rounded-2xl mb-6 p-6 flex justify-center ${
-                p.slug === "ark-matcha-30g" ? "bg-[color:var(--cream)]" : "bg-[color:var(--pale)]"
-              }`}>
-                <TinIllustration
-                  variant={p.slug === "ark-matcha-30g" ? "30g" : "50g"}
-                  imageUrl={p.image_url || undefined}
-                  className="h-64 w-auto"
+              <div className="min-w-0">
+                <div className="mb-3 flex items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-[color:var(--olive)]">
+                  <span>Made in Japan</span>
+                  <span>•</span>
+                  <span>{product.size}</span>
+                </div>
+                <h3 className="font-serif text-3xl text-[color:var(--forest)]">{product.name}</h3>
+                <p className="mt-3 max-w-md text-sm leading-relaxed text-[color:var(--muted-foreground)]">
+                  {index === 0
+                    ? "Light, elegant, and perfect for trying your first daily matcha ritual."
+                    : "Deeper, richer, and made for your everyday matcha routine."}
+                </p>
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--forest)]">
+                  View product <ArrowRight className="h-4 w-4" />
+                </div>
+              </div>
+
+              <div className="soft-panel overflow-hidden p-4">
+                <img
+                  src={getProductImage(product.slug, product.image_url)}
+                  alt={product.name}
+                  loading="lazy"
+                  className="h-[280px] w-full rounded-[1.5rem] object-cover"
                 />
-              </div>
-              <div className="flex items-baseline justify-between">
-                <h3 className="font-serif text-2xl">{p.name}</h3>
-                <span className="text-xs tracking-widest text-[color:var(--olive)] uppercase">{p.size}</span>
-              </div>
-              <p className="mt-3 text-sm text-[color:var(--muted-foreground)] leading-relaxed">
-                {p.short_description}
-              </p>
-              <div className="mt-5 text-sm font-medium text-[color:var(--forest)] group-hover:underline">
-                View product →
               </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Why */}
-      <section className="bg-[color:var(--pale)]">
-        <div className="container-soft py-20">
-          <div className="text-center mb-12">
+      <section className="bg-[color:var(--pale)]/70">
+        <div className="container-soft py-16 md:py-20">
+          <div className="mb-10 text-center">
             <h2 className="font-serif text-4xl">Why Ark Matcha</h2>
           </div>
-          <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-6">
+          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-5">
             {[
               { icon: Leaf, label: "Ceremonial Grade" },
               { icon: Sparkles, label: "Smooth Natural Energy" },
               { icon: MapPin, label: "Made in Japan" },
               { icon: Package, label: "Beautifully Packed" },
               { icon: Sun, label: "Made for Daily Rituals" },
-            ].map((f) => (
-              <div key={f.label} className="text-center p-6 rounded-2xl bg-[color:var(--cream)]/60">
-                <f.icon className="h-6 w-6 mx-auto mb-3 text-[color:var(--olive)]" />
-                <p className="text-sm font-medium">{f.label}</p>
+            ].map((feature) => (
+              <div key={feature.label} className="soft-panel px-5 py-6 text-center">
+                <feature.icon className="mx-auto mb-3 h-6 w-6 text-[color:var(--petal-strong)]" />
+                <p className="text-sm font-medium">{feature.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Nutrition preview */}
-      <section className="container-soft py-20">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+      <section className="container-soft py-16 md:py-20">
+        <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_420px] md:items-center">
           <div>
-            <p className="text-xs tracking-[0.3em] uppercase text-[color:var(--olive)] mb-3">
-              Per 2g serving
-            </p>
-            <h2 className="font-serif text-4xl mb-4">Simple. Clean. Ceremonial.</h2>
+            <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[color:var(--petal-strong)]">Simple. Clean. Ceremonial.</p>
+            <h2 className="mb-4 font-serif text-4xl">A calm green ritual in every 2g serving.</h2>
             <p className="text-[color:var(--muted-foreground)]">
               Every 2g serving is light, smooth, and made for a calm daily matcha ritual.
             </p>
           </div>
-          <div className="rounded-3xl bg-[color:var(--card)] p-8 border border-[color:var(--border)]">
+          <div className="soft-panel p-7 md:p-8">
             <table className="w-full text-sm">
               <tbody className="divide-y divide-[color:var(--border)]">
                 {[
@@ -165,10 +153,10 @@ function Home() {
                   ["Fat", "0.00 g"],
                   ["Sugar", "0.00 g"],
                   ["Total Carbohydrate", "1.14 g"],
-                ].map(([k, v]) => (
-                  <tr key={k}>
-                    <td className="py-3 text-[color:var(--muted-foreground)]">{k}</td>
-                    <td className="py-3 text-right font-medium">{v}</td>
+                ].map(([key, value]) => (
+                  <tr key={key}>
+                    <td className="py-3 text-[color:var(--muted-foreground)]">{key}</td>
+                    <td className="py-3 text-right font-medium text-[color:var(--forest)]">{value}</td>
                   </tr>
                 ))}
               </tbody>
@@ -177,13 +165,11 @@ function Home() {
         </div>
       </section>
 
-      {/* Brand story */}
-      <section className="bg-[color:var(--cream)] border-y border-[color:var(--border)]">
-        <div className="container-soft py-20 max-w-3xl text-center">
-          <h2 className="font-serif text-3xl md:text-4xl mb-5">Matcha Made Simple</h2>
-          <p className="text-[color:var(--muted-foreground)] leading-relaxed">
-            {settings?.brand_story}
-          </p>
+      <section className="border-y border-[color:var(--border)] bg-[color:var(--cream)]/70">
+        <div className="container-soft py-16 text-center md:py-20">
+          <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[color:var(--petal-strong)]">Brand Story</p>
+          <h2 className="mb-5 font-serif text-3xl md:text-4xl">Matcha Made Simple</h2>
+          <p className="mx-auto max-w-3xl leading-relaxed text-[color:var(--muted-foreground)]">{settings?.brand_story}</p>
         </div>
       </section>
 

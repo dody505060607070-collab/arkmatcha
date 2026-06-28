@@ -1,12 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { productsQuery } from "@/lib/queries";
-import { TinIllustration } from "@/components/site/TinIllustration";
 import { Stars } from "@/components/site/Stars";
 import { useCart } from "@/lib/cart";
 import { toast } from "sonner";
+import { getProductImage } from "@/lib/brand-assets";
 
 export const Route = createFileRoute("/catalog")({
   head: () => ({
@@ -23,97 +23,84 @@ export const Route = createFileRoute("/catalog")({
 });
 
 function CatalogPage() {
-  const { data: products = [] } = useQuery(productsQuery);
-  const [q, setQ] = useState("");
+  const { data: products } = useSuspenseQuery(productsQuery);
+  const [query, setQuery] = useState("");
   const add = useCart((s) => s.add);
 
   const filtered = useMemo(
     () =>
       products.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q.toLowerCase()) ||
-          p.size.toLowerCase().includes(q.toLowerCase()),
+        (product) =>
+          product.name.toLowerCase().includes(query.toLowerCase()) ||
+          product.size.toLowerCase().includes(query.toLowerCase()),
       ),
-    [products, q],
+    [products, query],
   );
 
   return (
-    <main className="container-soft py-14">
-      <header className="text-center mb-10">
-        <p className="text-xs tracking-[0.3em] uppercase text-[color:var(--olive)] mb-3">Catalog</p>
+    <main className="container-soft py-12 md:py-14">
+      <header className="mb-10 text-center">
+        <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[color:var(--petal-strong)]">Catalog</p>
         <h1 className="font-serif text-4xl md:text-5xl">Ceremonial Grade Matcha</h1>
       </header>
 
-      <div className="max-w-md mx-auto mb-12 relative">
-        <Search className="h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-[color:var(--muted-foreground)]" />
+      <div className="relative mx-auto mb-12 max-w-md">
+        <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[color:var(--muted-foreground)]" />
         <input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="Search matcha..."
-          className="w-full pl-11 pr-4 py-3 rounded-full bg-[color:var(--cream)] border border-[color:var(--border)] focus:outline-none focus:ring-2 focus:ring-[color:var(--olive)]"
+          className="w-full rounded-full border border-[color:var(--border)] bg-[color:var(--card)] py-3 pl-11 pr-4 focus:outline-none focus:ring-2 focus:ring-[color:var(--ring)]"
         />
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-8">
-        {filtered.map((p) => (
-          <article
-            key={p.id}
-            className="rounded-3xl bg-[color:var(--card)] border border-[color:var(--border)] p-6 md:p-8 flex flex-col"
-          >
-            <Link
-              to="/product/$slug"
-              params={{ slug: p.slug }}
-              className={`rounded-2xl mb-6 p-6 flex justify-center ${
-                p.slug === "ark-matcha-30g" ? "bg-[color:var(--cream)]" : "bg-[color:var(--pale)]"
-              }`}
-            >
-              <TinIllustration
-                variant={p.slug === "ark-matcha-30g" ? "30g" : "50g"}
-                imageUrl={p.image_url || undefined}
-                className="h-56 w-auto"
+      <div className="grid gap-8 sm:grid-cols-2">
+        {filtered.map((product) => (
+          <article key={product.id} className="product-sachet p-5 md:p-6">
+            <Link to="/product/$slug" params={{ slug: product.slug }} className="soft-panel block overflow-hidden p-3">
+              <img
+                src={getProductImage(product.slug, product.image_url)}
+                alt={product.name}
+                loading="lazy"
+                className="h-[320px] w-full rounded-[1.5rem] object-cover"
               />
             </Link>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-[10px] tracking-widest uppercase px-2 py-1 rounded-full bg-[color:var(--pale)] text-[color:var(--forest)]">
-                  Made in Japan
-                </span>
-                <span className="text-[10px] tracking-widest uppercase text-[color:var(--olive)]">
-                  {p.size}
-                </span>
-              </div>
-              <h2 className="font-serif text-2xl">{p.name}</h2>
-              <Stars className="mt-1" />
-              <p className="mt-3 text-sm text-[color:var(--muted-foreground)] leading-relaxed">
-                {p.short_description}
-              </p>
-              <div className="mt-4 font-serif text-xl text-[color:var(--forest)]">
-                {p.price != null ? (
-                  <>EGP {Number(p.price).toFixed(2)}</>
-                ) : (
-                  <span className="text-base text-[color:var(--muted-foreground)] italic">Price coming soon</span>
-                )}
-              </div>
+
+            <div className="mt-5 flex items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-[color:var(--olive)]">
+              <span className="rounded-full bg-[color:var(--pale)] px-2 py-1 text-[color:var(--forest)]">Made in Japan</span>
+              <span>{product.size}</span>
             </div>
-            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+
+            <h2 className="mt-4 font-serif text-2xl text-[color:var(--forest)]">{product.name}</h2>
+            <Stars className="mt-2" />
+            <p className="mt-3 text-sm leading-relaxed text-[color:var(--muted-foreground)]">{product.short_description}</p>
+            <div className="mt-4 font-serif text-xl text-[color:var(--forest)]">
+              {product.price != null ? (
+                <>EGP {Number(product.price).toFixed(2)}</>
+              ) : (
+                <span className="text-base italic text-[color:var(--muted-foreground)]">Price coming soon</span>
+              )}
+            </div>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={() => {
                   add({
-                    productId: p.id,
-                    slug: p.slug,
-                    name: p.name,
-                    size: p.size,
-                    price: p.price,
-                    image: p.image_url,
+                    productId: product.id,
+                    slug: product.slug,
+                    name: product.name,
+                    size: product.size,
+                    price: product.price,
+                    image: getProductImage(product.slug, product.image_url),
                   });
-                  toast.success(`${p.name} added to cart`);
+                  toast.success(`${product.name} added to cart`);
                 }}
                 className="btn-primary flex-1"
-                disabled={!p.in_stock}
+                disabled={!product.in_stock}
               >
-                {p.in_stock ? "Add to Cart" : "Out of stock"}
+                {product.in_stock ? "Add to Cart" : "Out of stock"}
               </button>
-              <Link to="/product/$slug" params={{ slug: p.slug }} className="btn-ghost flex-1">
+              <Link to="/product/$slug" params={{ slug: product.slug }} className="btn-ghost flex-1">
                 View Details
               </Link>
             </div>

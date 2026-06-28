@@ -1,12 +1,12 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { productQuery, productsQuery } from "@/lib/queries";
-import { TinIllustration } from "@/components/site/TinIllustration";
 import { Stars } from "@/components/site/Stars";
 import { useCart } from "@/lib/cart";
 import { toast } from "sonner";
+import { brandAssets, getProductGallery, getProductImage } from "@/lib/brand-assets";
 
 export const Route = createFileRoute("/product/$slug")({
   head: ({ params }) => ({
@@ -24,14 +24,16 @@ export const Route = createFileRoute("/product/$slug")({
   },
   notFoundComponent: () => (
     <div className="container-soft py-24 text-center">
-      <h1 className="font-serif text-3xl mb-3">Product not found</h1>
-      <Link to="/catalog" className="btn-primary inline-flex mt-4">Back to catalog</Link>
+      <h1 className="mb-3 font-serif text-3xl">Product not found</h1>
+      <Link to="/catalog" className="btn-primary mt-4 inline-flex">
+        Back to catalog
+      </Link>
     </div>
   ),
   errorComponent: ({ error }) => (
     <div className="container-soft py-24 text-center">
       <h1 className="font-serif text-2xl">Couldn't load this product.</h1>
-      <p className="text-sm text-[color:var(--muted-foreground)] mt-2">{error.message}</p>
+      <p className="mt-2 text-sm text-[color:var(--muted-foreground)]">{error.message}</p>
     </div>
   ),
   component: ProductPage,
@@ -39,18 +41,22 @@ export const Route = createFileRoute("/product/$slug")({
 
 function ProductPage() {
   const { slug } = Route.useParams();
-  const { data: product } = useQuery(productQuery(slug));
-  const { data: products = [] } = useQuery(productsQuery);
+  const { data: product } = useSuspenseQuery(productQuery(slug));
+  const { data: products } = useSuspenseQuery(productsQuery);
   const add = useCart((s) => s.add);
-  const [qty, setQty] = useState(1);
+  const [quantity, setQuantity] = useState(1);
+  const [activeImage, setActiveImage] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  if (!product) return null;
-  const variant = product.slug === "ark-matcha-30g" ? "30g" : "50g";
-  const related = products.filter((p) => p.id !== product.id);
+  const gallery = useMemo(() => {
+    const base = getProductGallery(product);
+    return Array.from(new Set([...base, brandAssets.matchaPowder]));
+  }, [product]);
+
+  const selectedImage = activeImage ?? gallery[0] ?? getProductImage(product.slug, product.image_url);
+  const related = products.filter((item) => item.id !== product.id);
 
   function addToCart() {
-    if (!product) return;
     add(
       {
         productId: product.id,
@@ -58,40 +64,67 @@ function ProductPage() {
         name: product.name,
         size: product.size,
         price: product.price,
-        image: product.image_url,
+        image: getProductImage(product.slug, product.image_url),
       },
-      qty,
+      quantity,
     );
     toast.success(`${product.name} added to cart`);
   }
 
   return (
     <main className="container-soft py-12 md:py-16">
-      <div className="grid md:grid-cols-2 gap-12">
-        <div className={`rounded-3xl p-8 md:p-12 ${variant === "30g" ? "bg-[color:var(--cream)]" : "bg-[color:var(--pale)]"}`}>
-          <TinIllustration variant={variant} imageUrl={product.image_url || undefined} className="w-full h-auto max-h-[520px]" />
+      <div className="grid gap-10 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:items-start">
+        <div className="grid gap-4">
+          <div className="soft-panel overflow-hidden p-4">
+            <img src={selectedImage} alt={product.name} className="w-full rounded-[1.75rem] object-cover" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {gallery.map((image, index) => (
+              <button
+                key={`${image}-${index}`}
+                type="button"
+                onClick={() => setActiveImage(image)}
+                className="soft-panel overflow-hidden p-2"
+                aria-label={`View image ${index + 1}`}
+                style={{
+                  borderColor:
+                    selectedImage === image
+                      ? "color-mix(in oklab, var(--petal-strong) 50%, white 50%)"
+                      : undefined,
+                }}
+              >
+                <img src={image} alt={`${product.name} preview ${index + 1}`} className="h-28 w-full rounded-[1rem] object-cover" />
+              </button>
+            ))}
+          </div>
         </div>
-        <div>
-          <div className="flex items-center gap-3 mb-3">
-            <span className="text-[10px] tracking-widest uppercase px-2 py-1 rounded-full bg-[color:var(--pale)] text-[color:var(--forest)]">
+
+        <div className="soft-panel p-7 md:p-8">
+          <div className="mb-3 flex items-center gap-3">
+            <span className="rounded-full bg-[color:var(--pale)] px-2 py-1 text-[10px] uppercase tracking-[0.28em] text-[color:var(--forest)]">
               Made in Japan
             </span>
-            <span className="text-[10px] tracking-widest uppercase text-[color:var(--olive)]">{product.size}</span>
+            <span className="text-[10px] uppercase tracking-[0.28em] text-[color:var(--olive)]">{product.size}</span>
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl mb-3">{product.name}</h1>
+          <h1 className="mb-3 font-serif text-4xl md:text-5xl">{product.name}</h1>
           <Stars className="mb-4" />
-          <div className="font-serif text-2xl text-[color:var(--forest)] mb-6">
-            {product.price != null ? `EGP ${Number(product.price).toFixed(2)}` : <span className="italic text-base text-[color:var(--muted-foreground)]">Price coming soon</span>}
+          <div className="mb-6 font-serif text-2xl text-[color:var(--forest)]">
+            {product.price != null ? (
+              `EGP ${Number(product.price).toFixed(2)}`
+            ) : (
+              <span className="text-base italic text-[color:var(--muted-foreground)]">Price coming soon</span>
+            )}
           </div>
-          <p className="text-[color:var(--muted-foreground)] leading-relaxed">{product.description}</p>
+          <p className="leading-relaxed text-[color:var(--muted-foreground)]">{product.description}</p>
 
           <div className="mt-7 flex items-center gap-4">
-            <div className="flex items-center border border-[color:var(--border)] rounded-full overflow-hidden">
-              <button aria-label="Decrease" onClick={() => setQty((q) => Math.max(1, q - 1))} className="p-3 hover:bg-[color:var(--pale)]">
+            <div className="flex items-center overflow-hidden rounded-full border border-[color:var(--border)] bg-[color:var(--card)]">
+              <button aria-label="Decrease" onClick={() => setQuantity((value) => Math.max(1, value - 1))} className="p-3 hover:bg-[color:var(--pale)]">
                 <Minus className="h-4 w-4" />
               </button>
-              <span className="px-4 min-w-[2.5rem] text-center">{qty}</span>
-              <button aria-label="Increase" onClick={() => setQty((q) => q + 1)} className="p-3 hover:bg-[color:var(--pale)]">
+              <span className="min-w-[2.5rem] px-4 text-center">{quantity}</span>
+              <button aria-label="Increase" onClick={() => setQuantity((value) => value + 1)} className="p-3 hover:bg-[color:var(--pale)]">
                 <Plus className="h-4 w-4" />
               </button>
             </div>
@@ -99,6 +132,7 @@ function ProductPage() {
               {product.in_stock ? "Add to Cart" : "Out of stock"}
             </button>
           </div>
+
           <button
             onClick={() => {
               addToCart();
@@ -110,29 +144,25 @@ function ProductPage() {
             Buy Now
           </button>
 
-          <div className="mt-8 text-sm text-[color:var(--muted-foreground)]">
-            Payment is available by Cash on Delivery.
-          </div>
+          <div className="mt-8 text-sm text-[color:var(--muted-foreground)]">Payment is available by Cash on Delivery.</div>
         </div>
       </div>
 
-      {/* Key Benefits */}
-      <section className="mt-20">
-        <h2 className="font-serif text-3xl mb-6">Key Benefits</h2>
-        <ul className="grid sm:grid-cols-2 gap-3">
-          {product.key_benefits.map((b) => (
-            <li key={b} className="px-5 py-4 rounded-2xl bg-[color:var(--card)] border border-[color:var(--border)]">
-              · {b}
+      <section className="mt-16 md:mt-20">
+        <h2 className="mb-6 font-serif text-3xl">Key Benefits</h2>
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {product.key_benefits.map((benefit) => (
+            <li key={benefit} className="soft-panel px-5 py-4 text-sm">
+              {benefit}
             </li>
           ))}
         </ul>
       </section>
 
-      {/* Nutrition + Ingredients */}
-      <section className="mt-20 grid md:grid-cols-2 gap-8">
-        <div className="rounded-3xl p-8 bg-[color:var(--card)] border border-[color:var(--border)]">
-          <h2 className="font-serif text-2xl mb-2">Nutrition Facts</h2>
-          <p className="text-xs uppercase tracking-widest text-[color:var(--olive)] mb-4">{product.nutrition.serving ?? "per 2g"}</p>
+      <section className="mt-16 grid gap-8 md:mt-20 md:grid-cols-2">
+        <div className="soft-panel p-8">
+          <h2 className="mb-2 font-serif text-2xl">Nutrition Facts</h2>
+          <p className="mb-4 text-xs uppercase tracking-[0.28em] text-[color:var(--olive)]">{product.nutrition.serving ?? "Per 2g"}</p>
           <table className="w-full text-sm">
             <tbody className="divide-y divide-[color:var(--border)]">
               {[
@@ -141,59 +171,59 @@ function ProductPage() {
                 ["Fat", product.nutrition.fat],
                 ["Sugar", product.nutrition.sugar],
                 ["Total Carbohydrate", product.nutrition.carbs],
-              ].map(([k, v]) => (
-                <tr key={k}>
-                  <td className="py-2.5 text-[color:var(--muted-foreground)]">{k}</td>
-                  <td className="py-2.5 text-right font-medium">{v ?? "—"}</td>
+              ].map(([key, value]) => (
+                <tr key={key}>
+                  <td className="py-2.5 text-[color:var(--muted-foreground)]">{key}</td>
+                  <td className="py-2.5 text-right font-medium">{value ?? "—"}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <p className="text-xs text-[color:var(--muted-foreground)] mt-4">Made in Japan.</p>
+          <p className="mt-4 text-xs text-[color:var(--muted-foreground)]">Made in Japan.</p>
         </div>
-        <div className="rounded-3xl p-8 bg-[color:var(--card)] border border-[color:var(--border)] flex flex-col gap-6">
+
+        <div className="soft-panel flex flex-col gap-6 p-8">
           <div>
-            <h3 className="font-serif text-xl mb-2">Ingredients</h3>
+            <h3 className="mb-2 font-serif text-xl">Ingredients</h3>
             <p className="text-sm text-[color:var(--muted-foreground)]">{product.ingredients}</p>
           </div>
           <div>
-            <h3 className="font-serif text-xl mb-2">Storage</h3>
+            <h3 className="mb-2 font-serif text-xl">Storage</h3>
             <p className="text-sm text-[color:var(--muted-foreground)]">{product.storage}</p>
           </div>
           <div>
-            <h3 className="font-serif text-xl mb-2">Payment</h3>
+            <h3 className="mb-2 font-serif text-xl">Shipping & Payment</h3>
             <p className="text-sm text-[color:var(--muted-foreground)]">Payment is available by Cash on Delivery.</p>
           </div>
         </div>
       </section>
 
-      {related.length > 0 && (
-        <section className="mt-20">
-          <h2 className="font-serif text-3xl mb-6">You may also like</h2>
-          <div className="grid sm:grid-cols-2 gap-6">
-            {related.map((p) => (
+      {related.length > 0 ? (
+        <section className="mt-16 md:mt-20">
+          <h2 className="mb-6 font-serif text-3xl">You may also like</h2>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {related.map((item) => (
               <Link
-                key={p.id}
+                key={item.id}
                 to="/product/$slug"
-                params={{ slug: p.slug }}
-                className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--card)] p-6 flex gap-5 items-center hover:-translate-y-0.5 transition-transform"
+                params={{ slug: item.slug }}
+                className="product-sachet grid items-center gap-4 p-4 sm:grid-cols-[120px_minmax(0,1fr)]"
               >
-                <div className={`p-3 rounded-xl ${p.slug === "ark-matcha-30g" ? "bg-[color:var(--cream)]" : "bg-[color:var(--pale)]"}`}>
-                  <TinIllustration
-                    variant={p.slug === "ark-matcha-30g" ? "30g" : "50g"}
-                    imageUrl={p.image_url || undefined}
-                    className="h-24 w-auto"
-                  />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-serif text-xl">{p.name}</h3>
-                  <p className="text-sm text-[color:var(--muted-foreground)]">{p.short_description}</p>
+                <img
+                  src={getProductImage(item.slug, item.image_url)}
+                  alt={item.name}
+                  loading="lazy"
+                  className="h-32 w-full rounded-[1.25rem] object-cover"
+                />
+                <div className="min-w-0">
+                  <h3 className="font-serif text-xl">{item.name}</h3>
+                  <p className="text-sm text-[color:var(--muted-foreground)]">{item.short_description}</p>
                 </div>
               </Link>
             ))}
           </div>
         </section>
-      )}
+      ) : null}
     </main>
   );
 }

@@ -49,39 +49,42 @@
   --color-stone: var(--stone);
   --color-blush: var(--blush);
   --color-pale: var(--pale);
+  --color-petal: var(--petal);
+  --color-petal-strong: var(--petal-strong);
 }
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0.9rem;
 
-  /* Brand palette */
-  --matcha: oklch(0.42 0.05 130);          /* #3D4837-ish dark matcha */
-  --forest: oklch(0.32 0.05 145);          /* #1F3326 deep forest */
-  --pale:   oklch(0.97 0.03 130);          /* #F3F8EA pale matcha bg */
-  --cream:  oklch(0.94 0.025 85);          /* #F3EBDD warm ivory */
-  --stone:  oklch(0.90 0.02 80);           /* #E8DFD0 light stone */
-  --olive:  oklch(0.62 0.06 115);          /* #7F875F muted olive */
-  --blush:  oklch(0.84 0.05 25);           /* #EAC6BD soft blush */
+  --matcha: oklch(0.5 0.1 137);
+  --forest: oklch(0.32 0.06 144);
+  --pale: oklch(0.965 0.03 116);
+  --cream: oklch(0.955 0.022 84);
+  --stone: oklch(0.915 0.022 80);
+  --olive: oklch(0.64 0.08 122);
+  --blush: oklch(0.87 0.055 24);
+  --petal: oklch(0.9 0.06 15);
+  --petal-strong: oklch(0.73 0.12 12);
 
-  --background: var(--cream);
+  --background: color-mix(in oklab, var(--cream) 78%, white 22%);
   --foreground: var(--forest);
-  --card: oklch(0.98 0.015 90);
+  --card: color-mix(in oklab, white 78%, var(--cream) 22%);
   --card-foreground: var(--forest);
-  --popover: oklch(0.98 0.015 90);
+  --popover: color-mix(in oklab, white 82%, var(--cream) 18%);
   --popover-foreground: var(--forest);
   --primary: var(--forest);
   --primary-foreground: var(--cream);
-  --secondary: var(--pale);
+  --secondary: color-mix(in oklab, var(--pale) 72%, white 28%);
   --secondary-foreground: var(--forest);
-  --muted: oklch(0.93 0.015 90);
-  --muted-foreground: oklch(0.45 0.03 130);
-  --accent: var(--olive);
-  --accent-foreground: var(--cream);
+  --muted: color-mix(in oklab, var(--stone) 60%, white 40%);
+  --muted-foreground: oklch(0.48 0.03 128);
+  --accent: var(--petal);
+  --accent-foreground: var(--forest);
   --destructive: oklch(0.55 0.18 27);
   --destructive-foreground: var(--cream);
-  --border: oklch(0.86 0.02 95);
-  --input: oklch(0.88 0.02 95);
-  --ring: var(--olive);
+  --border: color-mix(in oklab, var(--stone) 70%, white 30%);
+  --input: color-mix(in oklab, white 75%, var(--cream) 25%);
+  --ring: color-mix(in oklab, var(--matcha) 58%, var(--petal) 42%);
 
   --sidebar: var(--cream);
   --sidebar-foreground: var(--forest);
@@ -89,12 +92,12 @@
   --sidebar-primary-foreground: var(--cream);
   --sidebar-accent: var(--pale);
   --sidebar-accent-foreground: var(--forest);
-  --sidebar-border: oklch(0.86 0.02 95);
-  --sidebar-ring: var(--olive);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
 
   --chart-1: var(--matcha);
   --chart-2: var(--olive);
-  --chart-3: var(--blush);
+  --chart-3: var(--petal-strong);
   --chart-4: var(--stone);
   --chart-5: var(--forest);
 }
@@ -108,39 +111,84 @@
   --popover-foreground: var(--cream);
   --primary: var(--cream);
   --primary-foreground: var(--forest);
-  --secondary: oklch(0.40 0.05 140);
+  --secondary: oklch(0.4 0.05 140);
   --secondary-foreground: var(--cream);
-  --muted: oklch(0.40 0.05 140);
+  --muted: oklch(0.4 0.05 140);
   --muted-foreground: oklch(0.78 0.02 90);
-  --accent: var(--olive);
+  --accent: var(--petal);
   --accent-foreground: var(--cream);
   --border: oklch(0.45 0.04 140);
   --input: oklch(0.45 0.04 140);
-  --ring: var(--olive);
+  --ring: var(--petal-strong);
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
+    min-height: 100vh;
     background-color: var(--color-background);
+    background-image:
+      radial-gradient(circle at top left, color-mix(in oklab, var(--petal) 56%, transparent) 0, transparent 34%),
+      radial-gradient(circle at top right, color-mix(in oklab, var(--pale) 68%, transparent) 0, transparent 40%),
+      linear-gradient(180deg, color-mix(in oklab, white 48%, var(--cream) 52%) 0%, var(--background) 40%, color-mix(in oklab, var(--pale) 30%, var(--background) 70%) 100%);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "ss02";
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4, h5, .font-serif {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  .font-serif {
     font-family: var(--font-serif);
     font-weight: 500;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--petal) 60%, white 40%);
+    color: var(--forest);
   }
 }
 
 @utility container-soft {
   width: 100%;
   margin-inline: auto;
-  max-width: 78rem;
-  padding-inline: 1.25rem;
+  max-width: 80rem;
+  padding-inline: 1rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 1.5rem;
+  }
+}
+
+@utility glass-bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in oklab, white 66%, var(--stone) 34%);
+  background: color-mix(in oklab, white 62%, var(--petal) 38%);
+  box-shadow: 0 14px 34px -22px color-mix(in oklab, var(--forest) 34%, transparent);
+  backdrop-filter: blur(18px);
+  transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    background: color-mix(in oklab, white 54%, var(--petal) 46%);
+    border-color: color-mix(in oklab, white 35%, var(--petal) 65%);
+  }
 }
 
 @utility btn-primary {
@@ -148,14 +196,19 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.85rem 1.6rem;
+  padding: 0.9rem 1.5rem;
   border-radius: 9999px;
-  background: var(--forest);
+  background: linear-gradient(135deg, color-mix(in oklab, var(--forest) 92%, black 8%), var(--matcha));
   color: var(--cream);
   font-weight: 500;
-  letter-spacing: 0.01em;
-  transition: all 0.25s ease;
-  &:hover { background: var(--matcha); transform: translateY(-1px); }
+  box-shadow: 0 16px 34px -18px color-mix(in oklab, var(--forest) 60%, transparent);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 20px 36px -18px color-mix(in oklab, var(--forest) 72%, transparent);
+    filter: saturate(1.02);
+  }
 }
 
 @utility btn-ghost {
@@ -163,11 +216,46 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.85rem 1.6rem;
+  padding: 0.9rem 1.5rem;
   border-radius: 9999px;
-  border: 1px solid var(--forest);
+  border: 1px solid color-mix(in oklab, var(--petal) 52%, white 48%);
+  background: color-mix(in oklab, white 70%, var(--petal) 30%);
   color: var(--forest);
   font-weight: 500;
-  transition: all 0.25s ease;
-  &:hover { background: var(--forest); color: var(--cream); }
+  transition: transform 0.25s ease, background-color 0.25s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    background: color-mix(in oklab, white 58%, var(--petal) 42%);
+  }
+}
+
+@utility product-sachet {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 2rem;
+  border: 1px solid color-mix(in oklab, var(--stone) 62%, white 38%);
+  background: color-mix(in oklab, white 74%, var(--cream) 26%);
+  box-shadow: 0 28px 50px -36px color-mix(in oklab, var(--forest) 42%, transparent);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: auto auto 1.25rem -1.4rem;
+    width: 4.2rem;
+    height: 74%;
+    border-radius: 9999px;
+    background: linear-gradient(180deg, color-mix(in oklab, var(--petal) 76%, white 24%), color-mix(in oklab, var(--blush) 52%, white 48%));
+    opacity: 0.7;
+    transform: rotate(9deg);
+    z-index: -1;
+  }
+}
+
+@utility soft-panel {
+  border-radius: 2rem;
+  border: 1px solid color-mix(in oklab, var(--stone) 62%, white 38%);
+  background: color-mix(in oklab, white 82%, var(--cream) 18%);
+  box-shadow: 0 20px 40px -34px color-mix(in oklab, var(--forest) 45%, transparent);
 }
