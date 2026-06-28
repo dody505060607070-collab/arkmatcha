@@ -177,12 +177,15 @@ function ProductEditor({ product }: { product: Product }) {
         price: form.price === "" ? null : Number(form.price),
         image_url: form.image_url,
         in_stock: form.in_stock,
+        image_visible: form.image_visible,
+        price_visible: form.price_visible,
         ingredients: form.ingredients,
         storage: form.storage,
         key_benefits: form.key_benefits.split("\n").map((s) => s.trim()).filter(Boolean),
         updated_at: new Date().toISOString(),
       })
       .eq("id", product.id);
+
     setSaving(false);
     if (error) { toast.error(error.message); return; }
     toast.success("Saved");
