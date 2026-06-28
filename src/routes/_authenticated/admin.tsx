@@ -156,10 +156,13 @@ function ProductEditor({ product }: { product: Product }) {
     price: product.price == null ? "" : String(product.price),
     image_url: product.image_url,
     in_stock: product.in_stock,
+    image_visible: product.image_visible ?? true,
+    price_visible: product.price_visible ?? true,
     ingredients: product.ingredients,
     storage: product.storage,
     key_benefits: product.key_benefits.join("\n"),
   });
+
   const [saving, setSaving] = useState(false);
 
   async function save() {
