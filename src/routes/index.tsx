@@ -40,7 +40,7 @@ function Home() {
           <div className="grid grid-cols-2">
             <div className="relative bg-[color:var(--olive)]/5">
               <img
-                src={heroTins.url}
+                src={heroFlatlay.url}
                 alt="Ark Matcha ceremonial grade tins"
                 loading="eager"
                 fetchPriority="high"
