@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "approved admins can claim own role" ON public.user_roles;
