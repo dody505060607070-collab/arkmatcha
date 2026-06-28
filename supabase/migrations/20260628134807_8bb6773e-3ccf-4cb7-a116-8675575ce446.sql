@@ -1,0 +1,2 @@
+UPDATE public.products SET image_url = '/__l5e/assets-v1/42b6d33c-8fa2-43ec-a765-c7698e7c3060/ark-matcha-30g.png', gallery = '["/__l5e/assets-v1/42b6d33c-8fa2-43ec-a765-c7698e7c3060/ark-matcha-30g.png"]'::jsonb WHERE slug = 'ark-matcha-30g';
+UPDATE public.products SET image_url = '/__l5e/assets-v1/4c008d8a-e4ce-4929-8817-b76853f61b50/ark-matcha-50g.png', gallery = '["/__l5e/assets-v1/4c008d8a-e4ce-4929-8817-b76853f61b50/ark-matcha-50g.png"]'::jsonb WHERE slug = 'ark-matcha-50g';
