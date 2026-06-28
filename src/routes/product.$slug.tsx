@@ -103,8 +103,14 @@ function ProductPage() {
                   key={kitImage}
                   src={kitImage}
                   alt={`${product.name} — ${selectedColor.label}`}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  width={800}
+                  height={800}
                   className="aspect-square w-full object-cover transition-opacity duration-300"
                 />
+
               </div>
               <div className="mt-4 flex items-center gap-3">
                 <span className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
