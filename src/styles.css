@@ -194,7 +194,7 @@
   gap: 0.5rem;
   padding: 0.9rem 1.5rem;
   border-radius: 9999px;
-  background: linear-gradient(135deg, color-mix(in oklab, var(--forest) 92%, black 8%), var(--matcha));
+  background: var(--matcha);
   color: var(--cream);
   font-weight: 500;
   box-shadow: 0 16px 34px -18px color-mix(in oklab, var(--forest) 60%, transparent);
