@@ -14,6 +14,7 @@ import {
   LogOut,
   Search,
   RefreshCcw,
+  Trash2,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { productsQuery, settingsQuery, type Product, type SiteSettings } from "@/lib/queries";
