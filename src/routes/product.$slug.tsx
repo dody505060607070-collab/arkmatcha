@@ -41,6 +41,7 @@ export const Route = createFileRoute("/product/$slug")({
 function ProductPage() {
   const { slug } = Route.useParams();
   const { data: product } = useSuspenseQuery(productQuery(slug));
+  const { data: products } = useSuspenseQuery(productsQuery);
   const add = useCart((s) => s.add);
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
@@ -171,6 +172,50 @@ function ProductPage() {
           ) : null}
         </div>
       </div>
+
+      <section className="mt-12 grid gap-6 md:mt-16 md:grid-cols-2">
+        <div className="soft-panel p-6 md:p-8">
+          <h3 className="mb-2 font-serif text-xl">Ingredients</h3>
+          <p className="text-sm text-[color:var(--muted-foreground)]">{product.ingredients}</p>
+        </div>
+        <div className="soft-panel p-6 md:p-8">
+          <h3 className="mb-2 font-serif text-xl">Storage</h3>
+          <p className="text-sm text-[color:var(--muted-foreground)]">{product.storage}</p>
+          <h3 className="mt-5 mb-2 font-serif text-xl">Shipping & Payment</h3>
+          <p className="text-sm text-[color:var(--muted-foreground)]">Payment is available by Cash on Delivery.</p>
+        </div>
+      </section>
+
+      {(() => {
+        const related = products.filter((item) => item.id !== product.id);
+        if (!related.length) return null;
+        return (
+          <section className="mt-12 md:mt-16">
+            <h2 className="mb-6 font-serif text-2xl md:text-3xl">You may also like</h2>
+            <div className="grid gap-6 sm:grid-cols-2">
+              {related.map((item) => (
+                <Link
+                  key={item.id}
+                  to="/product/$slug"
+                  params={{ slug: item.slug }}
+                  className="product-sachet grid items-center gap-4 p-4 sm:grid-cols-[120px_minmax(0,1fr)]"
+                >
+                  <img
+                    src={getProductImage(item.slug, item.image_url)}
+                    alt={item.name}
+                    loading="lazy"
+                    className="h-32 w-full rounded-[1.25rem] object-cover"
+                  />
+                  <div className="min-w-0">
+                    <h3 className="font-serif text-xl">{item.name}</h3>
+                    <p className="text-sm text-[color:var(--muted-foreground)]">{item.short_description}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
     </main>
   );
 }
