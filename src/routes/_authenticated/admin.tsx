@@ -188,7 +188,7 @@ function ProductsAdmin() {
   );
 }
 
-function ProductEditor({ product }: { product: Product }) {
+function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () => void }) {
   const qc = useQueryClient();
   const [form, setForm] = useState({
     name: product.name,
