@@ -11,7 +11,9 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-const ADMIN_EMAIL = "arkmatcha@gmail.com";
+const ADMIN_EMAILS = ["arkmatcha@gmail.com", "dody505060607070@gmail.com"] as const;
+const DEFAULT_ADMIN_EMAIL = ADMIN_EMAILS[0];
+
 
 function AuthPage() {
   const navigate = useNavigate();
