@@ -18,6 +18,7 @@ export type Product = {
   in_stock: boolean;
   image_visible: boolean;
   price_visible: boolean;
+  discount_percentage: number;
   sort_order: number;
 };
 
