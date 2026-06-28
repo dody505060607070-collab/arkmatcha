@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { productsQuery, settingsQuery } from "@/lib/queries";
 import { getProductImage } from "@/lib/brand-assets";
-import heroTins from "@/assets/ark-hero-tins.png.asset.json";
+import heroFlatlay from "@/assets/ark-hero-flatlay.jpeg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "/" },
-      { rel: "preload", as: "image", href: heroTins.url, fetchpriority: "high" },
+      { rel: "preload", as: "image", href: heroFlatlay.url, fetchpriority: "high" },
     ],
   }),
 
@@ -40,7 +40,7 @@ function Home() {
           <div className="grid grid-cols-2">
             <div className="relative bg-[color:var(--olive)]/5">
               <img
-                src={heroTins.url}
+                src={heroFlatlay.url}
                 alt="Ark Matcha ceremonial grade tins"
                 loading="eager"
                 fetchPriority="high"
