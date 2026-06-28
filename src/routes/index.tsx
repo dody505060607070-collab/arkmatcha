@@ -3,6 +3,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { productsQuery, settingsQuery } from "@/lib/queries";
 import { getProductImage } from "@/lib/brand-assets";
 import matchaSpread from "@/assets/matcha-spread.jpg";
+import { ReviewsMarquee } from "@/components/site/ReviewsMarquee";
+import { Newsletter } from "@/components/site/Newsletter";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -91,6 +93,51 @@ function Home() {
           })}
         </div>
       </section>
+
+      <ReviewsMarquee />
+
+      <section className="container-soft py-10 md:py-14">
+        <div className="mx-auto grid max-w-3xl grid-cols-3 gap-4 text-center">
+          {[
+            { t: "Simple", d: "Two tins. One ritual." },
+            { t: "Clean", d: "Pure, organic, single origin." },
+            { t: "Ceremony", d: "Made for the everyday ritual." },
+          ].map((p) => (
+            <div key={p.t} className="rounded-2xl border border-[color:var(--border)] bg-white px-3 py-4">
+              <h3 className="font-serif text-base text-[color:var(--petal-strong)] md:text-lg">{p.t}</h3>
+              <p className="mt-1 text-xs text-[color:var(--muted-foreground)] md:text-sm">{p.d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="container-soft py-10 md:py-14">
+        <div className="mx-auto max-w-2xl rounded-2xl border border-[color:var(--border)] bg-white p-6 md:p-8">
+          <h2 className="text-center font-serif text-2xl text-[color:var(--petal-strong)] md:text-3xl">
+            Nutrition Facts
+          </h2>
+          <p className="mt-1 text-center text-xs text-[color:var(--muted-foreground)]">Per 1g serving</p>
+          <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-2 text-sm md:text-base">
+            {[
+              ["Calories", "3 kcal"],
+              ["Protein", "0.3 g"],
+              ["Carbohydrates", "0.4 g"],
+              ["Fat", "0.05 g"],
+              ["Catechins (EGCG)", "60 mg"],
+              ["L-Theanine", "14 mg"],
+              ["Caffeine", "30 mg"],
+              ["Antioxidants", "High"],
+            ].map(([k, v]) => (
+              <div key={k} className="flex justify-between border-b border-dashed border-[color:var(--border)] py-1">
+                <dt className="text-[color:var(--muted-foreground)]">{k}</dt>
+                <dd className="text-[color:var(--petal-strong)]">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      <Newsletter />
     </main>
   );
 }
