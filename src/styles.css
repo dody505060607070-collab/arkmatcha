@@ -259,3 +259,15 @@
   background: color-mix(in oklab, white 82%, var(--cream) 18%);
   box-shadow: 0 20px 40px -34px color-mix(in oklab, var(--forest) 45%, transparent);
 }
+
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x 38s linear infinite;
+}
+

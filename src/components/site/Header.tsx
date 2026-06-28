@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { BookOpenText, Grid2X2, House, Menu, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
+import { brandAssets } from "@/lib/brand-assets";
 
 const links = [
   { to: "/", label: "Home", icon: House },
@@ -9,6 +10,18 @@ const links = [
   { to: "/blog", label: "Blog", icon: BookOpenText },
   { to: "/cart", label: "Cart", icon: ShoppingBag },
 ] as const;
+
+function Logo() {
+  return (
+    <Link
+      to="/"
+      aria-label="Ark Matcha home"
+      className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full border border-[color:var(--border)] bg-white shadow-sm sm:h-12 sm:w-12"
+    >
+      <img src={brandAssets.logo} alt="Ark Matcha" className="h-full w-full object-cover" />
+    </Link>
+  );
+}
 
 export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -18,17 +31,14 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 px-3 pt-3">
       <div className="container-soft">
-        <div className="glass-bubble grid grid-cols-[minmax(0,1fr)_auto] items-center px-3 py-2 sm:flex sm:justify-between">
-          <Link to="/" className="min-w-0 truncate font-serif text-xl text-[color:var(--forest)] sm:text-2xl">
-            Ark <span className="italic font-normal">Matcha</span>
-          </Link>
+        <div className="glass-bubble grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 py-2">
+          <Logo />
 
-          <nav className="hidden items-center gap-2 md:flex">
+          <nav className="hidden items-center justify-center gap-2 md:flex">
             {links.map((link) => {
               const Icon = link.icon;
               const active = pathname === link.to;
               const isCart = link.to === "/cart";
-
               return (
                 <Link
                   key={link.to}
@@ -48,7 +58,10 @@ export function Header() {
             })}
           </nav>
 
-          <div className="flex items-center gap-2 md:hidden">
+          {/* Spacer for mobile to keep logo on the left while right cluster sits on the right */}
+          <div className="md:hidden" />
+
+          <div className="flex items-center justify-end gap-2 md:hidden">
             <Link to="/cart" className="glass-bubble relative h-10 w-10 text-[color:var(--forest)]" aria-label="Cart">
               <ShoppingBag className="h-4 w-4" />
               {count > 0 ? (
@@ -66,6 +79,9 @@ export function Header() {
               {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
           </div>
+
+          {/* Right slot on desktop balances the logo width so the centered nav stays truly centered */}
+          <div className="hidden h-11 w-11 md:block" />
         </div>
 
         {open ? (

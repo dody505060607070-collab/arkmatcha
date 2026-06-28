@@ -3,6 +3,7 @@ import heroMobileAsset from "@/assets/ark-hero-mobile.png.asset.json";
 import matcha30gAsset from "@/assets/ark-matcha-30g.png.asset.json";
 import matcha50gAsset from "@/assets/ark-matcha-50g.png.asset.json";
 import matchaPowderAsset from "@/assets/ark-matcha-powder.png.asset.json";
+import logoAsset from "@/assets/ark-matcha-logo.jpg.asset.json";
 import type { Product } from "@/lib/queries";
 
 export const brandAssets = {
@@ -11,7 +12,9 @@ export const brandAssets = {
   matcha30g: matcha30gAsset.url,
   matcha50g: matcha50gAsset.url,
   matchaPowder: matchaPowderAsset.url,
+  logo: logoAsset.url,
 };
+
 
 export function getProductImage(slug: string, imageUrl?: string | null) {
   if (imageUrl) return imageUrl;
