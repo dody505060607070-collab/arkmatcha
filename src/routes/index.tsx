@@ -15,8 +15,12 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:url", content: "/" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [
+      { rel: "canonical", href: "/" },
+      { rel: "preload", as: "image", href: heroTins.url, fetchpriority: "high" },
+    ],
   }),
+
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData(productsQuery),
@@ -38,9 +42,15 @@ function Home() {
               <img
                 src={heroTins.url}
                 alt="Ark Matcha ceremonial grade tins"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                width={800}
+                height={800}
                 className="block h-full w-full object-contain"
               />
             </div>
+
             <div className="flex flex-col items-start justify-center gap-3 p-4 md:gap-5 md:p-10">
               <span className="text-[9px] uppercase tracking-[0.25em] text-[color:var(--olive)] md:text-[11px] md:tracking-[0.3em]">
                 Ceremonial · Japan
@@ -74,7 +84,7 @@ function Home() {
                 key={product.id}
                 to="/product/$slug"
                 params={{ slug: product.slug }}
-                className="group block"
+                className="group block reveal"
               >
                 {product.image_visible !== false ? (
                   <div className="overflow-hidden rounded-2xl bg-white">
@@ -82,11 +92,15 @@ function Home() {
                       src={getProductImage(product.slug, product.image_url)}
                       alt={label}
                       loading="lazy"
+                      decoding="async"
+                      width={600}
+                      height={600}
                       className="aspect-square w-full object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-[1.04]"
                     />
 
                   </div>
                 ) : null}
+
                 <span className="mt-2 block text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
                   Ark Matcha
                 </span>

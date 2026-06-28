@@ -103,8 +103,14 @@ function ProductPage() {
                   key={kitImage}
                   src={kitImage}
                   alt={`${product.name} — ${selectedColor.label}`}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  width={800}
+                  height={800}
                   className="aspect-square w-full object-cover transition-opacity duration-300"
                 />
+
               </div>
               <div className="mt-4 flex items-center gap-3">
                 <span className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
@@ -139,9 +145,15 @@ function ProductPage() {
                     key={`${image}-${index}`}
                     src={image}
                     alt={`${product.name} ${index + 1}`}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                    decoding="async"
+                    width={800}
+                    height={800}
                     className="aspect-square w-full shrink-0 snap-center object-cover"
                   />
                 ))}
+
               </div>
               {gallery.length > 1 ? (
                 <>
@@ -250,8 +262,12 @@ function ProductPage() {
                     src={getProductImage(item.slug, item.image_url)}
                     alt={item.name}
                     loading="lazy"
+                    decoding="async"
+                    width={240}
+                    height={240}
                     className="h-32 w-full rounded-[1.25rem] object-cover"
                   />
+
                   <div className="min-w-0">
                     <h3 className="font-serif text-xl">{item.name}</h3>
                     <p className="text-sm text-[color:var(--muted-foreground)]">{item.short_description}</p>
