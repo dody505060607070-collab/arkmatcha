@@ -250,8 +250,12 @@ function ProductPage() {
                     src={getProductImage(item.slug, item.image_url)}
                     alt={item.name}
                     loading="lazy"
+                    decoding="async"
+                    width={240}
+                    height={240}
                     className="h-32 w-full rounded-[1.25rem] object-cover"
                   />
+
                   <div className="min-w-0">
                     <h3 className="font-serif text-xl">{item.name}</h3>
                     <p className="text-sm text-[color:var(--muted-foreground)]">{item.short_description}</p>
