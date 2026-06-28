@@ -14,6 +14,7 @@ import {
   LogOut,
   Search,
   RefreshCcw,
+  Trash2,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { productsQuery, settingsQuery, type Product, type SiteSettings } from "@/lib/queries";
@@ -305,6 +306,14 @@ function OrdersAdmin() {
     setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status } : o)));
   }
 
+  async function removeOrder(o: Order) {
+    if (!confirm(`Delete order #${o.order_number} from ${o.full_name}? This cannot be undone.`)) return;
+    const { error } = await supabase.from("orders").delete().eq("id", o.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success(`Order #${o.order_number} deleted`);
+    setOrders((prev) => prev.filter((x) => x.id !== o.id));
+  }
+
   const filtered = useMemo(() => orders.filter((o) => {
     if (filter !== "all" && o.status !== filter) return false;
     if (q) {
@@ -356,10 +365,18 @@ function OrdersAdmin() {
                   {o.notes && <div className="text-xs text-[color:var(--muted-foreground)] italic mt-1">"{o.notes}"</div>}
                 </div>
                 <div className="flex flex-col items-end gap-2">
-                  <select value={o.status} onChange={(e) => setStatus(o.id, e.target.value as Order["status"])} className="px-3 py-1.5 rounded-lg border border-[color:var(--border)] bg-white text-sm">
+                  <select value={o.status} onChange={(e) => setStatus(o.id, e.target.value as Order["status"])} className={`px-3 py-1.5 rounded-lg border border-[color:var(--border)] bg-white text-sm ${statusTone(o.status)}`}>
                     {STATUSES.map((s) => <option key={s} value={s}>{statusLabel(s)}</option>)}
                   </select>
                   <div className="font-serif text-lg">EGP {Number(o.total).toFixed(2)}</div>
+                  <button
+                    type="button"
+                    onClick={() => removeOrder(o)}
+                    title="Delete order"
+                    className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg border border-red-200 text-red-700 bg-red-50 hover:bg-red-100"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" /> Delete
+                  </button>
                 </div>
               </div>
               <ul className="mt-4 text-sm border-t border-[color:var(--border)] pt-3 space-y-1">
@@ -370,7 +387,13 @@ function OrdersAdmin() {
                   </li>
                 ))}
                 <li className="flex justify-between text-xs text-[color:var(--muted-foreground)] pt-1">
-                  <span>Shipping</span><span>EGP {Number(o.shipping_fee).toFixed(2)}</span>
+                  <span>Subtotal</span><span>EGP {Number(o.subtotal).toFixed(2)}</span>
+                </li>
+                <li className="flex justify-between text-xs text-[color:var(--muted-foreground)]">
+                  <span>Shipping{o.governorate ? ` · ${o.governorate}` : ""}</span><span>EGP {Number(o.shipping_fee).toFixed(2)}</span>
+                </li>
+                <li className="flex justify-between text-sm font-medium pt-1 border-t border-[color:var(--border)] mt-1">
+                  <span>Total (Cash on Delivery)</span><span>EGP {Number(o.total).toFixed(2)}</span>
                 </li>
               </ul>
             </div>
@@ -383,6 +406,16 @@ function OrdersAdmin() {
 
 function statusLabel(s: Order["status"]) {
   return { new: "New", confirmed: "Confirmed", out_for_delivery: "Out for delivery", delivered: "Delivered", cancelled: "Cancelled" }[s];
+}
+
+function statusTone(s: Order["status"]) {
+  return {
+    new: "text-amber-700",
+    confirmed: "text-blue-700",
+    out_for_delivery: "text-indigo-700",
+    delivered: "text-emerald-700",
+    cancelled: "text-red-700",
+  }[s];
 }
 
 /* ---------------- Settings shared form ---------------- */
