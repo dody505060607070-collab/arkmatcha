@@ -39,10 +39,12 @@ function AuthPage() {
 
   async function submit(ev: React.FormEvent) {
     ev.preventDefault();
-    if (email.trim().toLowerCase() !== ADMIN_EMAIL) {
-      toast.error("Only the brand admin can access this area.");
+    const normalized = email.trim().toLowerCase();
+    if (!(ADMIN_EMAILS as readonly string[]).includes(normalized)) {
+      toast.error("Only brand admins can access this area.");
       return;
     }
+
     setLoading(true);
     if (mode === "signin") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
