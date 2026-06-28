@@ -57,22 +57,23 @@ function ProductPage() {
     return Array.from(new Set([...base, brandAssets.matchaPowder]));
   }, [product]);
 
-  const selectedImage = activeImage ?? gallery[0] ?? getProductImage(product.slug, product.image_url);
-  const related = products.filter((item) => item.id !== product.id);
+  const currentProduct = product;
+  const selectedImage = activeImage ?? gallery[0] ?? getProductImage(currentProduct.slug, currentProduct.image_url);
+  const related = products.filter((item) => item.id !== currentProduct.id);
 
   function addToCart() {
     add(
       {
-        productId: product.id,
-        slug: product.slug,
-        name: product.name,
-        size: product.size,
-        price: product.price,
-        image: getProductImage(product.slug, product.image_url),
+        productId: currentProduct.id,
+        slug: currentProduct.slug,
+        name: currentProduct.name,
+        size: currentProduct.size,
+        price: currentProduct.price,
+        image: getProductImage(currentProduct.slug, currentProduct.image_url),
       },
       quantity,
     );
-    toast.success(`${product.name} added to cart`);
+    toast.success(`${currentProduct.name} added to cart`);
   }
 
   return (
