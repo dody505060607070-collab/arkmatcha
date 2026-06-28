@@ -306,6 +306,14 @@ function OrdersAdmin() {
     setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status } : o)));
   }
 
+  async function removeOrder(o: Order) {
+    if (!confirm(`Delete order #${o.order_number} from ${o.full_name}? This cannot be undone.`)) return;
+    const { error } = await supabase.from("orders").delete().eq("id", o.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success(`Order #${o.order_number} deleted`);
+    setOrders((prev) => prev.filter((x) => x.id !== o.id));
+  }
+
   const filtered = useMemo(() => orders.filter((o) => {
     if (filter !== "all" && o.status !== filter) return false;
     if (q) {
