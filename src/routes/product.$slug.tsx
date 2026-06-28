@@ -79,31 +79,38 @@ function ProductPage() {
   return (
     <main className="container-soft py-12 md:py-16">
       <div className="grid gap-10 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:items-start">
-        <div className="grid gap-4">
-          <div className="soft-panel overflow-hidden p-4">
-            <img src={selectedImage} alt={product.name} className="w-full rounded-[1.75rem] object-cover" />
-          </div>
+        {product.image_visible !== false ? (
+          <div className="grid gap-4">
+            <div className="soft-panel overflow-hidden p-4">
+              <img src={selectedImage} alt={product.name} className="w-full rounded-[1.75rem] object-cover" />
+            </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {gallery.map((image, index) => (
-              <button
-                key={`${image}-${index}`}
-                type="button"
-                onClick={() => setActiveImage(image)}
-                className="soft-panel overflow-hidden p-2"
-                aria-label={`View image ${index + 1}`}
-                style={{
-                  borderColor:
-                    selectedImage === image
-                      ? "color-mix(in oklab, var(--petal-strong) 50%, white 50%)"
-                      : undefined,
-                }}
-              >
-                <img src={image} alt={`${product.name} preview ${index + 1}`} className="h-28 w-full rounded-[1rem] object-cover" />
-              </button>
-            ))}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {gallery.map((image, index) => (
+                <button
+                  key={`${image}-${index}`}
+                  type="button"
+                  onClick={() => setActiveImage(image)}
+                  className="soft-panel overflow-hidden p-2"
+                  aria-label={`View image ${index + 1}`}
+                  style={{
+                    borderColor:
+                      selectedImage === image
+                        ? "color-mix(in oklab, var(--petal-strong) 50%, white 50%)"
+                        : undefined,
+                  }}
+                >
+                  <img src={image} alt={`${product.name} preview ${index + 1}`} className="h-28 w-full rounded-[1rem] object-cover" />
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="soft-panel grid min-h-[280px] place-items-center p-10 text-center">
+            <p className="font-serif text-2xl text-[color:var(--forest)]">{product.name}</p>
+          </div>
+        )}
+
 
         <div className="soft-panel p-7 md:p-8">
           <div className="mb-3 flex items-center gap-3">
