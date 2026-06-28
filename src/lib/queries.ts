@@ -16,8 +16,11 @@ export type Product = {
   ingredients: string;
   storage: string;
   in_stock: boolean;
+  image_visible: boolean;
+  price_visible: boolean;
   sort_order: number;
 };
+
 
 export type SiteSettings = {
   id: number;

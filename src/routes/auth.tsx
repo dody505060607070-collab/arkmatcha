@@ -11,13 +11,15 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-const ADMIN_EMAIL = "arkmatcha@gmail.com";
+const ADMIN_EMAILS = ["arkmatcha@gmail.com", "dody505060607070@gmail.com"] as const;
+const DEFAULT_ADMIN_EMAIL = ADMIN_EMAILS[0];
+
 
 function AuthPage() {
   const navigate = useNavigate();
   const { e } = Route.useSearch();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [email, setEmail] = useState(ADMIN_EMAIL);
+  const [email, setEmail] = useState<string>(DEFAULT_ADMIN_EMAIL);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -37,10 +39,12 @@ function AuthPage() {
 
   async function submit(ev: React.FormEvent) {
     ev.preventDefault();
-    if (email.trim().toLowerCase() !== ADMIN_EMAIL) {
-      toast.error("Only the brand admin can access this area.");
+    const normalized = email.trim().toLowerCase();
+    if (!(ADMIN_EMAILS as readonly string[]).includes(normalized)) {
+      toast.error("Only brand admins can access this area.");
       return;
     }
+
     setLoading(true);
     if (mode === "signin") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });

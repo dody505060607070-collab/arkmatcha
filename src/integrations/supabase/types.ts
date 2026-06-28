@@ -96,12 +96,14 @@ export type Database = {
           gallery: Json
           id: string
           image_url: string
+          image_visible: boolean
           in_stock: boolean
           ingredients: string
           key_benefits: Json
           name: string
           nutrition: Json
           price: number | null
+          price_visible: boolean
           short_description: string
           size: string
           slug: string
@@ -115,12 +117,14 @@ export type Database = {
           gallery?: Json
           id?: string
           image_url?: string
+          image_visible?: boolean
           in_stock?: boolean
           ingredients?: string
           key_benefits?: Json
           name: string
           nutrition?: Json
           price?: number | null
+          price_visible?: boolean
           short_description?: string
           size: string
           slug: string
@@ -134,12 +138,14 @@ export type Database = {
           gallery?: Json
           id?: string
           image_url?: string
+          image_visible?: boolean
           in_stock?: boolean
           ingredients?: string
           key_benefits?: Json
           name?: string
           nutrition?: Json
           price?: number | null
+          price_visible?: boolean
           short_description?: string
           size?: string
           slug?: string

@@ -57,14 +57,16 @@ function CatalogPage() {
       <div className="grid gap-8 sm:grid-cols-2">
         {filtered.map((product) => (
           <article key={product.id} className="product-sachet p-5 md:p-6">
-            <Link to="/product/$slug" params={{ slug: product.slug }} className="soft-panel block overflow-hidden p-3">
-              <img
-                src={getProductImage(product.slug, product.image_url)}
-                alt={product.name}
-                loading="lazy"
-                className="h-[320px] w-full rounded-[1.5rem] object-cover"
-              />
-            </Link>
+            {product.image_visible !== false ? (
+              <Link to="/product/$slug" params={{ slug: product.slug }} className="soft-panel block overflow-hidden p-3">
+                <img
+                  src={getProductImage(product.slug, product.image_url)}
+                  alt={product.name}
+                  loading="lazy"
+                  className="h-[320px] w-full rounded-[1.5rem] object-cover"
+                />
+              </Link>
+            ) : null}
 
             <div className="mt-5 flex items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-[color:var(--olive)]">
               <span className="rounded-full bg-[color:var(--pale)] px-2 py-1 text-[color:var(--forest)]">Made in Japan</span>
@@ -75,12 +77,13 @@ function CatalogPage() {
             <Stars className="mt-2" />
             <p className="mt-3 text-sm leading-relaxed text-[color:var(--muted-foreground)]">{product.short_description}</p>
             <div className="mt-4 font-serif text-xl text-[color:var(--forest)]">
-              {product.price != null ? (
+              {product.price_visible !== false && product.price != null ? (
                 <>EGP {Number(product.price).toFixed(2)}</>
               ) : (
                 <span className="text-base italic text-[color:var(--muted-foreground)]">Price coming soon</span>
               )}
             </div>
+
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <button

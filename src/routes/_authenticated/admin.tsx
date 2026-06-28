@@ -156,10 +156,13 @@ function ProductEditor({ product }: { product: Product }) {
     price: product.price == null ? "" : String(product.price),
     image_url: product.image_url,
     in_stock: product.in_stock,
+    image_visible: product.image_visible ?? true,
+    price_visible: product.price_visible ?? true,
     ingredients: product.ingredients,
     storage: product.storage,
     key_benefits: product.key_benefits.join("\n"),
   });
+
   const [saving, setSaving] = useState(false);
 
   async function save() {
@@ -174,12 +177,15 @@ function ProductEditor({ product }: { product: Product }) {
         price: form.price === "" ? null : Number(form.price),
         image_url: form.image_url,
         in_stock: form.in_stock,
+        image_visible: form.image_visible,
+        price_visible: form.price_visible,
         ingredients: form.ingredients,
         storage: form.storage,
         key_benefits: form.key_benefits.split("\n").map((s) => s.trim()).filter(Boolean),
         updated_at: new Date().toISOString(),
       })
       .eq("id", product.id);
+
     setSaving(false);
     if (error) { toast.error(error.message); return; }
     toast.success("Saved");
@@ -190,16 +196,27 @@ function ProductEditor({ product }: { product: Product }) {
   const input = "w-full px-3 py-2 rounded-lg bg-white border border-[color:var(--border)] focus:outline-none focus:ring-2 focus:ring-[color:var(--olive)] text-sm";
   return (
     <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)]">
-      <div className="flex items-center justify-between mb-5">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="font-serif text-xl">{product.name}</h2>
           <p className="text-xs text-[color:var(--muted-foreground)]">{product.slug}</p>
         </div>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={form.in_stock} onChange={(e) => setForm({ ...form, in_stock: e.target.checked })} />
-          In stock
-        </label>
+        <div className="flex flex-wrap items-center gap-4 text-sm">
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={form.in_stock} onChange={(e) => setForm({ ...form, in_stock: e.target.checked })} />
+            In stock
+          </label>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={form.image_visible} onChange={(e) => setForm({ ...form, image_visible: e.target.checked })} />
+            Show image
+          </label>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={form.price_visible} onChange={(e) => setForm({ ...form, price_visible: e.target.checked })} />
+            Show price
+          </label>
+        </div>
       </div>
+
       <div className="grid md:grid-cols-2 gap-4">
         <Field label="Name"><input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={input} /></Field>
         <Field label="Size text"><input value={form.size} onChange={(e) => setForm({ ...form, size: e.target.value })} className={input} /></Field>
