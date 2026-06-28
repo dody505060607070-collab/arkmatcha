@@ -18,17 +18,6 @@ function isAllowedAdminEmail(email?: string | null) {
   return !!email && (ADMIN_EMAILS as readonly string[]).includes(email.trim().toLowerCase());
 }
 
-async function ensureAdminRole(userId: string, email?: string | null) {
-  if (!isAllowedAdminEmail(email)) return false;
-  const { error } = await supabase
-    .from("user_roles")
-    .upsert({ user_id: userId, role: "admin" }, { onConflict: "user_id,role" });
-  if (error) {
-    console.error("Admin role repair failed", error);
-    return false;
-  }
-  return true;
-}
 
 
 function AuthPage() {
@@ -47,7 +36,7 @@ function AuthPage() {
     supabase.auth.getUser().then(async ({ data }) => {
       if (!data.user) return;
       const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", data.user.id);
-      if ((roles ?? []).some((r) => r.role === "admin") || await ensureAdminRole(data.user.id, data.user.email)) {
+      if ((roles ?? []).some((r) => r.role === "admin")) {
         navigate({ to: "/admin" });
       }
     });
@@ -66,7 +55,7 @@ function AuthPage() {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       setLoading(false);
       if (error) { toast.error(error.message); return; }
-      if (data.user) await ensureAdminRole(data.user.id, data.user.email);
+      // Admin role is granted by a database trigger when the whitelisted email is verified.
       navigate({ to: "/admin" });
     } else {
       const { error } = await supabase.auth.signUp({
