@@ -1,0 +1,1 @@
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS discount_percentage integer NOT NULL DEFAULT 0;
