@@ -69,6 +69,11 @@ function ProductPage() {
   const selectedColor = KIT_COLORS.find((c) => c.id === colorId) ?? KIT_COLORS[0];
   const kitImage = gallery[selectedColor.index] ?? gallery[0];
 
+  const discountPct = product.discount_percentage ?? 0;
+  const effectivePrice = product.price != null && discountPct > 0
+    ? Number(product.price) * (1 - discountPct / 100)
+    : product.price != null ? Number(product.price) : null;
+
   function addToCart() {
     const colorSuffix = isKit ? ` — ${selectedColor.label}` : "";
     add(
@@ -77,7 +82,7 @@ function ProductPage() {
         slug: currentProduct.slug,
         name: `${currentProduct.name}${colorSuffix}`,
         size: currentProduct.size,
-        price: currentProduct.price,
+        price: effectivePrice,
         image: isKit ? kitImage : getProductImage(currentProduct.slug, currentProduct.image_url),
       },
       quantity,
