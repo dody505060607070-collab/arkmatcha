@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { productsQuery, settingsQuery } from "@/lib/queries";
 import { getProductImage } from "@/lib/brand-assets";
+import matchaSpread from "@/assets/matcha-spread.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -30,7 +31,23 @@ function Home() {
 
   return (
     <main className="bg-white">
-      <section className="container-soft pb-12 pt-6 md:pt-10">
+      <section className="container-soft pb-8 pt-4 md:pt-8">
+        <p className="mx-auto max-w-2xl text-center font-serif text-xl leading-snug text-[color:var(--petal-strong)] md:text-3xl">
+          Exceptionally smooth organic high ceremonial grade goodness for the matcha lover.
+          <span className="block italic opacity-80"> Originated from Japan.</span>
+        </p>
+        <div className="mt-6 overflow-hidden rounded-2xl md:mt-10">
+          <img
+            src={matchaSpread}
+            alt="Ceremonial grade matcha powder spread on a clean surface"
+            width={1536}
+            height={1024}
+            className="h-[220px] w-full object-cover md:h-[420px]"
+          />
+        </div>
+      </section>
+
+      <section className="container-soft pb-12 pt-2 md:pt-4">
         <h1 className="mb-6 font-serif text-3xl text-[color:var(--petal-strong)] md:mb-10 md:text-5xl">
           The Goods
         </h1>
