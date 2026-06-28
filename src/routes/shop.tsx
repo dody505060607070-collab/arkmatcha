@@ -52,10 +52,10 @@ function Shop() {
                       decoding="async"
                       width={600}
                       height={600}
-                      className={`aspect-square w-full object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-[1.04] ${product.in_stock === false ? "opacity-60 grayscale" : ""}`}
+                      className="aspect-square w-full object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-[1.04]"
                     />
                     {product.in_stock === false && (
-                      <span className="absolute left-2 top-2 rounded-full bg-red-600 px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
+                      <span className="absolute left-2 top-2 rounded-full bg-[color:var(--matcha)] px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
                         Sold out
                       </span>
                     )}
