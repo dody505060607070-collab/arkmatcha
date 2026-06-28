@@ -31,7 +31,7 @@ function Home() {
 
   return (
     <main>
-      <section className="container-soft pt-4 md:pt-6">
+      <section className="container-soft pb-10 pt-4 md:pt-6">
         <div className="relative overflow-hidden rounded-3xl bg-[color:var(--olive)]/5">
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[360px]">
