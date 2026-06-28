@@ -145,9 +145,15 @@ function ProductPage() {
                     key={`${image}-${index}`}
                     src={image}
                     alt={`${product.name} ${index + 1}`}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                    decoding="async"
+                    width={800}
+                    height={800}
                     className="aspect-square w-full shrink-0 snap-center object-cover"
                   />
                 ))}
+
               </div>
               {gallery.length > 1 ? (
                 <>
