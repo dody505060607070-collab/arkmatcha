@@ -157,6 +157,7 @@ function ProductEditor({ product }: { product: Product }) {
     description: product.description,
     price: product.price == null ? "" : String(product.price),
     image_url: product.image_url,
+    gallery: (product.gallery ?? []).join("\n"),
     in_stock: product.in_stock,
     image_visible: product.image_visible ?? true,
     price_visible: product.price_visible ?? true,
@@ -178,6 +179,7 @@ function ProductEditor({ product }: { product: Product }) {
         description: form.description,
         price: form.price === "" ? null : Number(form.price),
         image_url: form.image_url,
+        gallery: form.gallery.split("\n").map((s) => s.trim()).filter(Boolean),
         in_stock: form.in_stock,
         image_visible: form.image_visible,
         price_visible: form.price_visible,
@@ -223,7 +225,8 @@ function ProductEditor({ product }: { product: Product }) {
         <Field label="Name"><input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={input} /></Field>
         <Field label="Size text"><input value={form.size} onChange={(e) => setForm({ ...form, size: e.target.value })} className={input} /></Field>
         <Field label="Price (EGP)"><input type="number" step="0.01" value={form.price} placeholder="Leave blank to hide" onChange={(e) => setForm({ ...form, price: e.target.value })} className={input} /></Field>
-        <Field label="Image URL"><input value={form.image_url} placeholder="https://..." onChange={(e) => setForm({ ...form, image_url: e.target.value })} className={input} /></Field>
+        <Field label="Image URL (main)"><input value={form.image_url} placeholder="https://..." onChange={(e) => setForm({ ...form, image_url: e.target.value })} className={input} /></Field>
+        <Field label="Gallery images (one URL per line — swiped on product page)" className="md:col-span-2"><textarea rows={4} value={form.gallery} placeholder={"https://...\nhttps://..."} onChange={(e) => setForm({ ...form, gallery: e.target.value })} className={input} /></Field>
         <Field label="Short description" className="md:col-span-2"><textarea rows={2} value={form.short_description} onChange={(e) => setForm({ ...form, short_description: e.target.value })} className={input} /></Field>
         <Field label="Full description" className="md:col-span-2"><textarea rows={4} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className={input} /></Field>
         <Field label="Key benefits (one per line)" className="md:col-span-2"><textarea rows={5} value={form.key_benefits} onChange={(e) => setForm({ ...form, key_benefits: e.target.value })} className={input} /></Field>
