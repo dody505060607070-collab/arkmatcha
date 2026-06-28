@@ -55,7 +55,7 @@ function AuthPage() {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       setLoading(false);
       if (error) { toast.error(error.message); return; }
-      if (data.user) await ensureAdminRole(data.user.id, data.user.email);
+      // Admin role is granted by a database trigger when the whitelisted email is verified.
       navigate({ to: "/admin" });
     } else {
       const { error } = await supabase.auth.signUp({
