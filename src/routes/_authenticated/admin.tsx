@@ -253,6 +253,7 @@ type Order = {
   whatsapp: string | null;
   email: string | null;
   city: string;
+  governorate: string | null;
   address: string;
   building: string | null;
   notes: string | null;
@@ -325,7 +326,8 @@ function OrdersAdmin() {
                     <strong>{o.full_name}</strong> · {o.phone}
                     {o.whatsapp && <> · WA {o.whatsapp}</>}
                   </div>
-                  <div className="text-xs text-[color:var(--muted-foreground)]">{o.city} — {o.address}{o.building ? `, ${o.building}` : ""}</div>
+                  <div className="text-xs text-[color:var(--muted-foreground)]">{o.governorate ? `${o.governorate} · ` : ""}{o.city} — {o.address}{o.building ? `, ${o.building}` : ""}</div>
+                  <div className="text-[10px] uppercase tracking-widest text-[color:var(--olive)] mt-1">Cash on Delivery</div>
                   {o.email && <div className="text-xs text-[color:var(--muted-foreground)]">{o.email}</div>}
                   {o.notes && <div className="text-xs text-[color:var(--muted-foreground)] italic mt-1">"{o.notes}"</div>}
                 </div>
