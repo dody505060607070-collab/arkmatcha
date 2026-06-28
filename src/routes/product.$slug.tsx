@@ -96,47 +96,81 @@ function ProductPage() {
     <main className="container-soft py-8 md:py-12">
       <div className="grid gap-8 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:items-start">
         {product.image_visible !== false ? (
-          <div className="relative">
-            <div
-              ref={scrollerRef}
-              className="flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden rounded-2xl bg-white scroll-smooth"
-              style={{ scrollbarWidth: "none" }}
-            >
-              {gallery.map((image, index) => (
+          isKit ? (
+            <div>
+              <div className="overflow-hidden rounded-2xl bg-white">
                 <img
-                  key={`${image}-${index}`}
-                  src={image}
-                  alt={`${product.name} ${index + 1}`}
-                  className="aspect-square w-full shrink-0 snap-center object-cover"
+                  key={kitImage}
+                  src={kitImage}
+                  alt={`${product.name} — ${selectedColor.label}`}
+                  className="aspect-square w-full object-cover transition-opacity duration-300"
                 />
-              ))}
+              </div>
+              <div className="mt-4 flex items-center gap-3">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
+                  Color: {selectedColor.label}
+                </span>
+                <div className="flex items-center gap-2">
+                  {KIT_COLORS.map((c) => {
+                    const active = c.id === selectedColor.id;
+                    return (
+                      <button
+                        key={c.id}
+                        type="button"
+                        aria-label={c.label}
+                        onClick={() => setColorId(c.id)}
+                        className={`h-8 w-8 rounded-full border transition ${active ? "ring-2 ring-offset-2 ring-[color:var(--matcha)]" : "border-black/10 hover:scale-105"}`}
+                        style={{ backgroundColor: c.swatch }}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
             </div>
-            {gallery.length > 1 ? (
-              <>
-                <button
-                  type="button"
-                  aria-label="Previous image"
-                  onClick={() => scrollBy(-1)}
-                  className="absolute left-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/80 backdrop-blur md:grid"
-                >
-                  <ChevronLeft className="h-5 w-5 text-[color:var(--petal-strong)]" />
-                </button>
-                <button
-                  type="button"
-                  aria-label="Next image"
-                  onClick={() => scrollBy(1)}
-                  className="absolute right-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/80 backdrop-blur md:grid"
-                >
-                  <ChevronRight className="h-5 w-5 text-[color:var(--petal-strong)]" />
-                </button>
-              </>
-            ) : null}
-          </div>
+          ) : (
+            <div className="relative">
+              <div
+                ref={scrollerRef}
+                className="flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden rounded-2xl bg-white scroll-smooth"
+                style={{ scrollbarWidth: "none" }}
+              >
+                {gallery.map((image, index) => (
+                  <img
+                    key={`${image}-${index}`}
+                    src={image}
+                    alt={`${product.name} ${index + 1}`}
+                    className="aspect-square w-full shrink-0 snap-center object-cover"
+                  />
+                ))}
+              </div>
+              {gallery.length > 1 ? (
+                <>
+                  <button
+                    type="button"
+                    aria-label="Previous image"
+                    onClick={() => scrollBy(-1)}
+                    className="absolute left-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/80 backdrop-blur md:grid"
+                  >
+                    <ChevronLeft className="h-5 w-5 text-[color:var(--petal-strong)]" />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next image"
+                    onClick={() => scrollBy(1)}
+                    className="absolute right-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white/80 backdrop-blur md:grid"
+                  >
+                    <ChevronRight className="h-5 w-5 text-[color:var(--petal-strong)]" />
+                  </button>
+                </>
+              ) : null}
+            </div>
+          )
         ) : (
           <div className="soft-panel grid min-h-[280px] place-items-center p-10 text-center">
             <p className="font-serif text-2xl text-[color:var(--forest)]">{product.name}</p>
           </div>
         )}
+
 
         <div className="p-1 md:p-2">
           <span className="block text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
