@@ -132,20 +132,63 @@ function Overview() {
 
 /* ---------------- Products ---------------- */
 function ProductsAdmin() {
+  const qc = useQueryClient();
   const { data: products = [] } = useQuery(productsQuery);
+  const [creating, setCreating] = useState(false);
+
+  async function addProduct() {
+    setCreating(true);
+    const stamp = Date.now().toString(36);
+    const slug = `new-product-${stamp}`;
+    const { error } = await supabase.from("products").insert({
+      slug,
+      name: "New Product",
+      size: "",
+      short_description: "",
+      description: "",
+      price: null,
+      image_url: "",
+      gallery: [],
+      in_stock: true,
+      image_visible: true,
+      price_visible: true,
+      sort_order: (products.length ?? 0) + 1,
+    });
+    setCreating(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Product added — edit the details below");
+    qc.invalidateQueries({ queryKey: ["products"] });
+  }
+
+  async function deleteProduct(p: Product) {
+    if (!confirm(`Delete "${p.name}"? This cannot be undone.`)) return;
+    const { error } = await supabase.from("products").delete().eq("id", p.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Product deleted");
+    qc.invalidateQueries({ queryKey: ["products"] });
+  }
+
   return (
     <div>
-      <h1 className="font-serif text-3xl mb-6">Products</h1>
+      <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
+        <h1 className="font-serif text-3xl">Products</h1>
+        <button onClick={addProduct} disabled={creating} className="btn-primary disabled:opacity-60">
+          {creating ? "Adding..." : "+ Add product"}
+        </button>
+      </div>
       <div className="space-y-6">
         {products.map((p) => (
-          <ProductEditor key={p.id} product={p} />
+          <ProductEditor key={p.id} product={p} onDelete={() => deleteProduct(p)} />
         ))}
+        {products.length === 0 && (
+          <p className="text-sm text-[color:var(--muted-foreground)]">No products yet. Click "Add product" to create one.</p>
+        )}
       </div>
     </div>
   );
 }
 
-function ProductEditor({ product }: { product: Product }) {
+function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () => void }) {
   const qc = useQueryClient();
   const [form, setForm] = useState({
     name: product.name,
@@ -228,7 +271,12 @@ function ProductEditor({ product }: { product: Product }) {
         <Field label="Ingredients"><textarea rows={2} value={form.ingredients} onChange={(e) => setForm({ ...form, ingredients: e.target.value })} className={input} /></Field>
         <Field label="Storage"><textarea rows={2} value={form.storage} onChange={(e) => setForm({ ...form, storage: e.target.value })} className={input} /></Field>
       </div>
-      <div className="mt-5 flex justify-end">
+      <div className="mt-5 flex justify-between gap-3">
+        {onDelete ? (
+          <button onClick={onDelete} className="inline-flex items-center gap-1.5 text-sm px-3 py-2 rounded-lg border border-red-200 text-red-700 bg-red-50 hover:bg-red-100">
+            <Trash2 className="h-4 w-4" /> Delete
+          </button>
+        ) : <span />}
         <button onClick={save} disabled={saving} className="btn-primary disabled:opacity-60">{saving ? "Saving..." : "Save"}</button>
       </div>
     </div>
