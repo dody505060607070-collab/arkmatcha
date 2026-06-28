@@ -196,6 +196,7 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
     short_description: product.short_description,
     description: product.description,
     price: product.price == null ? "" : String(product.price),
+    discount_percentage: String(product.discount_percentage ?? 0),
     image_url: product.image_url,
     gallery: (product.gallery ?? []).join("\n"),
     in_stock: product.in_stock,
@@ -207,6 +208,10 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
 
   const [saving, setSaving] = useState(false);
 
+  const discountNum = Math.max(0, Math.min(100, Number(form.discount_percentage) || 0));
+  const priceNum = form.price === "" ? null : Number(form.price);
+  const finalPrice = priceNum != null && discountNum > 0 ? priceNum * (1 - discountNum / 100) : priceNum;
+
   async function save() {
     setSaving(true);
     const { error } = await supabase
@@ -217,6 +222,7 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
         short_description: form.short_description,
         description: form.description,
         price: form.price === "" ? null : Number(form.price),
+        discount_percentage: discountNum,
         image_url: form.image_url,
         gallery: form.gallery.split("\n").map((s) => s.trim()).filter(Boolean),
         in_stock: form.in_stock,
@@ -243,11 +249,18 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
           <h2 className="font-serif text-xl">{product.name}</h2>
           <p className="text-xs text-[color:var(--muted-foreground)]">{product.slug}</p>
         </div>
-        <div className="flex flex-wrap items-center gap-4 text-sm">
-          <label className="flex items-center gap-2">
-            <input type="checkbox" checked={form.in_stock} onChange={(e) => setForm({ ...form, in_stock: e.target.checked })} />
-            In stock
-          </label>
+        <div className="flex flex-wrap items-center gap-3 text-sm">
+          <button
+            type="button"
+            onClick={() => setForm({ ...form, in_stock: !form.in_stock })}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-widest transition-colors ${
+              form.in_stock
+                ? "bg-[color:var(--olive)]/10 text-[color:var(--olive)] border border-[color:var(--olive)]/30"
+                : "bg-red-100 text-red-700 border border-red-300"
+            }`}
+          >
+            {form.in_stock ? "● In stock" : "✕ Sold out"}
+          </button>
           <label className="flex items-center gap-2">
             <input type="checkbox" checked={form.image_visible} onChange={(e) => setForm({ ...form, image_visible: e.target.checked })} />
             Show image
@@ -263,6 +276,16 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
         <Field label="Name"><input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={input} /></Field>
         <Field label="Size text"><input value={form.size} onChange={(e) => setForm({ ...form, size: e.target.value })} className={input} /></Field>
         <Field label="Price (EGP)"><input type="number" step="0.01" value={form.price} placeholder="Leave blank to hide" onChange={(e) => setForm({ ...form, price: e.target.value })} className={input} /></Field>
+        <Field label="Discount %">
+          <div className="flex items-center gap-3">
+            <input type="number" min="0" max="100" step="1" value={form.discount_percentage} onChange={(e) => setForm({ ...form, discount_percentage: e.target.value })} className={input} />
+            {discountNum > 0 && priceNum != null && (
+              <span className="text-xs whitespace-nowrap text-[color:var(--olive)]">
+                → EGP {finalPrice!.toFixed(2)}
+              </span>
+            )}
+          </div>
+        </Field>
         <Field label="Image URL (main)"><input value={form.image_url} placeholder="https://..." onChange={(e) => setForm({ ...form, image_url: e.target.value })} className={input} /></Field>
         <Field label="Gallery images (one URL per line — swiped on product page)" className="md:col-span-2"><textarea rows={4} value={form.gallery} placeholder={"https://...\nhttps://..."} onChange={(e) => setForm({ ...form, gallery: e.target.value })} className={input} /></Field>
         <Field label="Short description" className="md:col-span-2"><textarea rows={2} value={form.short_description} onChange={(e) => setForm({ ...form, short_description: e.target.value })} className={input} /></Field>
