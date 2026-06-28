@@ -33,27 +33,27 @@ function Home() {
     <main>
       <section className="container-soft pb-10 pt-4 md:pt-6">
         <div className="relative overflow-hidden rounded-3xl bg-[color:var(--olive)]/5">
-          <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="grid grid-cols-2">
             <div className="relative bg-[color:var(--olive)]/5">
               <img
                 src={heroTins.url}
                 alt="Ark Matcha ceremonial grade tins"
-                className="block h-auto w-full object-contain"
+                className="block h-full w-full object-contain"
               />
             </div>
-            <div className="flex flex-col items-start justify-center gap-4 p-6 md:p-10">
-              <span className="text-[10px] uppercase tracking-[0.3em] text-[color:var(--olive)]">
-                Ceremonial · Made in Japan
+            <div className="flex flex-col items-start justify-center gap-3 p-4 md:gap-5 md:p-10">
+              <span className="text-[9px] uppercase tracking-[0.25em] text-[color:var(--olive)] md:text-[11px] md:tracking-[0.3em]">
+                Ceremonial · Japan
               </span>
-              <h1 className="font-serif text-3xl leading-tight text-[color:var(--petal-strong)] md:text-5xl">
-                A quiet ritual,<span className="block italic opacity-80">in every tin.</span>
+              <h1 className="font-serif text-lg leading-snug text-[color:var(--petal-strong)] md:text-5xl md:leading-tight">
+                The ritual<span className="block italic opacity-80">starts here.</span>
               </h1>
-              <p className="max-w-md text-sm text-[color:var(--olive)] md:text-base">
-                Stone-milled, vivid, exceptionally smooth. Crafted for the matcha lover.
+              <p className="max-w-md text-[11px] leading-relaxed text-[color:var(--olive)] md:text-base">
+                Vivid. Smooth. Born in Japan. One tin, endless calm.
               </p>
               <Link
                 to="/shop"
-                className="group mt-1 inline-flex items-center gap-2 rounded-full bg-[color:var(--matcha)] px-6 py-3 text-sm font-medium text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                className="group mt-1 inline-flex items-center gap-2 rounded-full bg-[color:var(--matcha)] px-4 py-2 text-[11px] font-medium text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md md:px-6 md:py-3 md:text-sm"
               >
                 Shop now
                 <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
