@@ -93,15 +93,16 @@ function Home() {
               </div>
 
               {product.image_visible !== false ? (
-                <div className="soft-panel overflow-hidden p-4">
+                <div className="soft-panel group/img overflow-hidden p-4">
                   <img
                     src={getProductImage(product.slug, product.image_url)}
                     alt={product.name}
                     loading="lazy"
-                    className="h-[280px] w-full rounded-[1.5rem] object-cover"
+                    className="h-[280px] w-full rounded-[1.5rem] object-cover transition-transform duration-500 ease-out will-change-transform group-hover/img:scale-[1.06] group-hover/img:-rotate-1 group-active/img:scale-[1.02]"
                   />
                 </div>
               ) : null}
+
 
             </Link>
           ))}
