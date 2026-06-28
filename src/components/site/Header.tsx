@@ -78,7 +78,7 @@ export function Header() {
           </div>
         </div>
 
-        </div>
+
 
         {open ? (
           <div className="mt-3 soft-panel p-3 md:hidden">
