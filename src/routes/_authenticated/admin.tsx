@@ -8,7 +8,6 @@ import {
   Package,
   ShoppingBag,
   FileText,
-  Apple,
   Share2,
   Settings as SettingsIcon,
   LogOut,
@@ -23,14 +22,13 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
 });
 
-type Section = "overview" | "products" | "orders" | "content" | "nutrition" | "social" | "settings";
+type Section = "overview" | "products" | "orders" | "content" | "social" | "settings";
 
 const sections: { id: Section; label: string; icon: typeof LayoutDashboard }[] = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "products", label: "Products", icon: Package },
   { id: "orders", label: "Orders", icon: ShoppingBag },
   { id: "content", label: "Website Content", icon: FileText },
-  { id: "nutrition", label: "Nutrition Facts", icon: Apple },
   { id: "social", label: "Social Links", icon: Share2 },
   { id: "settings", label: "Settings", icon: SettingsIcon },
 ];
@@ -78,7 +76,6 @@ function AdminPage() {
         {section === "products" && <ProductsAdmin />}
         {section === "orders" && <OrdersAdmin />}
         {section === "content" && <ContentAdmin />}
-        {section === "nutrition" && <NutritionAdmin />}
         {section === "social" && <SocialAdmin />}
         {section === "settings" && <SettingsAdmin />}
       </main>
