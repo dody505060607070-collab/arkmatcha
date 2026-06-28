@@ -31,8 +31,40 @@ function Home() {
 
   return (
     <main>
-      <section className="container-soft pb-10 pt-6 md:pt-10">
-        <p className="mx-auto max-w-2xl text-center font-serif text-xl leading-snug text-[color:var(--petal-strong)] md:text-3xl">
+      <section className="container-soft pt-4 md:pt-6">
+        <div className="relative overflow-hidden rounded-3xl bg-[color:var(--olive)]/5">
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[360px]">
+              <img
+                src={heroTins.url}
+                alt="Ark Matcha ceremonial grade tins"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 to-transparent md:bg-gradient-to-r md:from-transparent md:to-white/10" />
+            </div>
+            <div className="flex flex-col items-start justify-center gap-4 p-6 md:p-10">
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[color:var(--olive)]">
+                Ceremonial · Made in Japan
+              </span>
+              <h1 className="font-serif text-3xl leading-tight text-[color:var(--petal-strong)] md:text-5xl">
+                A quiet ritual,<span className="block italic opacity-80">in every tin.</span>
+              </h1>
+              <p className="max-w-md text-sm text-[color:var(--olive)] md:text-base">
+                Stone-milled, vivid, exceptionally smooth. Crafted for the matcha lover.
+              </p>
+              <Link
+                to="/product/$slug"
+                params={{ slug: "ark-matcha-30g" }}
+                className="group mt-1 inline-flex items-center gap-2 rounded-full bg-[color:var(--petal-strong)] px-6 py-3 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+              >
+                Shop now
+                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <p className="mx-auto mt-10 max-w-2xl text-center font-serif text-xl leading-snug text-[color:var(--petal-strong)] md:mt-14 md:text-3xl">
           Exceptionally smooth organic high ceremonial grade goodness for the matcha lover.
           <span className="block italic opacity-80"> Originated from Japan.</span>
         </p>
