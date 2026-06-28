@@ -18,17 +18,6 @@ function isAllowedAdminEmail(email?: string | null) {
   return !!email && (ADMIN_EMAILS as readonly string[]).includes(email.trim().toLowerCase());
 }
 
-async function ensureAdminRole(userId: string, email?: string | null) {
-  if (!isAllowedAdminEmail(email)) return false;
-  const { error } = await supabase
-    .from("user_roles")
-    .upsert({ user_id: userId, role: "admin" }, { onConflict: "user_id,role" });
-  if (error) {
-    console.error("Admin role repair failed", error);
-    return false;
-  }
-  return true;
-}
 
 
 function AuthPage() {
