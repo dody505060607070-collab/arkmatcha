@@ -132,14 +132,57 @@ function Overview() {
 
 /* ---------------- Products ---------------- */
 function ProductsAdmin() {
+  const qc = useQueryClient();
   const { data: products = [] } = useQuery(productsQuery);
+  const [creating, setCreating] = useState(false);
+
+  async function addProduct() {
+    setCreating(true);
+    const stamp = Date.now().toString(36);
+    const slug = `new-product-${stamp}`;
+    const { error } = await supabase.from("products").insert({
+      slug,
+      name: "New Product",
+      size: "",
+      short_description: "",
+      description: "",
+      price: null,
+      image_url: "",
+      gallery: [],
+      in_stock: true,
+      image_visible: true,
+      price_visible: true,
+      sort_order: (products.length ?? 0) + 1,
+    });
+    setCreating(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Product added — edit the details below");
+    qc.invalidateQueries({ queryKey: ["products"] });
+  }
+
+  async function deleteProduct(p: Product) {
+    if (!confirm(`Delete "${p.name}"? This cannot be undone.`)) return;
+    const { error } = await supabase.from("products").delete().eq("id", p.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Product deleted");
+    qc.invalidateQueries({ queryKey: ["products"] });
+  }
+
   return (
     <div>
-      <h1 className="font-serif text-3xl mb-6">Products</h1>
+      <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
+        <h1 className="font-serif text-3xl">Products</h1>
+        <button onClick={addProduct} disabled={creating} className="btn-primary disabled:opacity-60">
+          {creating ? "Adding..." : "+ Add product"}
+        </button>
+      </div>
       <div className="space-y-6">
         {products.map((p) => (
-          <ProductEditor key={p.id} product={p} />
+          <ProductEditor key={p.id} product={p} onDelete={() => deleteProduct(p)} />
         ))}
+        {products.length === 0 && (
+          <p className="text-sm text-[color:var(--muted-foreground)]">No products yet. Click "Add product" to create one.</p>
+        )}
       </div>
     </div>
   );
