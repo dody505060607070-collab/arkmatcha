@@ -32,16 +32,30 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { data: products } = useSuspenseQuery(productsQuery);
+  const { data: settings } = useSuspenseQuery(settingsQuery);
+
+  const heroImage = settings?.hero_image?.trim() ? settings.hero_image : heroWhisk.url;
+  const heroLabel = settings?.hero_label?.trim() || "Ceremonial · Japan";
+  const heroHeadline = settings?.hero_headline?.trim() || "The ritual starts here.";
+  const heroTagline = settings?.hero_tagline?.trim() || "Vivid. Smooth. Born in Japan. One tin, endless calm.";
+  const heroCtaText = settings?.hero_cta_text?.trim() || "Shop now";
+  const heroCtaLink = settings?.hero_cta_link?.trim() || "/shop";
+  const featuredLabel = settings?.featured_label?.trim() || "Featured Product";
 
   return (
     <main>
+      {settings?.announcement_visible && settings.announcement_text ? (
+        <div className="bg-[color:var(--matcha)] px-4 py-2 text-center text-[11px] font-medium uppercase tracking-[0.2em] text-white">
+          {settings.announcement_text}
+        </div>
+      ) : null}
       <section className="container-soft pb-10 pt-4 md:pt-6">
         <div className="relative overflow-hidden rounded-3xl bg-[color:var(--olive)]/5">
           <div className="grid grid-cols-2">
             <div className="relative bg-[color:var(--olive)]/5">
               <img
-                src={heroWhisk.url}
-                alt="Ark Matcha ceremonial grade tins"
+                src={heroImage}
+                alt="Ark Matcha ceremonial grade"
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
@@ -53,19 +67,19 @@ function Home() {
 
             <div className="flex flex-col items-start justify-center gap-3 p-4 md:gap-5 md:p-10">
               <span className="text-[9px] uppercase tracking-[0.25em] text-[color:var(--olive)] md:text-[11px] md:tracking-[0.3em]">
-                Ceremonial · Japan
+                {heroLabel}
               </span>
               <h1 className="font-serif text-lg leading-snug text-[color:var(--petal-strong)] md:text-5xl md:leading-tight">
-                The ritual<span className="block italic opacity-80">starts here.</span>
+                {heroHeadline}
               </h1>
               <p className="max-w-md text-[11px] leading-relaxed text-[color:var(--olive)] md:text-base">
-                Vivid. Smooth. Born in Japan. One tin, endless calm.
+                {heroTagline}
               </p>
               <Link
-                to="/shop"
+                to={heroCtaLink as "/shop"}
                 className="group mt-1 inline-flex items-center gap-2 rounded-full bg-[color:var(--matcha)] px-4 py-2 text-[11px] font-medium text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md md:px-6 md:py-3 md:text-sm"
               >
-                Shop now
+                {heroCtaText}
                 <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
               </Link>
             </div>
@@ -73,7 +87,7 @@ function Home() {
         </div>
 
         <p className="mt-12 text-center text-[11px] uppercase tracking-[0.35em] text-[color:var(--olive)] md:mt-16">
-          Featured Product
+          {featuredLabel}
         </p>
 
         <div className="mt-4 grid grid-cols-2 gap-4 md:mt-6 md:gap-8">
