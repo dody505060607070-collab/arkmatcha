@@ -94,13 +94,15 @@ function Home() {
 
 
         <div className="mt-4 grid grid-cols-2 gap-4 md:mt-6 md:gap-8">
-          {products.map((product) => {
+          {products.map((product, i) => {
             const label = product.name;
             return (
               <Link
                 key={product.id}
                 to="/product/$slug"
                 params={{ slug: product.slug }}
+                data-reveal
+                data-reveal-delay={String(Math.min(i + 1, 5))}
                 className="group block reveal"
               >
                 {product.image_visible !== false ? (
