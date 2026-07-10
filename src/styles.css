@@ -269,6 +269,14 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 4rem;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+}
+
 img {
   content-visibility: auto;
 }
@@ -276,6 +284,40 @@ img {
 @keyframes reveal-up {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* JS-driven scroll reveal (mobile-friendly, no animation-timeline required) */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal][data-reveal-style="fade"] { transform: none; }
+[data-reveal][data-reveal-style="left"] { transform: translate3d(-22px, 0, 0); }
+[data-reveal][data-reveal-style="right"] { transform: translate3d(22px, 0, 0); }
+[data-reveal][data-reveal-style="scale"] { transform: scale(0.96); }
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+[data-reveal][data-reveal-delay="1"] { transition-delay: 80ms; }
+[data-reveal][data-reveal-delay="2"] { transition-delay: 160ms; }
+[data-reveal][data-reveal-delay="3"] { transition-delay: 240ms; }
+[data-reveal][data-reveal-delay="4"] { transition-delay: 320ms; }
+[data-reveal][data-reveal-delay="5"] { transition-delay: 400ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
