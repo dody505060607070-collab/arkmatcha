@@ -50,9 +50,9 @@ function Home() {
         </div>
       ) : null}
       <section className="container-soft pb-10 pt-4 md:pt-6">
-        <div className="relative overflow-hidden rounded-3xl bg-[color:var(--olive)]/5">
+        <div className="relative overflow-hidden rounded-3xl bg-[color:var(--olive)]/5" data-reveal data-reveal-style="fade">
           <div className="grid grid-cols-2">
-            <div className="relative bg-[color:var(--olive)]/5">
+            <div className="relative bg-[color:var(--olive)]/5" data-reveal data-reveal-style="left">
               <img
                 src={heroImage}
                 alt="Ark Matcha ceremonial grade"
@@ -66,17 +66,19 @@ function Home() {
             </div>
 
             <div className="flex flex-col items-start justify-center gap-3 p-4 md:gap-5 md:p-10">
-              <span className="text-[9px] uppercase tracking-[0.25em] text-[color:var(--olive)] md:text-[11px] md:tracking-[0.3em]">
+              <span data-reveal data-reveal-style="right" className="text-[9px] uppercase tracking-[0.25em] text-[color:var(--olive)] md:text-[11px] md:tracking-[0.3em]">
                 {heroLabel}
               </span>
-              <h1 className="font-serif text-lg leading-snug text-[color:var(--petal-strong)] md:text-5xl md:leading-tight">
+              <h1 data-reveal data-reveal-delay="1" className="font-serif text-lg leading-snug text-[color:var(--petal-strong)] md:text-5xl md:leading-tight">
                 {heroHeadline}
               </h1>
-              <p className="max-w-md text-[11px] leading-relaxed text-[color:var(--olive)] md:text-base">
+              <p data-reveal data-reveal-delay="2" className="max-w-md text-[11px] leading-relaxed text-[color:var(--olive)] md:text-base">
                 {heroTagline}
               </p>
               <Link
                 to={heroCtaLink as "/shop"}
+                data-reveal
+                data-reveal-delay="3"
                 className="group mt-1 inline-flex items-center gap-2 rounded-full bg-[color:var(--matcha)] px-4 py-2 text-[11px] font-medium text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md md:px-6 md:py-3 md:text-sm"
               >
                 {heroCtaText}
@@ -86,18 +88,21 @@ function Home() {
           </div>
         </div>
 
-        <p className="mt-12 text-center text-[11px] uppercase tracking-[0.35em] text-[color:var(--olive)] md:mt-16">
+        <p data-reveal data-reveal-style="fade" className="mt-12 text-center text-[11px] uppercase tracking-[0.35em] text-[color:var(--olive)] md:mt-16">
           {featuredLabel}
         </p>
 
+
         <div className="mt-4 grid grid-cols-2 gap-4 md:mt-6 md:gap-8">
-          {products.map((product) => {
+          {products.map((product, i) => {
             const label = product.name;
             return (
               <Link
                 key={product.id}
                 to="/product/$slug"
                 params={{ slug: product.slug }}
+                data-reveal
+                data-reveal-delay={String(Math.min(i + 1, 5))}
                 className="group block reveal"
               >
                 {product.image_visible !== false ? (
