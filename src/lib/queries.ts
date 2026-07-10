@@ -28,6 +28,11 @@ export type SiteSettings = {
   hero_image: string;
   hero_headline: string;
   hero_subheadline: string;
+  hero_label: string;
+  hero_tagline: string;
+  hero_cta_text: string;
+  hero_cta_link: string;
+  featured_label: string;
   coming_soon_text: string;
   brand_story: string;
   contact_email: string;
@@ -36,6 +41,10 @@ export type SiteSettings = {
   tiktok_url: string;
   shipping_fee: number;
   footer_text: string;
+  seo_title: string;
+  seo_description: string;
+  announcement_text: string;
+  announcement_visible: boolean;
 };
 
 export const productsQuery = queryOptions({
