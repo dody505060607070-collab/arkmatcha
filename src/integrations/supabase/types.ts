@@ -163,46 +163,73 @@ export type Database = {
       }
       site_settings: {
         Row: {
+          announcement_text: string | null
+          announcement_visible: boolean | null
           brand_story: string
           coming_soon_text: string
           contact_email: string
+          featured_label: string | null
           footer_text: string
+          hero_cta_link: string | null
+          hero_cta_text: string | null
           hero_headline: string
           hero_image: string
+          hero_label: string | null
           hero_subheadline: string
+          hero_tagline: string | null
           id: number
           instagram_url: string
           phone: string
+          seo_description: string | null
+          seo_title: string | null
           shipping_fee: number
           tiktok_url: string
           updated_at: string
         }
         Insert: {
+          announcement_text?: string | null
+          announcement_visible?: boolean | null
           brand_story?: string
           coming_soon_text?: string
           contact_email?: string
+          featured_label?: string | null
           footer_text?: string
+          hero_cta_link?: string | null
+          hero_cta_text?: string | null
           hero_headline?: string
           hero_image?: string
+          hero_label?: string | null
           hero_subheadline?: string
+          hero_tagline?: string | null
           id?: number
           instagram_url?: string
           phone?: string
+          seo_description?: string | null
+          seo_title?: string | null
           shipping_fee?: number
           tiktok_url?: string
           updated_at?: string
         }
         Update: {
+          announcement_text?: string | null
+          announcement_visible?: boolean | null
           brand_story?: string
           coming_soon_text?: string
           contact_email?: string
+          featured_label?: string | null
           footer_text?: string
+          hero_cta_link?: string | null
+          hero_cta_text?: string | null
           hero_headline?: string
           hero_image?: string
+          hero_label?: string | null
           hero_subheadline?: string
+          hero_tagline?: string | null
           id?: number
           instagram_url?: string
           phone?: string
+          seo_description?: string | null
+          seo_title?: string | null
           shipping_fee?: number
           tiktok_url?: string
           updated_at?: string
