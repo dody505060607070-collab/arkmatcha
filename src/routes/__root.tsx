@@ -123,6 +123,7 @@ function RootComponent() {
         </div>
         {!hideChrome && <Footer />}
       </div>
+      <ScrollReveal />
       <Toaster richColors position="top-center" />
     </QueryClientProvider>
   );
