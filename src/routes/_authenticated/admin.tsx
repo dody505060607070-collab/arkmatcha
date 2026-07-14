@@ -717,11 +717,31 @@ function statusTone(s: Order["status"]) {
 /* ---------------- Settings shared form ---------------- */
 function useSettings() {
   const { data, refetch } = useQuery(settingsQuery);
-  return { data, refetch };
+  const qc = useQueryClient();
+  const save = async (patch: Partial<SiteSettings>) => {
+    const { error } = await supabase
+      .from("site_settings")
+      .update({ ...patch, updated_at: new Date().toISOString() })
+      .eq("id", 1);
+    if (error) { toast.error(error.message); return false; }
+    // Update the cache immediately, then refetch to sync every consumer
+    // (Header, Footer, Hero, ThemeApplier, useContent, etc.) with no delay.
+    qc.setQueryData(["site_settings"], (prev: SiteSettings | undefined) =>
+      prev ? { ...prev, ...patch } : (prev as SiteSettings | undefined)
+    );
+    await qc.invalidateQueries({ queryKey: ["site_settings"] });
+    toast.success("Saved");
+    return true;
+  };
+  return { data, refetch, save };
 }
 
+// Back-compat helper used by a few older call sites in this file.
 async function saveSettings(patch: Partial<SiteSettings>, refetch: () => void) {
-  const { error } = await supabase.from("site_settings").update({ ...patch, updated_at: new Date().toISOString() }).eq("id", 1);
+  const { error } = await supabase
+    .from("site_settings")
+    .update({ ...patch, updated_at: new Date().toISOString() })
+    .eq("id", 1);
   if (error) { toast.error(error.message); return; }
   toast.success("Saved");
   refetch();
