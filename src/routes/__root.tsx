@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ScrollReveal } from "@/components/site/ScrollReveal";
+import { ThemeApplier } from "@/components/site/ThemeApplier";
 import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
@@ -116,6 +117,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ThemeApplier />
       <div className="flex min-h-screen flex-col">
         {!hideChrome && <Header />}
         <div className="flex-1">
