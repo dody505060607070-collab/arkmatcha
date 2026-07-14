@@ -137,8 +137,9 @@ a { color: ${linkColor}; }
 
   return (
     <>
-      <link rel="stylesheet" href={fontHref} />
-      <style dangerouslySetInnerHTML={{ __html: css }} />
+      <link rel="stylesheet" href={fontHref} suppressHydrationWarning />
+      <style dangerouslySetInnerHTML={{ __html: css }} suppressHydrationWarning />
     </>
   );
 }
+
