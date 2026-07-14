@@ -57,6 +57,29 @@ export function ThemeApplier() {
     return `https://fonts.googleapis.com/css2?${q}&display=swap`;
   }, [fontFamily, headingFamily]);
 
+  const fallback = (v: string | undefined, fb: string) => (v && v.trim() ? v : fb);
+
+  const heroBg = fallback(theme.heroBackground, `color-mix(in oklab, ${theme.olive} 5%, transparent)`);
+  const heroLabel = fallback(theme.heroLabel, theme.olive);
+  const heroHead = fallback(theme.heroHeadline, theme.matcha);
+  const heroTag = fallback(theme.heroTagline, theme.olive);
+  const ctaBg = fallback(theme.ctaBackground, theme.matcha);
+  const ctaText = fallback(theme.ctaText, "#ffffff");
+  const featuredLabel = fallback(theme.featuredLabel, theme.olive);
+  const productLabel = fallback(theme.productLabel, theme.olive);
+  const productTitle = fallback(theme.productTitle, theme.forest);
+  const productPrice = fallback(theme.productPrice, theme.olive);
+  const cardBg = fallback(theme.cardBackground, "#ffffff");
+  const footerBg = fallback(theme.footerBackground, `color-mix(in oklab, white 54%, ${theme.petal} 46%)`);
+  const footerText = fallback(theme.footerText, theme.forest);
+  const footerAccent = fallback(theme.footerAccent, theme.matcha);
+  const annBg = fallback(theme.announcementBackground, theme.matcha);
+  const annText = fallback(theme.announcementText, "#ffffff");
+  const linkColor = fallback(theme.linkColor, theme.matcha);
+  const borderColor = fallback(theme.borderColor, `color-mix(in oklab, ${theme.olive} 20%, white)`);
+  const headingColor = fallback(theme.headingColor, theme.forest);
+  const mutedText = fallback(theme.mutedText, `color-mix(in oklab, ${theme.text} 60%, white)`);
+
   const css = `
 :root {
   --background: ${theme.background};
@@ -66,6 +89,26 @@ export function ThemeApplier() {
   --petal: ${theme.petal};
   --petal-strong: ${theme.matcha};
   --foreground: ${theme.text};
+  --hero-bg: ${heroBg};
+  --hero-label: ${heroLabel};
+  --hero-headline: ${heroHead};
+  --hero-tagline: ${heroTag};
+  --cta-bg: ${ctaBg};
+  --cta-text: ${ctaText};
+  --featured-label: ${featuredLabel};
+  --product-label: ${productLabel};
+  --product-title: ${productTitle};
+  --product-price: ${productPrice};
+  --card-bg: ${cardBg};
+  --footer-bg: ${footerBg};
+  --footer-text: ${footerText};
+  --footer-accent: ${footerAccent};
+  --announcement-bg: ${annBg};
+  --announcement-text: ${annText};
+  --link-color: ${linkColor};
+  --border: ${borderColor};
+  --heading-color: ${headingColor};
+  --muted-foreground: ${mutedText};
 }
 body, html {
   background-color: ${theme.background};
@@ -75,13 +118,15 @@ body, html {
 }
 h1, h2, h3, h4, h5, .font-serif {
   font-family: "${headingFamily}", "${fontFamily}", ui-serif, Georgia, serif;
+  color: ${headingColor};
 }
-.ark-hero-label { font-size: ${typo.heroMobile.labelSize}px; }
-.ark-hero-headline { font-size: ${typo.heroMobile.headlineSize}px; line-height: 1.15; }
-.ark-hero-tagline { font-size: ${typo.heroMobile.taglineSize}px; }
-.ark-product-label { font-size: ${typo.product.labelSize}px; }
-.ark-product-title { font-size: ${typo.product.titleSize}px; }
-.ark-product-price { font-size: ${typo.product.priceSize}px; }
+a { color: ${linkColor}; }
+.ark-hero-label { font-size: ${typo.heroMobile.labelSize}px; color: ${heroLabel}; }
+.ark-hero-headline { font-size: ${typo.heroMobile.headlineSize}px; line-height: 1.15; color: ${heroHead}; }
+.ark-hero-tagline { font-size: ${typo.heroMobile.taglineSize}px; color: ${heroTag}; }
+.ark-product-label { font-size: ${typo.product.labelSize}px; color: ${productLabel}; }
+.ark-product-title { font-size: ${typo.product.titleSize}px; color: ${productTitle}; }
+.ark-product-price { font-size: ${typo.product.priceSize}px; color: ${productPrice}; }
 .ark-footer-text { font-size: ${typo.footer.size}px; }
 @media (min-width: 768px) {
   .ark-hero-label { font-size: ${typo.hero.labelSize}px; }
