@@ -1262,3 +1262,133 @@ function SizeField({ label, value, onChange }: { label: string; value: number; o
     </label>
   );
 }
+
+/* ---------------- Font Picker with search + categories + live preview ---------------- */
+function FontPicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [cat, setCat] = useState<FontCategory | "All">("All");
+
+  // Inject a link that loads all catalog fonts once picker opens, so each row
+  // renders in its own typeface.
+  useEffect(() => {
+    if (!open) return;
+    const id = "ark-font-picker-fonts";
+    if (document.getElementById(id)) return;
+    const families = FONT_CATALOG.map((f) =>
+      `family=${encodeURIComponent(f.name).replace(/%20/g, "+")}:wght@400;600`
+    ).join("&");
+    const link = document.createElement("link");
+    link.id = id;
+    link.rel = "stylesheet";
+    link.href = `https://fonts.googleapis.com/css2?${families}&display=swap`;
+    document.head.appendChild(link);
+  }, [open]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return FONT_CATALOG.filter((f) => {
+      if (cat !== "All" && f.category !== cat) return false;
+      if (q && !f.name.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [query, cat]);
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className={inputClass + " text-left flex items-center justify-between"}
+      >
+        <span style={{ fontFamily: `"${value}", ui-serif, Georgia, serif` }} className="truncate">
+          {value}
+        </span>
+        <span className="text-xs text-[color:var(--muted-foreground)] ml-2">▾</span>
+      </button>
+
+      {open && (
+        <div className="absolute z-40 mt-2 w-full min-w-[280px] rounded-xl border border-[color:var(--border)] bg-white shadow-xl">
+          <div className="p-2 border-b border-[color:var(--border)] space-y-2">
+            <div className="relative">
+              <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-[color:var(--muted-foreground)]" />
+              <input
+                autoFocus
+                placeholder="ابحث عن خط… e.g. Playfair, Bebas"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className={inputClass + " pl-8"}
+              />
+            </div>
+            <div className="flex flex-wrap gap-1">
+              {(["All", ...FONT_CATEGORIES] as const).map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setCat(c as FontCategory | "All")}
+                  className={
+                    "rounded-full px-2.5 py-1 text-[10px] uppercase tracking-widest transition " +
+                    (cat === c
+                      ? "bg-[color:var(--matcha)] text-white"
+                      : "bg-[color:var(--muted)] text-[color:var(--foreground)] hover:bg-[color:var(--muted)]/70")
+                  }
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          </div>
+          <ul className="max-h-72 overflow-auto py-1">
+            {filtered.length === 0 && (
+              <li className="px-3 py-4 text-center text-xs text-[color:var(--muted-foreground)]">
+                مفيش خط بالاسم ده
+              </li>
+            )}
+            {filtered.map((f) => (
+              <li key={f.name}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChange(f.name);
+                    setOpen(false);
+                    setQuery("");
+                  }}
+                  className={
+                    "w-full text-left px-3 py-2 flex items-center justify-between gap-3 hover:bg-[color:var(--muted)]/60 " +
+                    (value === f.name ? "bg-[color:var(--muted)]/40" : "")
+                  }
+                >
+                  <span
+                    style={{ fontFamily: `"${f.name}", ui-serif, Georgia, serif` }}
+                    className="text-base truncate"
+                  >
+                    {f.name}
+                  </span>
+                  <span className="text-[9px] uppercase tracking-widest text-[color:var(--muted-foreground)] shrink-0">
+                    {f.category}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+          <div className="border-t border-[color:var(--border)] p-2 flex justify-end">
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="text-xs text-[color:var(--muted-foreground)] hover:text-[color:var(--forest)] px-2 py-1"
+            >
+              إغلاق
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Silence unused import warning when FontPicker replaces the old select.
+void AVAILABLE_FONTS;
+      </div>
+    </label>
+  );
+}
