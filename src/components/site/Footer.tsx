@@ -20,10 +20,11 @@ export function Footer() {
     <footer className="mt-14 px-3 pb-4 pt-2">
       <div className="container-soft">
         <div
-          className="ark-footer-text relative grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-[999px] border px-4 py-2.5 text-[color:var(--forest)] shadow-sm backdrop-blur"
+          className="ark-footer-text relative grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-[999px] border px-4 py-2.5 shadow-sm backdrop-blur"
           style={{
-            background: "color-mix(in oklab, white 54%, var(--petal) 46%)",
-            borderColor: "color-mix(in oklab, white 46%, var(--petal) 54%)",
+            background: "var(--footer-bg)",
+            color: "var(--footer-text)",
+            borderColor: "color-mix(in oklab, var(--footer-bg) 60%, transparent)",
           }}
         >
           <div className="min-w-0 truncate font-medium">
@@ -38,7 +39,7 @@ export function Footer() {
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram"
-              className="glass-bubble h-11 w-11 text-[color:var(--petal-strong)] transition-transform hover:scale-110 active:scale-95"
+              className="glass-bubble h-11 w-11 text-[color:var(--footer-accent)] transition-transform hover:scale-110 active:scale-95"
             >
               <Instagram className="h-6 w-6" />
             </a>
@@ -47,14 +48,14 @@ export function Footer() {
               target="_blank"
               rel="noreferrer"
               aria-label="TikTok"
-              className="glass-bubble h-11 w-11 text-[color:var(--petal-strong)] transition-transform hover:scale-110 active:scale-95"
+              className="glass-bubble h-11 w-11 text-[color:var(--footer-accent)] transition-transform hover:scale-110 active:scale-95"
             >
               <TikTokIcon className="h-6 w-6" />
             </a>
           </div>
 
           <div className="justify-self-end">
-            <Link to="/auth" aria-label="Admin login" className="glass-bubble h-8 w-8 text-[color:var(--petal-strong)]">
+            <Link to="/auth" aria-label="Admin login" className="glass-bubble h-8 w-8 text-[color:var(--footer-accent)]">
               <LockKeyhole className="h-3.5 w-3.5" />
             </Link>
           </div>

@@ -1128,34 +1128,128 @@ function DesignAdmin() {
               <Palette className="h-4 w-4 text-[color:var(--forest)]" />
               <h3 className="font-serif text-lg text-[color:var(--forest)]">Colors · الألوان</h3>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { k: "background", label: "Background", ar: "لون الخلفية" },
-                { k: "matcha", label: "Primary (Matcha)", ar: "اللون الأساسي" },
-                { k: "forest", label: "Forest (dark)", ar: "اللون الغامق" },
-                { k: "olive", label: "Olive (accent)", ar: "لون التفاصيل" },
-                { k: "petal", label: "Petal (soft)", ar: "لون الأزرار الناعمة" },
-                { k: "text", label: "Text", ar: "لون النصوص" },
-              ].map((row) => (
-                <Field key={row.k} label={row.label} hint={row.ar}>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      value={(theme as any)[row.k]}
-                      onChange={(e) => setTheme({ ...theme, [row.k]: e.target.value } as ThemeColors)}
-                      className="h-9 w-12 shrink-0 cursor-pointer rounded border border-[color:var(--border)] bg-white"
-                    />
-                    <input
-                      value={(theme as any)[row.k]}
-                      onChange={(e) => setTheme({ ...theme, [row.k]: e.target.value } as ThemeColors)}
-                      className={inputClass}
-                      placeholder="#ECF3E3"
-                    />
-                  </div>
-                </Field>
-              ))}
-            </div>
+            <p className="mb-4 text-[11px] leading-relaxed text-[color:var(--muted-foreground)]" dir="rtl">
+              كل لون هنا بيتحكم في جزء محدد من الموقع. سيبه فاضي علشان يستخدم اللون الأساسي تلقائيًا،
+              أو غيّره لأي لون تاني (Hex زي <b>#3D4837</b> أو من الـ picker). التغيير بيظهر في المعاينة على طول.
+            </p>
+
+            {(() => {
+              type Row = { k: keyof ThemeColors; label: string; ar: string };
+              const groups: { title: string; ar: string; rows: Row[] }[] = [
+                {
+                  title: "Base palette", ar: "الألوان الأساسية",
+                  rows: [
+                    { k: "background", label: "Page background", ar: "لون خلفية الموقع كله" },
+                    { k: "matcha",     label: "Primary (Matcha)", ar: "اللون الأساسي — الأزرار والـ CTA" },
+                    { k: "forest",     label: "Forest (dark)",    ar: "اللون الغامق — العناوين" },
+                    { k: "olive",      label: "Olive (accent)",   ar: "لون التفاصيل والـ labels" },
+                    { k: "petal",      label: "Petal (soft)",     ar: "اللون الناعم للفوتر والخلفيات" },
+                    { k: "text",       label: "Body text",        ar: "لون كل النصوص العادية" },
+                  ],
+                },
+                {
+                  title: "Hero section", ar: "قسم الـ Hero (أعلى الصفحة)",
+                  rows: [
+                    { k: "heroBackground", label: "Hero background", ar: "خلفية الـ Hero (المكان اللي فيه العنوان والصورة)" },
+                    { k: "heroLabel",      label: "Small label",     ar: "الكلمة الصغيرة فوق العنوان (Ceremonial · Japan)" },
+                    { k: "heroHeadline",   label: "Big headline",    ar: "لون العنوان الكبير — Pure Ritual / The ritual starts here" },
+                    { k: "heroTagline",    label: "Tagline",         ar: "لون الجملة الوصفية تحت العنوان" },
+                    { k: "featuredLabel",  label: "Featured label",  ar: "لون كلمة 'Featured Product' فوق المنتجات" },
+                  ],
+                },
+                {
+                  title: "Buttons & CTA", ar: "الأزرار والدعوات",
+                  rows: [
+                    { k: "ctaBackground", label: "Button background", ar: "خلفية أزرار Shop Now / Add to Cart" },
+                    { k: "ctaText",       label: "Button text",       ar: "لون النص جوة الزرار" },
+                  ],
+                },
+                {
+                  title: "Product cards", ar: "كروت المنتجات",
+                  rows: [
+                    { k: "cardBackground", label: "Card background", ar: "خلفية كارت المنتج" },
+                    { k: "productLabel",   label: "Product label",   ar: "الكلمة الصغيرة فوق اسم المنتج (Ark Matcha)" },
+                    { k: "productTitle",   label: "Product title",   ar: "لون اسم المنتج" },
+                    { k: "productPrice",   label: "Product price",   ar: "لون السعر" },
+                  ],
+                },
+                {
+                  title: "Footer", ar: "الفوتر (أسفل الصفحة)",
+                  rows: [
+                    { k: "footerBackground", label: "Footer background", ar: "خلفية الفوتر" },
+                    { k: "footerText",       label: "Footer text",       ar: "لون نصوص الفوتر" },
+                    { k: "footerAccent",     label: "Footer icons",      ar: "لون أيقونات السوشيال ميديا" },
+                  ],
+                },
+                {
+                  title: "Announcement bar", ar: "شريط الإعلانات (فوق الموقع)",
+                  rows: [
+                    { k: "announcementBackground", label: "Bar background", ar: "خلفية شريط الإعلان" },
+                    { k: "announcementText",       label: "Bar text",       ar: "لون نص الإعلان" },
+                  ],
+                },
+                {
+                  title: "Global text & links", ar: "النصوص العامة والروابط",
+                  rows: [
+                    { k: "headingColor", label: "Headings",     ar: "لون كل العناوين h1/h2/h3" },
+                    { k: "linkColor",    label: "Links",        ar: "لون الروابط" },
+                    { k: "mutedText",    label: "Muted text",   ar: "النصوص الثانوية (الوصف الصغير)" },
+                    { k: "borderColor",  label: "Borders",      ar: "لون الحدود والفواصل" },
+                  ],
+                },
+              ];
+              return (
+                <div className="space-y-5">
+                  {groups.map((g) => (
+                    <div key={g.title}>
+                      <div className="mb-2 flex items-baseline justify-between">
+                        <h4 className="text-xs font-semibold uppercase tracking-widest text-[color:var(--forest)]">{g.title}</h4>
+                        <span className="text-[11px] text-[color:var(--muted-foreground)]" dir="rtl">{g.ar}</span>
+                      </div>
+                      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                        {g.rows.map((row) => {
+                          const val = ((theme as any)[row.k] ?? "") as string;
+                          return (
+                            <Field key={String(row.k)} label={row.label} hint={row.ar}>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="color"
+                                  value={val || "#ffffff"}
+                                  onChange={(e) => setTheme({ ...theme, [row.k]: e.target.value } as ThemeColors)}
+                                  className="h-9 w-12 shrink-0 cursor-pointer rounded border border-[color:var(--border)] bg-white"
+                                />
+                                <input
+                                  value={val}
+                                  onChange={(e) => setTheme({ ...theme, [row.k]: e.target.value } as ThemeColors)}
+                                  className={inputClass}
+                                  placeholder="auto"
+                                />
+                                {val && (
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const next = { ...theme } as any;
+                                      delete next[row.k];
+                                      setTheme(next);
+                                    }}
+                                    className="shrink-0 rounded-md border border-[color:var(--border)] px-2 py-1 text-[10px] text-[color:var(--muted-foreground)] hover:bg-[color:var(--cream)]"
+                                    title="Use default"
+                                  >
+                                    ✕
+                                  </button>
+                                )}
+                              </div>
+                            </Field>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
           </div>
+
 
           {/* Typography */}
           <div className="rounded-2xl bg-white p-5 border border-[color:var(--border)] shadow-sm">

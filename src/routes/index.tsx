@@ -45,14 +45,22 @@ function Home() {
   return (
     <main>
       {settings?.announcement_visible && settings.announcement_text ? (
-        <div className="bg-[color:var(--matcha)] px-4 py-2 text-center text-[11px] font-medium uppercase tracking-[0.2em] text-white">
+        <div
+          className="px-4 py-2 text-center text-[11px] font-medium uppercase tracking-[0.2em]"
+          style={{ background: "var(--announcement-bg)", color: "var(--announcement-text)" }}
+        >
           {settings.announcement_text}
         </div>
       ) : null}
       <section className="container-soft pb-10 pt-4 md:pt-6">
-        <div className="relative overflow-hidden rounded-3xl bg-[color:var(--olive)]/5" data-reveal data-reveal-style="fade">
+        <div
+          className="relative overflow-hidden rounded-3xl"
+          style={{ background: "var(--hero-bg)" }}
+          data-reveal
+          data-reveal-style="fade"
+        >
           <div className="grid grid-cols-2">
-            <div className="relative bg-[color:var(--olive)]/5" data-reveal data-reveal-style="left">
+            <div className="relative" style={{ background: "var(--hero-bg)" }} data-reveal data-reveal-style="left">
               <img
                 src={heroImage}
                 alt="Ark Matcha ceremonial grade"
@@ -66,20 +74,21 @@ function Home() {
             </div>
 
             <div className="flex flex-col items-start justify-center gap-3 p-4 md:gap-5 md:p-10">
-              <span data-reveal data-reveal-style="right" className="ark-hero-label uppercase tracking-[0.25em] text-[color:var(--olive)] md:tracking-[0.3em]">
+              <span data-reveal data-reveal-style="right" className="ark-hero-label uppercase tracking-[0.25em] md:tracking-[0.3em]">
                 {heroLabel}
               </span>
-              <h1 data-reveal data-reveal-delay="1" className="ark-hero-headline font-serif leading-snug text-[color:var(--petal-strong)] md:leading-tight">
+              <h1 data-reveal data-reveal-delay="1" className="ark-hero-headline font-serif leading-snug md:leading-tight">
                 {heroHeadline}
               </h1>
-              <p data-reveal data-reveal-delay="2" className="ark-hero-tagline max-w-md leading-relaxed text-[color:var(--olive)]">
+              <p data-reveal data-reveal-delay="2" className="ark-hero-tagline max-w-md leading-relaxed">
                 {heroTagline}
               </p>
               <Link
                 to={heroCtaLink as "/shop"}
                 data-reveal
                 data-reveal-delay="3"
-                className="group mt-1 inline-flex items-center gap-2 rounded-full bg-[color:var(--matcha)] px-4 py-2 text-[11px] font-medium text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md md:px-6 md:py-3 md:text-sm"
+                style={{ background: "var(--cta-bg)", color: "var(--cta-text)" }}
+                className="group mt-1 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11px] font-medium shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md md:px-6 md:py-3 md:text-sm"
               >
                 {heroCtaText}
                 <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
@@ -88,9 +97,15 @@ function Home() {
           </div>
         </div>
 
-        <p data-reveal data-reveal-style="fade" className="mt-12 text-center text-[11px] uppercase tracking-[0.35em] text-[color:var(--olive)] md:mt-16">
+        <p
+          data-reveal
+          data-reveal-style="fade"
+          className="mt-12 text-center text-[11px] uppercase tracking-[0.35em] md:mt-16"
+          style={{ color: "var(--featured-label)" }}
+        >
           {featuredLabel}
         </p>
+
 
 
         <div className="mt-4 grid grid-cols-2 gap-4 md:mt-6 md:gap-8">
