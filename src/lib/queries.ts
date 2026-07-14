@@ -30,6 +30,32 @@ export type ThemeColors = {
   petal: string;
   text: string;
   accent: string;
+
+  /* Section-specific overrides (all optional — fall back to the base palette) */
+  heroBackground?: string;
+  heroLabel?: string;
+  heroHeadline?: string;
+  heroTagline?: string;
+  ctaBackground?: string;
+  ctaText?: string;
+  featuredLabel?: string;
+
+  productLabel?: string;
+  productTitle?: string;
+  productPrice?: string;
+  cardBackground?: string;
+
+  footerBackground?: string;
+  footerText?: string;
+  footerAccent?: string;
+
+  announcementBackground?: string;
+  announcementText?: string;
+
+  linkColor?: string;
+  borderColor?: string;
+  headingColor?: string;
+  mutedText?: string;
 };
 
 export type TypographySizes = { headlineSize: number; taglineSize: number; labelSize: number };
