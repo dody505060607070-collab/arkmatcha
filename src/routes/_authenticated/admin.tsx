@@ -19,9 +19,23 @@ import {
   Megaphone,
   Info,
   Globe,
+  Palette,
+  Type as TypeIcon,
+  Image as ImageIcon,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { productsQuery, settingsQuery, type Product, type SiteSettings } from "@/lib/queries";
+import {
+  productsQuery,
+  settingsQuery,
+  DEFAULT_THEME,
+  DEFAULT_TYPOGRAPHY,
+  AVAILABLE_FONTS,
+  type Product,
+  type SiteSettings,
+  type ThemeColors,
+  type Typography,
+  type ContentMap,
+} from "@/lib/queries";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
@@ -29,6 +43,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 
 type Section =
   | "overview"
+  | "design"
   | "hero"
   | "products"
   | "orders"
@@ -41,10 +56,11 @@ type Section =
 
 const sections: { id: Section; label: string; labelAr: string; icon: typeof LayoutDashboard }[] = [
   { id: "overview", label: "Overview", labelAr: "نظرة عامة", icon: LayoutDashboard },
+  { id: "design", label: "Design Studio", labelAr: "استوديو التصميم", icon: Palette },
   { id: "hero", label: "Hero Section", labelAr: "الواجهة الرئيسية", icon: Sparkles },
+  { id: "content", label: "Content", labelAr: "نصوص الصفحات", icon: FileText },
   { id: "products", label: "Products", labelAr: "المنتجات", icon: Package },
   { id: "orders", label: "Orders", labelAr: "الطلبات", icon: ShoppingBag },
-  { id: "content", label: "Content", labelAr: "المحتوى", icon: FileText },
   { id: "social", label: "Social & Contact", labelAr: "السوشيال والتواصل", icon: Share2 },
   { id: "newsletter", label: "Newsletter", labelAr: "قائمة البريد", icon: Mail },
   { id: "seo", label: "SEO", labelAr: "تحسين محركات البحث", icon: Globe },
@@ -100,8 +116,9 @@ function AdminPage() {
           </button>
         </div>
       </aside>
-      <main className="flex-1 p-6 md:p-10 max-w-6xl">
+      <main className="flex-1 p-6 md:p-10 max-w-7xl">
         {section === "overview" && <Overview />}
+        {section === "design" && <DesignAdmin />}
         {section === "hero" && <HeroAdmin />}
         {section === "products" && <ProductsAdmin />}
         {section === "orders" && <OrdersAdmin />}
