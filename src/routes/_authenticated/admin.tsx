@@ -1144,16 +1144,12 @@ function DesignAdmin() {
               <h3 className="font-serif text-lg text-[color:var(--forest)]">Typography · الخطوط</h3>
             </div>
             <div className="grid gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                <Field label="Body font" hint="خط النصوص العامة">
-                  <select value={typo.fontFamily} onChange={(e) => setTypo({ ...typo, fontFamily: e.target.value })} className={inputClass}>
-                    {AVAILABLE_FONTS.map((f) => <option key={f} value={f}>{f}</option>)}
-                  </select>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Field label="Body font · خط النصوص" hint="الخط المستخدم للنصوص العامة في كل الموقع">
+                  <FontPicker value={typo.fontFamily} onChange={(v) => setTypo({ ...typo, fontFamily: v })} />
                 </Field>
-                <Field label="Headings font" hint="خط العناوين">
-                  <select value={typo.headingFamily} onChange={(e) => setTypo({ ...typo, headingFamily: e.target.value })} className={inputClass}>
-                    {AVAILABLE_FONTS.map((f) => <option key={f} value={f}>{f}</option>)}
-                  </select>
+                <Field label="Headings font · خط العناوين" hint="خط العناوين الكبيرة والـ Hero">
+                  <FontPicker value={typo.headingFamily} onChange={(v) => setTypo({ ...typo, headingFamily: v })} />
                 </Field>
               </div>
 
