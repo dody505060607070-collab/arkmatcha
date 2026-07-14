@@ -39,7 +39,7 @@ export function Footer() {
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram"
-              className="glass-bubble h-11 w-11 text-[color:var(--petal-strong)] transition-transform hover:scale-110 active:scale-95"
+              className="glass-bubble h-11 w-11 text-[color:var(--footer-accent)] transition-transform hover:scale-110 active:scale-95"
             >
               <Instagram className="h-6 w-6" />
             </a>
@@ -48,14 +48,14 @@ export function Footer() {
               target="_blank"
               rel="noreferrer"
               aria-label="TikTok"
-              className="glass-bubble h-11 w-11 text-[color:var(--petal-strong)] transition-transform hover:scale-110 active:scale-95"
+              className="glass-bubble h-11 w-11 text-[color:var(--footer-accent)] transition-transform hover:scale-110 active:scale-95"
             >
               <TikTokIcon className="h-6 w-6" />
             </a>
           </div>
 
           <div className="justify-self-end">
-            <Link to="/auth" aria-label="Admin login" className="glass-bubble h-8 w-8 text-[color:var(--petal-strong)]">
+            <Link to="/auth" aria-label="Admin login" className="glass-bubble h-8 w-8 text-[color:var(--footer-accent)]">
               <LockKeyhole className="h-3.5 w-3.5" />
             </Link>
           </div>
