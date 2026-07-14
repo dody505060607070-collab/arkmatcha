@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { productsQuery } from "@/lib/queries";
+import { productsQuery, settingsQuery } from "@/lib/queries";
 import { getProductImage } from "@/lib/brand-assets";
+import { useContent } from "@/lib/useContent";
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
@@ -14,22 +15,28 @@ export const Route = createFileRoute("/shop")({
     links: [{ rel: "canonical", href: "/shop" }],
   }),
   loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(productsQuery);
+    await Promise.all([
+      context.queryClient.ensureQueryData(productsQuery),
+      context.queryClient.ensureQueryData(settingsQuery),
+    ]);
   },
   component: Shop,
 });
 
 function Shop() {
   const { data: products } = useSuspenseQuery(productsQuery);
+  const c = useContent();
+  const subtitle = c.shop?.subtitle || "Featured Product";
+  const title = c.shop?.title || "The Ark Matcha Collection";
 
   return (
     <main>
       <section className="container-soft pb-12 pt-6 md:pt-10">
         <p className="text-center text-[11px] uppercase tracking-[0.35em] text-[color:var(--olive)]">
-          Featured Product
+          {subtitle}
         </p>
         <h1 className="mt-2 text-center font-serif text-2xl text-[color:var(--petal-strong)] md:text-3xl">
-          The Ark Matcha Collection
+          {title}
         </h1>
 
         <div className="mt-8 grid grid-cols-2 gap-4 md:mt-10 md:gap-8">

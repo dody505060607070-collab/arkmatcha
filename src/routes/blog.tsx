@@ -4,6 +4,7 @@ import { Instagram, Mail, Phone } from "lucide-react";
 import { Newsletter } from "@/components/site/Newsletter";
 import { brandAssets } from "@/lib/brand-assets";
 import { settingsQuery } from "@/lib/queries";
+import { useContent } from "@/lib/useContent";
 
 export const Route = createFileRoute("/blog")({
   head: () => ({
@@ -21,14 +22,17 @@ export const Route = createFileRoute("/blog")({
 
 export function BlogPage() {
   const { data: settings } = useSuspenseQuery(settingsQuery);
+  const c = useContent();
+  const heading = c.blog?.title || "A calm daily ritual, designed softly.";
+  const intro = c.blog?.intro || settings?.brand_story || "";
 
   return (
     <main>
       <section className="container-soft py-12 md:py-16">
         <header className="mx-auto mb-12 max-w-2xl text-center">
           <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[color:var(--petal-strong)]">About</p>
-          <h1 className="mb-5 font-serif text-4xl md:text-5xl">A calm daily ritual, designed softly.</h1>
-          <p className="leading-relaxed text-[color:var(--muted-foreground)]">{settings?.brand_story}</p>
+          <h1 className="mb-5 font-serif text-4xl md:text-5xl">{heading}</h1>
+          <p className="leading-relaxed text-[color:var(--muted-foreground)]">{intro}</p>
         </header>
 
         <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_1.05fr] md:items-center">

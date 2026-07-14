@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { settingsQuery } from "@/lib/queries";
+import { useContent } from "@/lib/useContent";
 import { TinIllustration } from "@/components/site/TinIllustration";
 
 export const Route = createFileRoute("/cart")({
@@ -85,7 +86,7 @@ function CartPage() {
               <dt>Total</dt><dd>EGP {total.toFixed(2)}</dd>
             </div>
           </dl>
-          <Link to="/checkout" className="btn-primary w-full mt-6">Checkout</Link>
+          <Link to="/checkout" className="btn-primary w-full mt-6">{checkoutText}</Link>
           <p className="text-xs text-[color:var(--muted-foreground)] text-center mt-3">Cash on Delivery only</p>
         </aside>
       </div>
