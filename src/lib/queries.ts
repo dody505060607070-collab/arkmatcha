@@ -137,15 +137,155 @@ export const DEFAULT_TYPOGRAPHY: Typography = {
   baseSize: 16,
 };
 
-export const AVAILABLE_FONTS = [
-  "Fraunces",
-  "Playfair Display",
-  "DM Serif Display",
-  "Cormorant Garamond",
-  "EB Garamond",
-  "Libre Baskerville",
-  "Inter",
-  "DM Sans",
-  "Manrope",
-  "Poppins",
-] as const;
+export type FontCategory =
+  | "Serif"
+  | "Sans"
+  | "Display"
+  | "Handwriting"
+  | "Monospace"
+  | "Funky";
+
+export type FontEntry = { name: string; category: FontCategory };
+
+export const FONT_CATALOG: FontEntry[] = [
+  // ————— Serif (elegant / editorial) —————
+  { name: "Fraunces", category: "Serif" },
+  { name: "Playfair Display", category: "Serif" },
+  { name: "DM Serif Display", category: "Serif" },
+  { name: "DM Serif Text", category: "Serif" },
+  { name: "Cormorant Garamond", category: "Serif" },
+  { name: "Cormorant", category: "Serif" },
+  { name: "EB Garamond", category: "Serif" },
+  { name: "Libre Baskerville", category: "Serif" },
+  { name: "Lora", category: "Serif" },
+  { name: "Merriweather", category: "Serif" },
+  { name: "Crimson Pro", category: "Serif" },
+  { name: "Crimson Text", category: "Serif" },
+  { name: "Cardo", category: "Serif" },
+  { name: "Spectral", category: "Serif" },
+  { name: "Source Serif 4", category: "Serif" },
+  { name: "Noto Serif", category: "Serif" },
+  { name: "PT Serif", category: "Serif" },
+  { name: "Bitter", category: "Serif" },
+  { name: "Instrument Serif", category: "Serif" },
+  { name: "Newsreader", category: "Serif" },
+  { name: "Prata", category: "Serif" },
+  { name: "Italiana", category: "Serif" },
+  { name: "Marcellus", category: "Serif" },
+  { name: "Tenor Sans", category: "Serif" },
+
+  // ————— Sans-serif (modern / clean) —————
+  { name: "Inter", category: "Sans" },
+  { name: "DM Sans", category: "Sans" },
+  { name: "Manrope", category: "Sans" },
+  { name: "Poppins", category: "Sans" },
+  { name: "Montserrat", category: "Sans" },
+  { name: "Work Sans", category: "Sans" },
+  { name: "Plus Jakarta Sans", category: "Sans" },
+  { name: "Space Grotesk", category: "Sans" },
+  { name: "Outfit", category: "Sans" },
+  { name: "Figtree", category: "Sans" },
+  { name: "Nunito", category: "Sans" },
+  { name: "Nunito Sans", category: "Sans" },
+  { name: "Rubik", category: "Sans" },
+  { name: "Karla", category: "Sans" },
+  { name: "Barlow", category: "Sans" },
+  { name: "Raleway", category: "Sans" },
+  { name: "Open Sans", category: "Sans" },
+  { name: "Lato", category: "Sans" },
+  { name: "Roboto", category: "Sans" },
+  { name: "Urbanist", category: "Sans" },
+  { name: "Sora", category: "Sans" },
+  { name: "Epilogue", category: "Sans" },
+  { name: "Archivo", category: "Sans" },
+  { name: "Onest", category: "Sans" },
+  { name: "Geist", category: "Sans" },
+
+  // ————— Display (bold statement) —————
+  { name: "Abril Fatface", category: "Display" },
+  { name: "Bebas Neue", category: "Display" },
+  { name: "Anton", category: "Display" },
+  { name: "Archivo Black", category: "Display" },
+  { name: "Big Shoulders Display", category: "Display" },
+  { name: "Oswald", category: "Display" },
+  { name: "Righteous", category: "Display" },
+  { name: "Alfa Slab One", category: "Display" },
+  { name: "Bricolage Grotesque", category: "Display" },
+  { name: "Syne", category: "Display" },
+  { name: "Unbounded", category: "Display" },
+  { name: "Bodoni Moda", category: "Display" },
+  { name: "Yeseva One", category: "Display" },
+  { name: "Josefin Sans", category: "Display" },
+  { name: "Comfortaa", category: "Display" },
+
+  // ————— Handwriting / Script —————
+  { name: "Caveat", category: "Handwriting" },
+  { name: "Dancing Script", category: "Handwriting" },
+  { name: "Pacifico", category: "Handwriting" },
+  { name: "Sacramento", category: "Handwriting" },
+  { name: "Great Vibes", category: "Handwriting" },
+  { name: "Satisfy", category: "Handwriting" },
+  { name: "Kalam", category: "Handwriting" },
+  { name: "Shadows Into Light", category: "Handwriting" },
+  { name: "Homemade Apple", category: "Handwriting" },
+  { name: "Parisienne", category: "Handwriting" },
+  { name: "Allura", category: "Handwriting" },
+  { name: "Cookie", category: "Handwriting" },
+
+  // ————— Monospace —————
+  { name: "JetBrains Mono", category: "Monospace" },
+  { name: "Space Mono", category: "Monospace" },
+  { name: "IBM Plex Mono", category: "Monospace" },
+  { name: "Fira Code", category: "Monospace" },
+  { name: "Roboto Mono", category: "Monospace" },
+  { name: "DM Mono", category: "Monospace" },
+
+  // ————— Funky / Decorative —————
+  { name: "Rubik Mono One", category: "Funky" },
+  { name: "Rubik Glitch", category: "Funky" },
+  { name: "Rubik Puddles", category: "Funky" },
+  { name: "Rubik Bubbles", category: "Funky" },
+  { name: "Rubik Wet Paint", category: "Funky" },
+  { name: "Rubik Iso", category: "Funky" },
+  { name: "Rubik Marker Hatch", category: "Funky" },
+  { name: "Rubik Beastly", category: "Funky" },
+  { name: "Rubik Distressed", category: "Funky" },
+  { name: "Rubik Spray Paint", category: "Funky" },
+  { name: "Rubik Vinyl", category: "Funky" },
+  { name: "Rubik Gemstones", category: "Funky" },
+  { name: "Rubik Storm", category: "Funky" },
+  { name: "Rubik Broken Fax", category: "Funky" },
+  { name: "Rubik Doodle Shadow", category: "Funky" },
+  { name: "Bungee", category: "Funky" },
+  { name: "Bungee Shade", category: "Funky" },
+  { name: "Bungee Inline", category: "Funky" },
+  { name: "Monoton", category: "Funky" },
+  { name: "Faster One", category: "Funky" },
+  { name: "Press Start 2P", category: "Funky" },
+  { name: "VT323", category: "Funky" },
+  { name: "Bowlby One", category: "Funky" },
+  { name: "Titan One", category: "Funky" },
+  { name: "Lilita One", category: "Funky" },
+  { name: "Fugaz One", category: "Funky" },
+  { name: "Bagel Fat One", category: "Funky" },
+  { name: "Modak", category: "Funky" },
+  { name: "Silkscreen", category: "Funky" },
+  { name: "Pixelify Sans", category: "Funky" },
+  { name: "Rampart One", category: "Funky" },
+  { name: "Codystar", category: "Funky" },
+  { name: "Bungee Spice", category: "Funky" },
+  { name: "Shrikhand", category: "Funky" },
+  { name: "Passion One", category: "Funky" },
+  { name: "Ultra", category: "Funky" },
+];
+
+export const FONT_CATEGORIES: FontCategory[] = [
+  "Serif",
+  "Sans",
+  "Display",
+  "Handwriting",
+  "Monospace",
+  "Funky",
+];
+
+export const AVAILABLE_FONTS = FONT_CATALOG.map((f) => f.name);
