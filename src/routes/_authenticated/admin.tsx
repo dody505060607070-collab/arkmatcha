@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -19,9 +19,23 @@ import {
   Megaphone,
   Info,
   Globe,
+  Palette,
+  Type as TypeIcon,
+  Image as ImageIcon,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { productsQuery, settingsQuery, type Product, type SiteSettings } from "@/lib/queries";
+import {
+  productsQuery,
+  settingsQuery,
+  DEFAULT_THEME,
+  DEFAULT_TYPOGRAPHY,
+  AVAILABLE_FONTS,
+  type Product,
+  type SiteSettings,
+  type ThemeColors,
+  type Typography,
+  type ContentMap,
+} from "@/lib/queries";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
@@ -29,6 +43,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 
 type Section =
   | "overview"
+  | "design"
   | "hero"
   | "products"
   | "orders"
@@ -41,10 +56,11 @@ type Section =
 
 const sections: { id: Section; label: string; labelAr: string; icon: typeof LayoutDashboard }[] = [
   { id: "overview", label: "Overview", labelAr: "نظرة عامة", icon: LayoutDashboard },
+  { id: "design", label: "Design Studio", labelAr: "استوديو التصميم", icon: Palette },
   { id: "hero", label: "Hero Section", labelAr: "الواجهة الرئيسية", icon: Sparkles },
+  { id: "content", label: "Content", labelAr: "نصوص الصفحات", icon: FileText },
   { id: "products", label: "Products", labelAr: "المنتجات", icon: Package },
   { id: "orders", label: "Orders", labelAr: "الطلبات", icon: ShoppingBag },
-  { id: "content", label: "Content", labelAr: "المحتوى", icon: FileText },
   { id: "social", label: "Social & Contact", labelAr: "السوشيال والتواصل", icon: Share2 },
   { id: "newsletter", label: "Newsletter", labelAr: "قائمة البريد", icon: Mail },
   { id: "seo", label: "SEO", labelAr: "تحسين محركات البحث", icon: Globe },
@@ -100,8 +116,9 @@ function AdminPage() {
           </button>
         </div>
       </aside>
-      <main className="flex-1 p-6 md:p-10 max-w-6xl">
+      <main className="flex-1 p-6 md:p-10 max-w-7xl">
         {section === "overview" && <Overview />}
+        {section === "design" && <DesignAdmin />}
         {section === "hero" && <HeroAdmin />}
         {section === "products" && <ProductsAdmin />}
         {section === "orders" && <OrdersAdmin />}
@@ -709,25 +726,115 @@ async function saveSettings(patch: Partial<SiteSettings>, refetch: () => void) {
 
 function ContentAdmin() {
   const { data: s, refetch } = useSettings();
-  const [form, setForm] = useState<Partial<SiteSettings>>({});
-  useEffect(() => { if (s) setForm({
-    brand_story: s.brand_story,
-    footer_text: s.footer_text,
-  }); }, [s]);
+  const [form, setForm] = useState<{
+    brand_story?: string;
+    footer_text?: string;
+    content?: ContentMap;
+  }>({});
+  useEffect(() => {
+    if (s)
+      setForm({
+        brand_story: s.brand_story,
+        footer_text: s.footer_text,
+        content: s.content ?? {},
+      });
+  }, [s]);
+
+  const c: ContentMap = form.content ?? {};
+  function setC(path: string, key: string, value: string) {
+    setForm((prev) => ({
+      ...prev,
+      content: {
+        ...(prev.content ?? {}),
+        [path]: { ...((prev.content ?? {}) as any)[path], [key]: value },
+      } as ContentMap,
+    }));
+  }
+
+  const pages: { key: keyof ContentMap; title: string; titleAr: string; fields: { k: string; label: string; hint: string; multi?: boolean }[] }[] = [
+    { key: "shop", title: "Shop page", titleAr: "صفحة المتجر", fields: [
+      { k: "subtitle", label: "Small label above title", hint: "النص الصغير فوق العنوان" },
+      { k: "title", label: "Page title", hint: "عنوان الصفحة" },
+    ]},
+    { key: "product", title: "Product page", titleAr: "صفحة المنتج", fields: [
+      { k: "addToCart", label: "Add to cart button", hint: "نص زرار الإضافة للسلة" },
+      { k: "soldOut", label: "Sold out label", hint: "نص علامة نفذت الكمية" },
+      { k: "ingredientsTitle", label: "Ingredients section title", hint: "عنوان قسم المكونات" },
+      { k: "storageTitle", label: "Storage section title", hint: "عنوان قسم التخزين" },
+      { k: "shippingTitle", label: "Shipping section title", hint: "عنوان قسم الشحن" },
+      { k: "relatedTitle", label: "Related products title", hint: "عنوان المنتجات المشابهة" },
+    ]},
+    { key: "blog", title: "Blog / About page", titleAr: "صفحة القصة", fields: [
+      { k: "title", label: "Page headline", hint: "العنوان الرئيسي", multi: false },
+      { k: "intro", label: "Intro paragraph", hint: "المقدمة", multi: true },
+    ]},
+    { key: "cart", title: "Cart page", titleAr: "صفحة السلة", fields: [
+      { k: "title", label: "Cart title", hint: "عنوان صفحة السلة" },
+      { k: "empty", label: "Empty state text", hint: "لما السلة فاضية" },
+      { k: "checkout", label: "Checkout button", hint: "نص زرار الدفع" },
+    ]},
+    { key: "checkout", title: "Checkout page", titleAr: "صفحة الدفع", fields: [
+      { k: "title", label: "Checkout title", hint: "عنوان صفحة الدفع" },
+      { k: "submit", label: "Submit button", hint: "زرار تأكيد الطلب" },
+    ]},
+    { key: "footer", title: "Footer", titleAr: "الفوتر", fields: [
+      { k: "brandLine", label: "Brand name", hint: "اسم البراند في الفوتر" },
+      { k: "tagline", label: "Tagline", hint: "الجملة اللي جنب الاسم" },
+    ]},
+  ];
 
   return (
     <div>
-      <PageHeader title="Content" subtitle="النصوص العامة اللي بتظهر في المدونة والفوتر." />
-      <HelpPanel title="محتوى الموقع">
+      <PageHeader title="Content" subtitle="نصوص كل الصفحات في مكان واحد — عدّل واحفظ، والموقع يتحدث فورًا." />
+      <HelpPanel title="نصوص الصفحات">
+        <p>هنا تقدر تتحكم في كل النصوص المكتوبة في الموقع — كل صفحة ليها قسم بحقولها.</p>
         <ul className="list-inside list-disc space-y-1 pr-2">
-          <li><b>Brand story</b>: قصة العلامة اللي بتظهر في صفحة المدونة (Blog).</li>
-          <li><b>Footer text</b>: النص اللي في الفوتر تحت الموقع.</li>
+          <li><b>Brand story</b>: قصة البراند في صفحة About / Blog.</li>
+          <li>باقي الأقسام لكل صفحة نصوصها القابلة للتعديل.</li>
         </ul>
       </HelpPanel>
-      <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm grid gap-4 max-w-2xl">
-        <Field label="Brand story"><textarea rows={6} value={form.brand_story ?? ""} onChange={(e) => setForm({ ...form, brand_story: e.target.value })} className={inputClass} /></Field>
-        <Field label="Footer text"><input value={form.footer_text ?? ""} onChange={(e) => setForm({ ...form, footer_text: e.target.value })} className={inputClass} /></Field>
-        <div><button onClick={() => saveSettings(form, refetch)} className="btn-primary">Save</button></div>
+
+      <div className="grid gap-5 max-w-3xl">
+        <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm grid gap-4">
+          <Field label="Brand story" hint="قصة البراند اللي بتظهر في صفحة القصة">
+            <textarea rows={5} value={form.brand_story ?? ""} onChange={(e) => setForm({ ...form, brand_story: e.target.value })} className={inputClass} />
+          </Field>
+          <Field label="Footer text (legacy)" hint="نص إضافي في الفوتر">
+            <input value={form.footer_text ?? ""} onChange={(e) => setForm({ ...form, footer_text: e.target.value })} className={inputClass} />
+          </Field>
+        </div>
+
+        {pages.map((p) => (
+          <div key={p.key} className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="font-serif text-lg text-[color:var(--forest)]">{p.title}</h3>
+              <span className="text-xs text-[color:var(--muted-foreground)]" dir="rtl">{p.titleAr}</span>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              {p.fields.map((f) => {
+                const val = ((c as any)[p.key] ?? {})[f.k] ?? "";
+                return (
+                  <Field key={f.k} label={f.label} hint={f.hint} className={f.multi ? "md:col-span-2" : ""}>
+                    {f.multi ? (
+                      <textarea rows={4} value={val} onChange={(e) => setC(p.key as string, f.k, e.target.value)} className={inputClass} />
+                    ) : (
+                      <input value={val} onChange={(e) => setC(p.key as string, f.k, e.target.value)} className={inputClass} />
+                    )}
+                  </Field>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+
+        <div>
+          <button
+            onClick={() => saveSettings({ brand_story: form.brand_story, footer_text: form.footer_text, content: form.content } as Partial<SiteSettings>, refetch)}
+            className="btn-primary"
+          >
+            Save all content
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -899,5 +1006,260 @@ function SettingsAdmin() {
         <div><button onClick={save} className="btn-primary">Save</button></div>
       </div>
     </div>
+  );
+}
+
+/* ---------------- Design Studio (Theme + Typography + Logo + Live Preview) ---------------- */
+function DesignAdmin() {
+  const { data: s, refetch } = useSettings();
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const [logoUrl, setLogoUrl] = useState("");
+  const [theme, setTheme] = useState<ThemeColors>(DEFAULT_THEME);
+  const [typo, setTypo] = useState<Typography>(DEFAULT_TYPOGRAPHY);
+  const [saving, setSaving] = useState(false);
+  const [device, setDevice] = useState<"mobile" | "desktop">("mobile");
+
+  useEffect(() => {
+    if (!s) return;
+    setLogoUrl(s.logo_url ?? "");
+    setTheme({ ...DEFAULT_THEME, ...(s.theme ?? {}) });
+    setTypo({
+      ...DEFAULT_TYPOGRAPHY,
+      ...(s.typography ?? {}),
+      hero: { ...DEFAULT_TYPOGRAPHY.hero, ...(s.typography?.hero ?? {}) },
+      heroMobile: { ...DEFAULT_TYPOGRAPHY.heroMobile, ...(s.typography?.heroMobile ?? {}) },
+      product: { ...DEFAULT_TYPOGRAPHY.product, ...(s.typography?.product ?? {}) },
+      footer: { ...DEFAULT_TYPOGRAPHY.footer, ...(s.typography?.footer ?? {}) },
+    });
+  }, [s]);
+
+  // Push live preview overrides to the iframe
+  useEffect(() => {
+    const send = () => iframeRef.current?.contentWindow?.postMessage(
+      { type: "ark-preview", theme, typography: typo }, "*"
+    );
+    send();
+    const onReady = (ev: MessageEvent) => {
+      if (ev.data?.type === "ark-preview-ready") send();
+    };
+    window.addEventListener("message", onReady);
+    return () => window.removeEventListener("message", onReady);
+  }, [theme, typo]);
+
+  async function save() {
+    setSaving(true);
+    await saveSettings(
+      { logo_url: logoUrl, theme, typography: typo } as Partial<SiteSettings>,
+      refetch
+    );
+    setSaving(false);
+    // Reload iframe so content/logo changes flush
+    if (iframeRef.current) iframeRef.current.src = iframeRef.current.src;
+  }
+
+  function reset() {
+    if (!confirm("Reset design to defaults? Text content is not affected.")) return;
+    setTheme(DEFAULT_THEME);
+    setTypo(DEFAULT_TYPOGRAPHY);
+  }
+
+  return (
+    <div>
+      <PageHeader
+        title="Design Studio"
+        subtitle="غيّر الألوان، الخطوط، ومقاسات كل جزء في الموقع — وشوف التغيير مباشرة قبل الحفظ."
+      />
+      <HelpPanel title="ازاي تستخدم استوديو التصميم؟">
+        <ul className="list-inside list-disc space-y-1 pr-2">
+          <li><b>Theme colors</b>: غيّر لون الخلفية والألوان الأساسية عن طريق كتابة كود اللون (Hex) أو من الـ picker.</li>
+          <li><b>Typography</b>: اختار الخط من قائمة الخطوط الجاهزة، وحدد مقاس كل جزء (Hero، المنتجات، الفوتر).</li>
+          <li><b>Logo</b>: غيّر صورة اللوجو بلينك جديد.</li>
+          <li>الـ <b>Live Preview</b> على اليمين بيوريك التغييرات فورًا قبل ما تحفظ.</li>
+          <li>لما تدوس <b>Save changes</b>، التغييرات بتتحفظ ويتحدث الموقع لكل الزوار.</li>
+        </ul>
+      </HelpPanel>
+
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+        {/* Editor */}
+        <div className="space-y-5">
+          {/* Logo */}
+          <div className="rounded-2xl bg-white p-5 border border-[color:var(--border)] shadow-sm">
+            <div className="mb-3 flex items-center gap-2">
+              <ImageIcon className="h-4 w-4 text-[color:var(--forest)]" />
+              <h3 className="font-serif text-lg text-[color:var(--forest)]">Logo</h3>
+              <span className="text-xs text-[color:var(--muted-foreground)] mr-auto" dir="rtl">صورة اللوجو</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-full bg-[color:var(--cream)] border border-[color:var(--border)]">
+                {logoUrl ? <img src={logoUrl} alt="logo" className="h-full w-full object-cover" /> : <span className="text-[10px] text-[color:var(--muted-foreground)]">No logo</span>}
+              </div>
+              <Field label="Logo URL" hint="لصق رابط الصورة" className="flex-1">
+                <input value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} className={inputClass} placeholder="https://..." />
+              </Field>
+            </div>
+          </div>
+
+          {/* Theme */}
+          <div className="rounded-2xl bg-white p-5 border border-[color:var(--border)] shadow-sm">
+            <div className="mb-3 flex items-center gap-2">
+              <Palette className="h-4 w-4 text-[color:var(--forest)]" />
+              <h3 className="font-serif text-lg text-[color:var(--forest)]">Colors · الألوان</h3>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { k: "background", label: "Background", ar: "لون الخلفية" },
+                { k: "matcha", label: "Primary (Matcha)", ar: "اللون الأساسي" },
+                { k: "forest", label: "Forest (dark)", ar: "اللون الغامق" },
+                { k: "olive", label: "Olive (accent)", ar: "لون التفاصيل" },
+                { k: "petal", label: "Petal (soft)", ar: "لون الأزرار الناعمة" },
+                { k: "text", label: "Text", ar: "لون النصوص" },
+              ].map((row) => (
+                <Field key={row.k} label={row.label} hint={row.ar}>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      value={(theme as any)[row.k]}
+                      onChange={(e) => setTheme({ ...theme, [row.k]: e.target.value } as ThemeColors)}
+                      className="h-9 w-12 shrink-0 cursor-pointer rounded border border-[color:var(--border)] bg-white"
+                    />
+                    <input
+                      value={(theme as any)[row.k]}
+                      onChange={(e) => setTheme({ ...theme, [row.k]: e.target.value } as ThemeColors)}
+                      className={inputClass}
+                      placeholder="#ECF3E3"
+                    />
+                  </div>
+                </Field>
+              ))}
+            </div>
+          </div>
+
+          {/* Typography */}
+          <div className="rounded-2xl bg-white p-5 border border-[color:var(--border)] shadow-sm">
+            <div className="mb-3 flex items-center gap-2">
+              <TypeIcon className="h-4 w-4 text-[color:var(--forest)]" />
+              <h3 className="font-serif text-lg text-[color:var(--forest)]">Typography · الخطوط</h3>
+            </div>
+            <div className="grid gap-4">
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="Body font" hint="خط النصوص العامة">
+                  <select value={typo.fontFamily} onChange={(e) => setTypo({ ...typo, fontFamily: e.target.value })} className={inputClass}>
+                    {AVAILABLE_FONTS.map((f) => <option key={f} value={f}>{f}</option>)}
+                  </select>
+                </Field>
+                <Field label="Headings font" hint="خط العناوين">
+                  <select value={typo.headingFamily} onChange={(e) => setTypo({ ...typo, headingFamily: e.target.value })} className={inputClass}>
+                    {AVAILABLE_FONTS.map((f) => <option key={f} value={f}>{f}</option>)}
+                  </select>
+                </Field>
+              </div>
+
+              <div>
+                <h4 className="text-xs font-medium uppercase tracking-widest text-[color:var(--muted-foreground)] mb-2">
+                  Hero — Mobile · موبايل
+                </h4>
+                <div className="grid grid-cols-3 gap-3">
+                  <SizeField label="Label" value={typo.heroMobile.labelSize} onChange={(v) => setTypo({ ...typo, heroMobile: { ...typo.heroMobile, labelSize: v } })} />
+                  <SizeField label="Headline" value={typo.heroMobile.headlineSize} onChange={(v) => setTypo({ ...typo, heroMobile: { ...typo.heroMobile, headlineSize: v } })} />
+                  <SizeField label="Tagline" value={typo.heroMobile.taglineSize} onChange={(v) => setTypo({ ...typo, heroMobile: { ...typo.heroMobile, taglineSize: v } })} />
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-xs font-medium uppercase tracking-widest text-[color:var(--muted-foreground)] mb-2">
+                  Hero — Desktop · ديسكتوب
+                </h4>
+                <div className="grid grid-cols-3 gap-3">
+                  <SizeField label="Label" value={typo.hero.labelSize} onChange={(v) => setTypo({ ...typo, hero: { ...typo.hero, labelSize: v } })} />
+                  <SizeField label="Headline" value={typo.hero.headlineSize} onChange={(v) => setTypo({ ...typo, hero: { ...typo.hero, headlineSize: v } })} />
+                  <SizeField label="Tagline" value={typo.hero.taglineSize} onChange={(v) => setTypo({ ...typo, hero: { ...typo.hero, taglineSize: v } })} />
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-xs font-medium uppercase tracking-widest text-[color:var(--muted-foreground)] mb-2">
+                  Product cards · كروت المنتجات
+                </h4>
+                <div className="grid grid-cols-3 gap-3">
+                  <SizeField label="Label" value={typo.product.labelSize} onChange={(v) => setTypo({ ...typo, product: { ...typo.product, labelSize: v } })} />
+                  <SizeField label="Title" value={typo.product.titleSize} onChange={(v) => setTypo({ ...typo, product: { ...typo.product, titleSize: v } })} />
+                  <SizeField label="Price" value={typo.product.priceSize} onChange={(v) => setTypo({ ...typo, product: { ...typo.product, priceSize: v } })} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <SizeField label="Footer size" value={typo.footer.size} onChange={(v) => setTypo({ ...typo, footer: { size: v } })} />
+                <SizeField label="Base body size" value={typo.baseSize} onChange={(v) => setTypo({ ...typo, baseSize: v })} />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <button onClick={save} disabled={saving} className="btn-primary disabled:opacity-60">
+              {saving ? "Saving..." : "Save changes"}
+            </button>
+            <button onClick={reset} className="btn-ghost">Reset design</button>
+          </div>
+        </div>
+
+        {/* Live Preview */}
+        <div className="lg:sticky lg:top-6 self-start">
+          <div className="mb-3 flex items-center justify-between">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[color:var(--muted-foreground)]">
+              Live preview · معاينة مباشرة
+            </p>
+            <div className="flex items-center gap-1 rounded-full bg-white border border-[color:var(--border)] p-0.5 text-xs">
+              <button
+                onClick={() => setDevice("mobile")}
+                className={`px-3 py-1 rounded-full ${device === "mobile" ? "bg-[color:var(--forest)] text-[color:var(--cream)]" : ""}`}
+              >Mobile</button>
+              <button
+                onClick={() => setDevice("desktop")}
+                className={`px-3 py-1 rounded-full ${device === "desktop" ? "bg-[color:var(--forest)] text-[color:var(--cream)]" : ""}`}
+              >Desktop</button>
+            </div>
+          </div>
+          <div
+            className="rounded-3xl bg-[color:var(--forest)]/10 p-3 shadow-inner"
+            style={{ minHeight: 640 }}
+          >
+            <div
+              className="mx-auto overflow-hidden rounded-2xl bg-white shadow-lg transition-all"
+              style={{
+                width: device === "mobile" ? 390 : "100%",
+                maxWidth: "100%",
+                height: 640,
+              }}
+            >
+              <iframe
+                ref={iframeRef}
+                src="/"
+                title="Live preview"
+                className="h-full w-full"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SizeField({ label, value, onChange }: { label: string; value: number; onChange: (n: number) => void }) {
+  return (
+    <label className="block">
+      <span className="text-[10px] uppercase tracking-widest text-[color:var(--muted-foreground)]">{label}</span>
+      <div className="mt-1 flex items-center gap-2">
+        <input
+          type="number"
+          min={8}
+          max={120}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value) || 0)}
+          className={inputClass}
+        />
+        <span className="text-xs text-[color:var(--muted-foreground)]">px</span>
+      </div>
+    </label>
   );
 }

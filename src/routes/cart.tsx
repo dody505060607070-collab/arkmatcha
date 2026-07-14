@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { settingsQuery } from "@/lib/queries";
+import { useContent } from "@/lib/useContent";
 import { TinIllustration } from "@/components/site/TinIllustration";
 
 export const Route = createFileRoute("/cart")({
@@ -23,13 +24,17 @@ function CartPage() {
   const remove = useCart((s) => s.remove);
   const subtotal = useCart((s) => s.subtotal());
   const { data: s } = useQuery(settingsQuery);
+  const c = useContent();
   const shipping = Number(s?.shipping_fee ?? 0);
   const total = subtotal + (items.length > 0 ? shipping : 0);
+  const title = c.cart?.title || "Your Cart";
+  const emptyText = c.cart?.empty || "Your cart is empty";
+  const checkoutText = c.cart?.checkout || "Checkout";
 
   if (items.length === 0) {
     return (
       <main className="container-soft py-24 text-center">
-        <h1 className="font-serif text-4xl mb-4">Your cart is empty</h1>
+        <h1 className="font-serif text-4xl mb-4">{emptyText}</h1>
         <p className="text-[color:var(--muted-foreground)] mb-8">Choose your ritual to get started.</p>
         <Link to="/" className="btn-primary inline-flex">Shop Matcha</Link>
       </main>
@@ -38,7 +43,7 @@ function CartPage() {
 
   return (
     <main className="container-soft py-12">
-      <h1 className="font-serif text-4xl mb-10">Your Cart</h1>
+      <h1 className="font-serif text-4xl mb-10">{title}</h1>
       <div className="grid md:grid-cols-[1fr_360px] gap-10">
         <ul className="space-y-4">
           {items.map((i) => (
@@ -85,7 +90,7 @@ function CartPage() {
               <dt>Total</dt><dd>EGP {total.toFixed(2)}</dd>
             </div>
           </dl>
-          <Link to="/checkout" className="btn-primary w-full mt-6">Checkout</Link>
+          <Link to="/checkout" className="btn-primary w-full mt-6">{checkoutText}</Link>
           <p className="text-xs text-[color:var(--muted-foreground)] text-center mt-3">Cash on Delivery only</p>
         </aside>
       </div>

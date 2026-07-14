@@ -168,6 +168,7 @@ export type Database = {
           brand_story: string
           coming_soon_text: string
           contact_email: string
+          content: Json
           featured_label: string | null
           footer_text: string
           hero_cta_link: string | null
@@ -179,11 +180,14 @@ export type Database = {
           hero_tagline: string | null
           id: number
           instagram_url: string
+          logo_url: string | null
           phone: string
           seo_description: string | null
           seo_title: string | null
           shipping_fee: number
+          theme: Json
           tiktok_url: string
+          typography: Json
           updated_at: string
         }
         Insert: {
@@ -192,6 +196,7 @@ export type Database = {
           brand_story?: string
           coming_soon_text?: string
           contact_email?: string
+          content?: Json
           featured_label?: string | null
           footer_text?: string
           hero_cta_link?: string | null
@@ -203,11 +208,14 @@ export type Database = {
           hero_tagline?: string | null
           id?: number
           instagram_url?: string
+          logo_url?: string | null
           phone?: string
           seo_description?: string | null
           seo_title?: string | null
           shipping_fee?: number
+          theme?: Json
           tiktok_url?: string
+          typography?: Json
           updated_at?: string
         }
         Update: {
@@ -216,6 +224,7 @@ export type Database = {
           brand_story?: string
           coming_soon_text?: string
           contact_email?: string
+          content?: Json
           featured_label?: string | null
           footer_text?: string
           hero_cta_link?: string | null
@@ -227,11 +236,14 @@ export type Database = {
           hero_tagline?: string | null
           id?: number
           instagram_url?: string
+          logo_url?: string | null
           phone?: string
           seo_description?: string | null
           seo_title?: string | null
           shipping_fee?: number
+          theme?: Json
           tiktok_url?: string
+          typography?: Json
           updated_at?: string
         }
         Relationships: []

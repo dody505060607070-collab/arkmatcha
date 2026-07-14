@@ -13,21 +13,23 @@ function TikTokIcon({ className }: { className?: string }) {
 
 export function Footer() {
   const { data: s } = useQuery(settingsQuery);
+  const brandLine = s?.content?.footer?.brandLine || "Ark Matcha";
+  const tagline = s?.content?.footer?.tagline || "Ceremonial grade matcha made in Japan.";
 
   return (
     <footer className="mt-14 px-3 pb-4 pt-2">
       <div className="container-soft">
         <div
-          className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-[999px] border px-4 py-2.5 text-xs text-[color:var(--forest)] shadow-sm backdrop-blur"
+          className="ark-footer-text relative grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-[999px] border px-4 py-2.5 text-[color:var(--forest)] shadow-sm backdrop-blur"
           style={{
             background: "color-mix(in oklab, white 54%, var(--petal) 46%)",
             borderColor: "color-mix(in oklab, white 46%, var(--petal) 54%)",
           }}
         >
           <div className="min-w-0 truncate font-medium">
-            <span className="font-serif text-sm">Ark Matcha</span>
+            <span className="font-serif text-sm">{brandLine}</span>
             <span className="mx-1.5 hidden sm:inline">·</span>
-            <span className="hidden sm:inline">Ceremonial grade matcha made in Japan.</span>
+            <span className="hidden sm:inline">{tagline}</span>
           </div>
 
           <div className="flex items-center justify-center gap-3">

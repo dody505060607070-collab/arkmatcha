@@ -1,8 +1,10 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { BookOpenText, House, Menu, Search, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
 import { brandAssets } from "@/lib/brand-assets";
+import { settingsQuery } from "@/lib/queries";
 
 const links = [
   { to: "/", label: "Home", icon: House },
@@ -13,6 +15,8 @@ const links = [
 export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const count = useCart((s) => s.items.reduce((n, i) => n + i.quantity, 0));
+  const { data: settings } = useQuery(settingsQuery);
+  const logo = settings?.logo_url?.trim() || brandAssets.logo;
   const [open, setOpen] = useState(false);
 
   return (
@@ -35,7 +39,7 @@ export function Header() {
             aria-label="Ark Matcha home"
             className="grid h-12 w-12 place-items-center overflow-hidden rounded-full bg-white"
           >
-            <img src={brandAssets.logo} alt="Ark Matcha" className="h-full w-full object-cover" />
+            <img src={logo} alt="Ark Matcha" className="h-full w-full object-cover" />
           </Link>
 
           <div className="flex items-center justify-end gap-3">
