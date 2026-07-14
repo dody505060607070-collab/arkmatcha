@@ -1388,7 +1388,4 @@ function FontPicker({ value, onChange }: { value: string; onChange: (v: string) 
 
 // Silence unused import warning when FontPicker replaces the old select.
 void AVAILABLE_FONTS;
-      </div>
-    </label>
-  );
-}
+
