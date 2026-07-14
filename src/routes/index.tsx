@@ -66,13 +66,13 @@ function Home() {
             </div>
 
             <div className="flex flex-col items-start justify-center gap-3 p-4 md:gap-5 md:p-10">
-              <span data-reveal data-reveal-style="right" className="text-[9px] uppercase tracking-[0.25em] text-[color:var(--olive)] md:text-[11px] md:tracking-[0.3em]">
+              <span data-reveal data-reveal-style="right" className="ark-hero-label uppercase tracking-[0.25em] text-[color:var(--olive)] md:tracking-[0.3em]">
                 {heroLabel}
               </span>
-              <h1 data-reveal data-reveal-delay="1" className="font-serif text-lg leading-snug text-[color:var(--petal-strong)] md:text-5xl md:leading-tight">
+              <h1 data-reveal data-reveal-delay="1" className="ark-hero-headline font-serif leading-snug text-[color:var(--petal-strong)] md:leading-tight">
                 {heroHeadline}
               </h1>
-              <p data-reveal data-reveal-delay="2" className="max-w-md text-[11px] leading-relaxed text-[color:var(--olive)] md:text-base">
+              <p data-reveal data-reveal-delay="2" className="ark-hero-tagline max-w-md leading-relaxed text-[color:var(--olive)]">
                 {heroTagline}
               </p>
               <Link
