@@ -726,25 +726,115 @@ async function saveSettings(patch: Partial<SiteSettings>, refetch: () => void) {
 
 function ContentAdmin() {
   const { data: s, refetch } = useSettings();
-  const [form, setForm] = useState<Partial<SiteSettings>>({});
-  useEffect(() => { if (s) setForm({
-    brand_story: s.brand_story,
-    footer_text: s.footer_text,
-  }); }, [s]);
+  const [form, setForm] = useState<{
+    brand_story?: string;
+    footer_text?: string;
+    content?: ContentMap;
+  }>({});
+  useEffect(() => {
+    if (s)
+      setForm({
+        brand_story: s.brand_story,
+        footer_text: s.footer_text,
+        content: s.content ?? {},
+      });
+  }, [s]);
+
+  const c: ContentMap = form.content ?? {};
+  function setC(path: string, key: string, value: string) {
+    setForm((prev) => ({
+      ...prev,
+      content: {
+        ...(prev.content ?? {}),
+        [path]: { ...((prev.content ?? {}) as any)[path], [key]: value },
+      } as ContentMap,
+    }));
+  }
+
+  const pages: { key: keyof ContentMap; title: string; titleAr: string; fields: { k: string; label: string; hint: string; multi?: boolean }[] }[] = [
+    { key: "shop", title: "Shop page", titleAr: "صفحة المتجر", fields: [
+      { k: "subtitle", label: "Small label above title", hint: "النص الصغير فوق العنوان" },
+      { k: "title", label: "Page title", hint: "عنوان الصفحة" },
+    ]},
+    { key: "product", title: "Product page", titleAr: "صفحة المنتج", fields: [
+      { k: "addToCart", label: "Add to cart button", hint: "نص زرار الإضافة للسلة" },
+      { k: "soldOut", label: "Sold out label", hint: "نص علامة نفذت الكمية" },
+      { k: "ingredientsTitle", label: "Ingredients section title", hint: "عنوان قسم المكونات" },
+      { k: "storageTitle", label: "Storage section title", hint: "عنوان قسم التخزين" },
+      { k: "shippingTitle", label: "Shipping section title", hint: "عنوان قسم الشحن" },
+      { k: "relatedTitle", label: "Related products title", hint: "عنوان المنتجات المشابهة" },
+    ]},
+    { key: "blog", title: "Blog / About page", titleAr: "صفحة القصة", fields: [
+      { k: "title", label: "Page headline", hint: "العنوان الرئيسي", multi: false },
+      { k: "intro", label: "Intro paragraph", hint: "المقدمة", multi: true },
+    ]},
+    { key: "cart", title: "Cart page", titleAr: "صفحة السلة", fields: [
+      { k: "title", label: "Cart title", hint: "عنوان صفحة السلة" },
+      { k: "empty", label: "Empty state text", hint: "لما السلة فاضية" },
+      { k: "checkout", label: "Checkout button", hint: "نص زرار الدفع" },
+    ]},
+    { key: "checkout", title: "Checkout page", titleAr: "صفحة الدفع", fields: [
+      { k: "title", label: "Checkout title", hint: "عنوان صفحة الدفع" },
+      { k: "submit", label: "Submit button", hint: "زرار تأكيد الطلب" },
+    ]},
+    { key: "footer", title: "Footer", titleAr: "الفوتر", fields: [
+      { k: "brandLine", label: "Brand name", hint: "اسم البراند في الفوتر" },
+      { k: "tagline", label: "Tagline", hint: "الجملة اللي جنب الاسم" },
+    ]},
+  ];
 
   return (
     <div>
-      <PageHeader title="Content" subtitle="النصوص العامة اللي بتظهر في المدونة والفوتر." />
-      <HelpPanel title="محتوى الموقع">
+      <PageHeader title="Content" subtitle="نصوص كل الصفحات في مكان واحد — عدّل واحفظ، والموقع يتحدث فورًا." />
+      <HelpPanel title="نصوص الصفحات">
+        <p>هنا تقدر تتحكم في كل النصوص المكتوبة في الموقع — كل صفحة ليها قسم بحقولها.</p>
         <ul className="list-inside list-disc space-y-1 pr-2">
-          <li><b>Brand story</b>: قصة العلامة اللي بتظهر في صفحة المدونة (Blog).</li>
-          <li><b>Footer text</b>: النص اللي في الفوتر تحت الموقع.</li>
+          <li><b>Brand story</b>: قصة البراند في صفحة About / Blog.</li>
+          <li>باقي الأقسام لكل صفحة نصوصها القابلة للتعديل.</li>
         </ul>
       </HelpPanel>
-      <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm grid gap-4 max-w-2xl">
-        <Field label="Brand story"><textarea rows={6} value={form.brand_story ?? ""} onChange={(e) => setForm({ ...form, brand_story: e.target.value })} className={inputClass} /></Field>
-        <Field label="Footer text"><input value={form.footer_text ?? ""} onChange={(e) => setForm({ ...form, footer_text: e.target.value })} className={inputClass} /></Field>
-        <div><button onClick={() => saveSettings(form, refetch)} className="btn-primary">Save</button></div>
+
+      <div className="grid gap-5 max-w-3xl">
+        <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm grid gap-4">
+          <Field label="Brand story" hint="قصة البراند اللي بتظهر في صفحة القصة">
+            <textarea rows={5} value={form.brand_story ?? ""} onChange={(e) => setForm({ ...form, brand_story: e.target.value })} className={inputClass} />
+          </Field>
+          <Field label="Footer text (legacy)" hint="نص إضافي في الفوتر">
+            <input value={form.footer_text ?? ""} onChange={(e) => setForm({ ...form, footer_text: e.target.value })} className={inputClass} />
+          </Field>
+        </div>
+
+        {pages.map((p) => (
+          <div key={p.key} className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="font-serif text-lg text-[color:var(--forest)]">{p.title}</h3>
+              <span className="text-xs text-[color:var(--muted-foreground)]" dir="rtl">{p.titleAr}</span>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              {p.fields.map((f) => {
+                const val = ((c as any)[p.key] ?? {})[f.k] ?? "";
+                return (
+                  <Field key={f.k} label={f.label} hint={f.hint} className={f.multi ? "md:col-span-2" : ""}>
+                    {f.multi ? (
+                      <textarea rows={4} value={val} onChange={(e) => setC(p.key as string, f.k, e.target.value)} className={inputClass} />
+                    ) : (
+                      <input value={val} onChange={(e) => setC(p.key as string, f.k, e.target.value)} className={inputClass} />
+                    )}
+                  </Field>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+
+        <div>
+          <button
+            onClick={() => saveSettings({ brand_story: form.brand_story, footer_text: form.footer_text, content: form.content } as Partial<SiteSettings>, refetch)}
+            className="btn-primary"
+          >
+            Save all content
+          </button>
+        </div>
       </div>
     </div>
   );
