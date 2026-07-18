@@ -82,55 +82,55 @@ export function Header() {
         </div>
       </header>
 
-      {/* Side drawer */}
+      {/* Full-screen drawer */}
       <div
         className={`fixed inset-0 z-50 transition-opacity duration-300 ${
           open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         }`}
         aria-hidden={!open}
       >
-        <button
-          type="button"
-          aria-label="Close menu"
-          onClick={() => setOpen(false)}
-          className="absolute inset-0 bg-black/30"
-        />
         <aside
-          className={`absolute inset-y-0 left-0 flex w-[86%] max-w-sm flex-col shadow-xl transition-transform duration-300 ${
-            open ? "translate-x-0" : "-translate-x-full"
+          className={`absolute inset-0 flex flex-col transition-transform duration-300 ${
+            open ? "translate-y-0" : "-translate-y-2"
           }`}
           style={{ background: "var(--background)" }}
         >
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center px-4 py-4">
-            <button
-              aria-label="Close menu"
-              type="button"
-              onClick={() => setOpen(false)}
-              className="grid h-10 w-10 place-items-center text-[color:var(--forest)]"
-            >
-              <X className="h-5 w-5" />
-            </button>
-            <div className="grid h-12 w-12 place-items-center overflow-hidden rounded-full">
-              <img src={logo} alt="Ark Matcha" className="h-full w-full object-contain" />
-            </div>
-            <div className="flex justify-end gap-2">
-              <button aria-label="Search" className="grid h-10 w-10 place-items-center text-[color:var(--forest)]">
-                <Search className="h-5 w-5" />
-              </button>
-              <Link to="/cart" aria-label="Cart" className="grid h-10 w-10 place-items-center text-[color:var(--forest)]">
-                <ShoppingBag className="h-5 w-5" />
-              </Link>
+          {/* Top bar — X left, logo center, search+cart right */}
+          <div className="container-soft">
+            <div className="grid grid-cols-[1fr_auto_1fr] items-center py-4">
+              <div className="flex items-center">
+                <button
+                  aria-label="Close menu"
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="grid h-10 w-10 place-items-center text-[color:var(--forest)]"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="grid h-14 w-14 place-items-center overflow-hidden rounded-full">
+                <img src={logo} alt="Ark Matcha" className="h-full w-full object-contain" />
+              </div>
+              <div className="flex items-center justify-end gap-2">
+                <button aria-label="Search" className="grid h-10 w-10 place-items-center text-[color:var(--forest)]">
+                  <Search className="h-5 w-5" />
+                </button>
+                <Link to="/cart" aria-label="Cart" onClick={() => setOpen(false)} className="grid h-10 w-10 place-items-center text-[color:var(--forest)]">
+                  <ShoppingBag className="h-5 w-5" />
+                </Link>
+              </div>
             </div>
           </div>
 
-          <nav className="mt-2 flex flex-col">
-            {drawerLinks.map((link) => {
+          {/* Nav list — full width rows */}
+          <nav className="mt-4 flex flex-col">
+            {drawerLinks.map((link, idx) => {
               const active = pathname === link.to;
               return (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="border-t border-[color:var(--border)] px-6 py-4 text-lg text-[color:var(--forest)]"
+                  className={`px-6 py-4 text-lg text-[color:var(--forest)] ${idx === 0 ? "border-t" : ""} border-b border-[color:var(--border)]`}
                   style={{
                     background: active
                       ? "color-mix(in oklab, var(--forest) 6%, transparent)"
@@ -143,7 +143,8 @@ export function Header() {
             })}
           </nav>
 
-          <div className="mt-auto border-t border-[color:var(--border)] px-6 py-5">
+          {/* Footer — Log in + Instagram bottom-left */}
+          <div className="mt-auto border-t border-[color:var(--border)] px-6 py-6">
             <Link
               to="/auth"
               className="flex items-center gap-3 text-[color:var(--forest)]"
@@ -162,6 +163,7 @@ export function Header() {
           </div>
         </aside>
       </div>
+
     </>
   );
 }
