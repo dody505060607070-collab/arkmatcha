@@ -16,6 +16,7 @@ import {
   Trash2,
   Sparkles,
   Mail,
+  MessageSquare,
   Megaphone,
   Info,
   Globe,
@@ -50,6 +51,7 @@ type Section =
   | "hero"
   | "products"
   | "orders"
+  | "messages"
   | "content"
   | "social"
   | "newsletter"
@@ -64,6 +66,7 @@ const sections: { id: Section; label: string; labelAr: string; icon: typeof Layo
   { id: "content", label: "Content", labelAr: "نصوص الصفحات", icon: FileText },
   { id: "products", label: "Products", labelAr: "المنتجات", icon: Package },
   { id: "orders", label: "Orders", labelAr: "الطلبات", icon: ShoppingBag },
+  { id: "messages", label: "Messages", labelAr: "رسائل التواصل", icon: MessageSquare },
   { id: "social", label: "Social & Contact", labelAr: "السوشيال والتواصل", icon: Share2 },
   { id: "newsletter", label: "Newsletter", labelAr: "قائمة البريد", icon: Mail },
   { id: "seo", label: "SEO", labelAr: "تحسين محركات البحث", icon: Globe },
@@ -125,6 +128,7 @@ function AdminPage() {
         {section === "hero" && <HeroAdmin />}
         {section === "products" && <ProductsAdmin />}
         {section === "orders" && <OrdersAdmin />}
+        {section === "messages" && <MessagesAdmin />}
         {section === "content" && <ContentAdmin />}
         {section === "social" && <SocialAdmin />}
         {section === "newsletter" && <NewsletterAdmin />}
@@ -1499,6 +1503,132 @@ function FontPicker({ value, onChange }: { value: string; onChange: (v: string) 
     </div>
   );
 }
+
+/* ---------------- Contact Messages ---------------- */
+type ContactMessage = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  message: string;
+  is_read: boolean;
+  created_at: string;
+};
+
+function MessagesAdmin() {
+  const [rows, setRows] = useState<ContactMessage[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  async function load() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("contact_messages")
+      .select("*")
+      .order("created_at", { ascending: false });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setRows((data ?? []) as ContactMessage[]);
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function markRead(id: string) {
+    const { error } = await supabase
+      .from("contact_messages")
+      .update({ is_read: true })
+      .eq("id", id);
+    if (error) return toast.error(error.message);
+    setRows((r) => r.map((x) => (x.id === id ? { ...x, is_read: true } : x)));
+  }
+
+  async function remove(id: string) {
+    if (!confirm("Delete this message?")) return;
+    const { error } = await supabase.from("contact_messages").delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    setRows((r) => r.filter((x) => x.id !== id));
+    toast.success("Deleted");
+  }
+
+  return (
+    <div>
+      <PageHeader
+        title="Contact Messages"
+        subtitle="كل الرسائل اللي بتوصل من صفحة Contact. تقدر تعلّم الرسالة كمقروءة أو تمسحها."
+      />
+      <HelpPanel title="إزاي تدير الرسائل؟">
+        <ul className="list-inside list-disc space-y-1 pr-2">
+          <li>الرسائل الجديدة بتظهر أولاً وليها علامة <b>new</b>.</li>
+          <li>دوس <b>Mark read</b> عشان تعلّمها كمقروءة.</li>
+          <li>دوس <b>Delete</b> لو عايز تمسحها نهائيًا.</li>
+        </ul>
+      </HelpPanel>
+
+      {loading ? (
+        <p className="text-sm text-[color:var(--muted-foreground)]">Loading...</p>
+      ) : rows.length === 0 ? (
+        <p className="text-sm text-[color:var(--muted-foreground)]">No messages yet.</p>
+      ) : (
+        <div className="space-y-3">
+          {rows.map((m) => (
+            <div
+              key={m.id}
+              className="rounded-2xl border border-[color:var(--border)] bg-white p-5 shadow-sm"
+            >
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="font-medium text-[color:var(--forest)]">{m.name}</p>
+                    {!m.is_read && (
+                      <span className="rounded-full bg-[color:var(--matcha)] px-2 py-0.5 text-[10px] font-medium uppercase tracking-widest text-white">
+                        new
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-[color:var(--muted-foreground)]">
+                    {m.email}
+                    {m.phone ? ` · ${m.phone}` : ""} ·{" "}
+                    {new Date(m.created_at).toLocaleString()}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  {!m.is_read && (
+                    <button
+                      onClick={() => markRead(m.id)}
+                      className="rounded-lg border border-[color:var(--border)] bg-white px-3 py-1.5 text-xs hover:bg-[color:var(--pale)]"
+                    >
+                      Mark read
+                    </button>
+                  )}
+                  <a
+                    href={`mailto:${m.email}`}
+                    className="rounded-lg border border-[color:var(--border)] bg-white px-3 py-1.5 text-xs hover:bg-[color:var(--pale)]"
+                  >
+                    Reply
+                  </a>
+                  <button
+                    onClick={() => remove(m.id)}
+                    className="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs text-red-700 hover:bg-red-100"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" /> Delete
+                  </button>
+                </div>
+              </div>
+              <p className="mt-3 whitespace-pre-wrap text-sm text-[color:var(--forest)]">
+                {m.message}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 // Silence unused import warning when FontPicker replaces the old select.
 void AVAILABLE_FONTS;

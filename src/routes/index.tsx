@@ -1,26 +1,29 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { productsQuery, settingsQuery } from "@/lib/queries";
+import { useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { productsQuery, settingsQuery, type Product } from "@/lib/queries";
 import { getProductImage } from "@/lib/brand-assets";
+import { AnnouncementBar } from "@/components/site/AnnouncementBar";
+import { Newsletter } from "@/components/site/Newsletter";
 import heroWhisk from "@/assets/ark-hero-whisk.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Ark Matcha | Ceremonial Grade Matcha Made in Japan" },
-      { property: "og:title", content: "Ark Matcha | Ceremonial Grade Matcha Made in Japan" },
+      { property: "og:title", content: "Ark Matcha | Ceremonial Grade Matcha" },
       {
         property: "og:description",
-        content: "Shop Ark Matcha ceremonial grade matcha made in Japan, available in 30g and 50g premium tins. A calm, elegant matcha ritual made for smooth daily energy.",
+        content:
+          "Shop Ark Matcha ceremonial grade matcha, available in 30g and 50g premium tins.",
       },
-      { property: "og:url", content: "/" },
     ],
     links: [
       { rel: "canonical", href: "/" },
       { rel: "preload", as: "image", href: heroWhisk.url, fetchpriority: "high" },
     ],
   }),
-
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData(productsQuery),
@@ -35,147 +38,209 @@ function Home() {
   const { data: settings } = useSuspenseQuery(settingsQuery);
 
   const heroImage = settings?.hero_image?.trim() ? settings.hero_image : heroWhisk.url;
-  const heroLabel = settings?.hero_label?.trim() || "Ceremonial · Japan";
-  const heroHeadline = settings?.hero_headline?.trim() || "The ritual starts here.";
-  const heroTagline = settings?.hero_tagline?.trim() || "Vivid. Smooth. Born in Japan. One tin, endless calm.";
+  const heroBadge =
+    settings?.content?.home?.heroBadge?.trim() || "MATCHA LOVER";
+  const heroHeadline =
+    settings?.hero_headline?.trim() || "Explore Your Preferred Size";
   const heroCtaText = settings?.hero_cta_text?.trim() || "Shop now";
   const heroCtaLink = settings?.hero_cta_link?.trim() || "/shop";
-  const featuredLabel = settings?.featured_label?.trim() || "Featured Product";
+  const featuredLabel = settings?.featured_label?.trim() || "Featured products";
 
   return (
     <main>
-      {settings?.announcement_visible && settings.announcement_text ? (
-        <div
-          className="px-4 py-2 text-center text-[11px] font-medium uppercase tracking-[0.2em]"
-          style={{ background: "var(--announcement-bg)", color: "var(--announcement-text)" }}
-        >
-          {settings.announcement_text}
-        </div>
-      ) : null}
-      <section className="container-soft pb-10 pt-4 md:pt-6">
+      <AnnouncementBar />
+
+      {/* Hero */}
+      <section className="container-soft pt-6 md:pt-8">
         <div
           className="relative overflow-hidden rounded-3xl"
-          style={{ background: "var(--hero-bg)" }}
-          data-reveal
-          data-reveal-style="fade"
+          style={{ background: "var(--matcha)" }}
         >
-          <div className="grid grid-cols-2">
-            <div className="relative" style={{ background: "var(--hero-bg)" }} data-reveal data-reveal-style="left">
-              <img
-                src={heroImage}
-                alt="Ark Matcha ceremonial grade"
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-                width={800}
-                height={800}
-                className="block h-full w-full object-contain"
-              />
-            </div>
-
-            <div className="flex flex-col items-start justify-center gap-3 p-4 md:gap-5 md:p-10">
-              <span data-reveal data-reveal-style="right" className="ark-hero-label uppercase tracking-[0.25em] md:tracking-[0.3em]">
-                {heroLabel}
-              </span>
-              <h1 data-reveal data-reveal-delay="1" className="ark-hero-headline font-serif leading-snug md:leading-tight">
-                {heroHeadline}
-              </h1>
-              <p data-reveal data-reveal-delay="2" className="ark-hero-tagline max-w-md leading-relaxed">
-                {heroTagline}
+          {/* Sticker-style badge */}
+          <div className="absolute left-4 top-6 md:left-8 md:top-10 z-10 -rotate-6">
+            <div className="rounded-2xl bg-[color:var(--background)] px-4 py-2.5 shadow-md md:px-6 md:py-3">
+              <p className="font-serif text-xl leading-none text-[color:var(--matcha)] md:text-3xl">
+                {heroBadge.split(" ")[0]}
               </p>
-              <Link
-                to={heroCtaLink as "/shop"}
-                data-reveal
-                data-reveal-delay="3"
-                style={{ background: "var(--cta-bg)", color: "var(--cta-text)" }}
-                className="group mt-1 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11px] font-medium shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md md:px-6 md:py-3 md:text-sm"
-              >
-                {heroCtaText}
-                <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
-              </Link>
+              <p className="font-serif text-xl leading-none text-[color:var(--matcha)] md:text-3xl">
+                {heroBadge.split(" ").slice(1).join(" ")}
+              </p>
             </div>
           </div>
+
+          <img
+            src={heroImage}
+            alt="Ark Matcha ceremonial grade"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            width={900}
+            height={700}
+            className="mx-auto block aspect-square w-full max-w-2xl object-contain p-8 pt-24 md:aspect-[4/3] md:p-14 md:pt-20"
+          />
         </div>
 
-        <p
-          data-reveal
-          data-reveal-style="fade"
-          className="mt-12 text-center text-[11px] uppercase tracking-[0.35em] md:mt-16"
-          style={{ color: "var(--featured-label)" }}
+        {/* Explore card */}
+        <div
+          className="relative -mt-6 overflow-hidden rounded-3xl px-6 py-8 md:-mt-10 md:px-10 md:py-10"
+          style={{
+            background:
+              "linear-gradient(135deg, color-mix(in oklab, var(--matcha) 12%, var(--background)) 0%, color-mix(in oklab, var(--matcha) 22%, var(--background)) 100%)",
+          }}
         >
-          {featuredLabel}
+          <h1 className="font-serif text-3xl leading-tight text-[color:var(--forest)] md:text-5xl">
+            {heroHeadline}
+          </h1>
+          <Link
+            to={heroCtaLink as "/shop"}
+            className="mt-6 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium shadow-sm transition-transform hover:-translate-y-0.5"
+            style={{ background: "var(--matcha)", color: "#fff" }}
+          >
+            {heroCtaText}
+          </Link>
+        </div>
+      </section>
+
+      {/* Featured Products carousel */}
+      <FeaturedCarousel products={products} label={featuredLabel} />
+
+      {/* Newsletter */}
+      <section className="container-soft py-16 text-center">
+        <h2 className="font-serif text-3xl text-[color:var(--forest)] md:text-4xl">
+          Subscribe to our emails
+        </h2>
+        <p className="mx-auto mt-3 max-w-md text-sm text-[color:var(--muted-foreground)]">
+          Join our email list for exclusive offers and the latest news.
         </p>
-
-
-
-        <div className="mt-4 grid grid-cols-2 gap-4 md:mt-6 md:gap-8">
-          {products.map((product, i) => {
-            const label = product.name;
-            return (
-              <Link
-                key={product.id}
-                to="/product/$slug"
-                params={{ slug: product.slug }}
-                data-reveal
-                data-reveal-delay={String(Math.min(i + 1, 5))}
-                className="group block reveal"
-              >
-                {product.image_visible !== false ? (
-                  <div className="relative overflow-hidden rounded-2xl bg-white">
-                    <img
-                      src={getProductImage(product.slug, product.image_url)}
-                      alt={label}
-                      loading="lazy"
-                      decoding="async"
-                      width={600}
-                      height={600}
-                      className="aspect-square w-full object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-[1.04]"
-                    />
-                    {product.in_stock === false && (
-                      <span className="absolute left-2 top-2 rounded-full bg-[color:var(--matcha)] px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
-                        Sold out
-                      </span>
-                    )}
-                    {product.in_stock !== false && (product.discount_percentage ?? 0) > 0 && (
-                      <span className="absolute left-2 top-2 rounded-full bg-[color:var(--matcha)] px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
-                        -{product.discount_percentage}%
-                      </span>
-                    )}
-                  </div>
-                ) : null}
-
-                <span className="mt-2 block text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
-                  Ark Matcha
-                </span>
-                <h3 className="mt-0.5 text-sm font-medium text-[color:var(--petal-strong)] md:text-base">
-                  {label}
-                </h3>
-                {product.price_visible !== false && product.price ? (
-                  (product.discount_percentage ?? 0) > 0 ? (
-                    <p className="mt-1 text-sm md:text-base">
-                      <span className="text-[color:var(--petal-strong)]">
-                        LE {(Number(product.price) * (1 - product.discount_percentage / 100)).toFixed(2)} EGP
-                      </span>
-                      <span className="ml-2 text-xs text-[color:var(--muted-foreground)] line-through">
-                        {Number(product.price).toFixed(2)}
-                      </span>
-                    </p>
-                  ) : (
-                    <p className="mt-1 text-sm text-[color:var(--petal-strong)] md:text-base">
-                      LE {Number(product.price).toFixed(2)} EGP
-                    </p>
-                  )
-                ) : (
-                  <p className="mt-1 text-xs text-[color:var(--petal-strong)] opacity-70">
-                    Price coming soon
-                  </p>
-                )}
-              </Link>
-            );
-          })}
+        <div className="mx-auto mt-6 max-w-md">
+          <Newsletter compact />
         </div>
       </section>
     </main>
   );
 }
 
+function FeaturedCarousel({ products, label }: { products: Product[]; label: string }) {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [page, setPage] = useState(1);
+  const perView = 2;
+  const totalPages = Math.max(1, Math.ceil(products.length / perView));
+
+  const scrollBy = (dir: 1 | -1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-card]");
+    const step = card ? card.offsetWidth + 16 : el.clientWidth * 0.9;
+    el.scrollBy({ left: step * dir, behavior: "smooth" });
+  };
+
+  const onScroll = () => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-card]");
+    const step = card ? card.offsetWidth + 16 : el.clientWidth * 0.9;
+    const idx = Math.round(el.scrollLeft / step);
+    setPage(Math.min(totalPages, Math.floor(idx / perView) + 1));
+  };
+
+  return (
+    <section className="container-soft pt-16">
+      <h2 className="font-serif text-2xl text-[color:var(--forest)] md:text-3xl">
+        {label}
+      </h2>
+
+      <div
+        ref={scrollerRef}
+        onScroll={onScroll}
+        className="mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {products.map((product) => {
+          const label = product.name;
+          return (
+            <Link
+              key={product.id}
+              data-card
+              to="/product/$slug"
+              params={{ slug: product.slug }}
+              className="group block w-[46%] shrink-0 snap-start md:w-[30%]"
+            >
+              {product.image_visible !== false ? (
+                <div
+                  className="relative overflow-hidden rounded-2xl"
+                  style={{ background: "var(--card-bg, #fff)" }}
+                >
+                  <img
+                    src={getProductImage(product.slug, product.image_url)}
+                    alt={label}
+                    loading="lazy"
+                    decoding="async"
+                    width={600}
+                    height={600}
+                    className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  />
+                  {product.in_stock === false && (
+                    <span className="absolute left-2 top-2 rounded-full bg-[color:var(--matcha)] px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
+                      Sold out
+                    </span>
+                  )}
+                  {product.in_stock !== false && (product.discount_percentage ?? 0) > 0 && (
+                    <span className="absolute left-2 top-2 rounded-full bg-[color:var(--matcha)] px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
+                      -{product.discount_percentage}%
+                    </span>
+                  )}
+                </div>
+              ) : null}
+
+              <h3 className="mt-3 text-center text-sm font-medium text-[color:var(--forest)] md:text-base">
+                {label}
+              </h3>
+              {product.price_visible !== false && product.price ? (
+                (product.discount_percentage ?? 0) > 0 ? (
+                  <p className="mt-1 text-center text-sm">
+                    <span className="text-[color:var(--forest)]">
+                      LE{" "}
+                      {(
+                        Number(product.price) *
+                        (1 - product.discount_percentage / 100)
+                      ).toFixed(2)}{" "}
+                      EGP
+                    </span>
+                    <span className="ml-2 text-xs text-[color:var(--muted-foreground)] line-through">
+                      {Number(product.price).toFixed(2)}
+                    </span>
+                  </p>
+                ) : (
+                  <p className="mt-1 text-center text-sm text-[color:var(--forest)]">
+                    LE {Number(product.price).toFixed(2)} EGP
+                  </p>
+                )
+              ) : null}
+            </Link>
+          );
+        })}
+      </div>
+
+      {products.length > perView && (
+        <div className="mt-4 flex items-center justify-center gap-6 text-sm text-[color:var(--forest)]">
+          <button
+            aria-label="Previous"
+            onClick={() => scrollBy(-1)}
+            className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:bg-[color:var(--border)]"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <span className="tabular-nums">
+            {page}/{totalPages}
+          </span>
+          <button
+            aria-label="Next"
+            onClick={() => scrollBy(1)}
+            className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:bg-[color:var(--border)]"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+    </section>
+  );
+}

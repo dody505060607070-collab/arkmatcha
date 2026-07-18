@@ -1,15 +1,15 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { BookOpenText, House, Menu, Search, ShoppingBag, X } from "lucide-react";
-import { useState } from "react";
+import { Instagram, LogIn, Menu, Search, ShoppingBag, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/lib/cart";
 import { brandAssets } from "@/lib/brand-assets";
 import { settingsQuery } from "@/lib/queries";
 
-const links = [
-  { to: "/", label: "Home", icon: House },
-  { to: "/blog", label: "Blog", icon: BookOpenText },
-  { to: "/cart", label: "Cart", icon: ShoppingBag },
+const drawerLinks = [
+  { to: "/", label: "Home" },
+  { to: "/shop", label: "Catalog" },
+  { to: "/contact", label: "Contact" },
 ] as const;
 
 export function Header() {
@@ -19,75 +19,149 @@ export function Header() {
   const logo = settings?.logo_url?.trim() || brandAssets.logo;
   const [open, setOpen] = useState(false);
 
+  // Close drawer on route change
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll while drawer open
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
-    <header className="sticky top-0 z-40 bg-white">
-      <div className="container-soft">
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center py-4">
-          <div className="flex items-center">
-            <button
-              aria-label="Menu"
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              className="grid h-9 w-9 place-items-center text-[color:var(--petal-strong)]"
-            >
-              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
-          </div>
+    <>
+      <header className="sticky top-0 z-40" style={{ background: "var(--background)" }}>
+        <div className="container-soft">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center py-4">
+            <div className="flex items-center">
+              <button
+                aria-label="Menu"
+                type="button"
+                onClick={() => setOpen(true)}
+                className="grid h-10 w-10 place-items-center text-[color:var(--forest)]"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            </div>
 
-          <Link
-            to="/"
-            aria-label="Ark Matcha home"
-            className="grid h-12 w-12 place-items-center overflow-hidden rounded-full bg-white"
-          >
-            <img src={logo} alt="Ark Matcha" className="h-full w-full object-cover" />
-          </Link>
-
-          <div className="flex items-center justify-end gap-3">
-            <button
-              aria-label="Search"
-              type="button"
-              className="grid h-9 w-9 place-items-center text-[color:var(--petal-strong)]"
-            >
-              <Search className="h-5 w-5" />
-            </button>
             <Link
-              to="/cart"
-              aria-label="Cart"
-              className="relative grid h-9 w-9 place-items-center text-[color:var(--petal-strong)]"
+              to="/"
+              aria-label="Ark Matcha home"
+              className="grid h-14 w-14 place-items-center overflow-hidden rounded-full"
             >
-              <ShoppingBag className="h-5 w-5" />
-              {count > 0 ? (
-                <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-[color:var(--petal-strong)] px-1 text-[10px] text-white">
-                  {count}
-                </span>
-              ) : null}
+              <img src={logo} alt="Ark Matcha" className="h-full w-full object-contain" />
             </Link>
+
+            <div className="flex items-center justify-end gap-2">
+              <button
+                aria-label="Search"
+                type="button"
+                className="grid h-10 w-10 place-items-center text-[color:var(--forest)]"
+              >
+                <Search className="h-5 w-5" />
+              </button>
+              <Link
+                to="/cart"
+                aria-label="Cart"
+                className="relative grid h-10 w-10 place-items-center text-[color:var(--forest)]"
+              >
+                <ShoppingBag className="h-5 w-5" />
+                {count > 0 ? (
+                  <span className="absolute right-0 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-[color:var(--matcha)] px-1 text-[10px] text-white">
+                    {count}
+                  </span>
+                ) : null}
+              </Link>
+            </div>
           </div>
         </div>
+      </header>
 
-        {open ? (
-          <nav className="grid grid-cols-2 gap-2 pb-3">
-            {links.map((link) => {
-              const Icon = link.icon;
+      {/* Side drawer */}
+      <div
+        className={`fixed inset-0 z-50 transition-opacity duration-300 ${
+          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        aria-hidden={!open}
+      >
+        <button
+          type="button"
+          aria-label="Close menu"
+          onClick={() => setOpen(false)}
+          className="absolute inset-0 bg-black/30"
+        />
+        <aside
+          className={`absolute inset-y-0 left-0 flex w-[86%] max-w-sm flex-col shadow-xl transition-transform duration-300 ${
+            open ? "translate-x-0" : "-translate-x-full"
+          }`}
+          style={{ background: "var(--background)" }}
+        >
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center px-4 py-4">
+            <button
+              aria-label="Close menu"
+              type="button"
+              onClick={() => setOpen(false)}
+              className="grid h-10 w-10 place-items-center text-[color:var(--forest)]"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <div className="grid h-12 w-12 place-items-center overflow-hidden rounded-full">
+              <img src={logo} alt="Ark Matcha" className="h-full w-full object-contain" />
+            </div>
+            <div className="flex justify-end gap-2">
+              <button aria-label="Search" className="grid h-10 w-10 place-items-center text-[color:var(--forest)]">
+                <Search className="h-5 w-5" />
+              </button>
+              <Link to="/cart" aria-label="Cart" className="grid h-10 w-10 place-items-center text-[color:var(--forest)]">
+                <ShoppingBag className="h-5 w-5" />
+              </Link>
+            </div>
+          </div>
+
+          <nav className="mt-2 flex flex-col">
+            {drawerLinks.map((link) => {
               const active = pathname === link.to;
               return (
                 <Link
                   key={link.to}
                   to={link.to}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 rounded-full px-4 py-2 text-sm text-[color:var(--petal-strong)]"
+                  className="border-t border-[color:var(--border)] px-6 py-4 text-lg text-[color:var(--forest)]"
                   style={{
-                    background: active ? "color-mix(in oklab, white 70%, var(--petal) 30%)" : "transparent",
+                    background: active
+                      ? "color-mix(in oklab, var(--forest) 6%, transparent)"
+                      : "transparent",
                   }}
                 >
-                  <Icon className="h-4 w-4" />
-                  <span>{link.label}</span>
+                  {link.label}
                 </Link>
               );
             })}
           </nav>
-        ) : null}
+
+          <div className="mt-auto border-t border-[color:var(--border)] px-6 py-5">
+            <Link
+              to="/auth"
+              className="flex items-center gap-3 text-[color:var(--forest)]"
+            >
+              <LogIn className="h-4 w-4" /> Log in
+            </Link>
+            <a
+              href={settings?.instagram_url ?? "https://www.instagram.com/arkmatcha"}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              className="mt-4 inline-flex items-center gap-2 text-[color:var(--forest)]"
+            >
+              <Instagram className="h-5 w-5" />
+            </a>
+          </div>
+        </aside>
       </div>
-    </header>
+    </>
   );
 }
