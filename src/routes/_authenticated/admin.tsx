@@ -16,6 +16,7 @@ import {
   Trash2,
   Sparkles,
   Mail,
+  MessageSquare,
   Megaphone,
   Info,
   Globe,
@@ -50,6 +51,7 @@ type Section =
   | "hero"
   | "products"
   | "orders"
+  | "messages"
   | "content"
   | "social"
   | "newsletter"
@@ -64,6 +66,7 @@ const sections: { id: Section; label: string; labelAr: string; icon: typeof Layo
   { id: "content", label: "Content", labelAr: "نصوص الصفحات", icon: FileText },
   { id: "products", label: "Products", labelAr: "المنتجات", icon: Package },
   { id: "orders", label: "Orders", labelAr: "الطلبات", icon: ShoppingBag },
+  { id: "messages", label: "Messages", labelAr: "رسائل التواصل", icon: MessageSquare },
   { id: "social", label: "Social & Contact", labelAr: "السوشيال والتواصل", icon: Share2 },
   { id: "newsletter", label: "Newsletter", labelAr: "قائمة البريد", icon: Mail },
   { id: "seo", label: "SEO", labelAr: "تحسين محركات البحث", icon: Globe },
@@ -125,6 +128,7 @@ function AdminPage() {
         {section === "hero" && <HeroAdmin />}
         {section === "products" && <ProductsAdmin />}
         {section === "orders" && <OrdersAdmin />}
+        {section === "messages" && <MessagesAdmin />}
         {section === "content" && <ContentAdmin />}
         {section === "social" && <SocialAdmin />}
         {section === "newsletter" && <NewsletterAdmin />}
