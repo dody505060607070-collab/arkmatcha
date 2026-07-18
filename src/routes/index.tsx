@@ -48,9 +48,12 @@ function Home() {
     <main>
       <AnnouncementBar />
 
-      {/* HERO — full-width lifestyle image with a single centered pill CTA */}
+      {/* HERO — full-viewport lifestyle image with a single centered white pill CTA */}
       <section className="relative w-full overflow-hidden">
-        <div className="relative aspect-[4/5] w-full md:aspect-[16/8]">
+        <div
+          className="relative w-full"
+          style={{ height: "calc(100svh - 96px)", minHeight: "520px" }}
+        >
           <img
             src={heroImage}
             alt="Ark Matcha ceremonial grade tins"
@@ -59,49 +62,41 @@ function Home() {
             fetchPriority="high"
             className="absolute inset-0 h-full w-full object-cover"
           />
-          {/* Subtle top-to-bottom lift for legibility */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, transparent 55%, color-mix(in oklab, black 18%, transparent) 100%)",
-            }}
-          />
           <Link
             to={heroCtaLink as "/shop"}
-            className="absolute left-1/2 top-[38%] -translate-x-1/2 rounded-full bg-white px-8 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--forest)] shadow-lg transition-transform hover:-translate-y-0.5 md:top-1/2 md:-translate-y-1/2 md:px-10 md:py-4 md:text-sm"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white px-10 py-3.5 text-[11px] font-medium uppercase tracking-[0.28em] text-[color:var(--forest)] shadow-[0_10px_30px_-10px_rgba(0,0,0,0.35)] transition-transform md:px-12 md:py-4 md:text-xs"
           >
             {heroCtaText}
           </Link>
         </div>
       </section>
 
-      {/* CATEGORY TILES — two image tiles, "SHOP ALL" below */}
-      <section className="mt-6 md:mt-10" aria-label="Shop by category">
-        <div className="grid grid-cols-1 gap-4 px-4 md:grid-cols-2 md:gap-6 md:px-6">
+      {/* CATEGORY TILES — horizontal peek-scroll carousel, Rocky's Matcha style */}
+      <section className="mt-10 md:mt-16" aria-label="Shop by category">
+        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 pb-2 md:gap-6 md:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <CategoryTile
             data-reveal
-            data-reveal-style="left"
+            data-reveal-style="up"
             to="/shop"
             image={tileMatcha.url}
             label="MATCHA"
           />
           <CategoryTile
             data-reveal
-            data-reveal-style="right"
+            data-reveal-style="up"
             data-reveal-delay="1"
             to="/shop"
             image={tileWhisk.url}
-            label="ACCESSORIES"
+            label="MATCHA TOOLS"
           />
         </div>
 
-        <div className="mt-8 flex justify-center px-4 md:mt-12">
+        <div className="mt-10 flex justify-center px-4 md:mt-14">
           <Link
             to="/shop"
             data-reveal
             data-reveal-style="fade"
-            className="inline-flex items-center gap-2 rounded-full border border-[color:var(--forest)] px-8 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--forest)] transition-colors hover:bg-[color:var(--forest)] hover:text-white md:px-10 md:py-4 md:text-sm"
+            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--forest)] px-12 py-3.5 text-[11px] font-medium uppercase tracking-[0.28em] text-white shadow-[0_10px_30px_-12px_rgba(0,0,0,0.4)] transition-transform hover:-translate-y-0.5 md:px-14 md:py-4 md:text-xs"
           >
             Shop all
           </Link>
@@ -115,15 +110,15 @@ function Home() {
 
       {/* NEWSLETTER */}
       <section
-        className="container-soft py-20 text-center"
+        className="container-soft py-24 text-center"
         data-reveal
         data-reveal-style="fade"
       >
-        <h2 className="text-4xl font-semibold tracking-tight text-[color:var(--forest)] md:text-5xl">
-          Subscribe to our emails
+        <h2 className="text-3xl font-semibold tracking-tight text-[color:var(--forest)] md:text-5xl">
+          Join Our Newsletter
         </h2>
         <p className="mx-auto mt-4 max-w-md text-[color:var(--muted-foreground)]">
-          Join our email list for exclusive offers and the latest news.
+          Be the first to hear about new drops, rituals, and exclusive offers.
         </p>
         <div className="mx-auto mt-8 max-w-md">
           <Newsletter compact />
@@ -156,25 +151,25 @@ function CategoryTile({
     <Link
       to={to as "/shop"}
       {...rest}
-      className="group relative block overflow-hidden rounded-2xl"
+      className="group relative block w-[85%] shrink-0 snap-start overflow-hidden rounded-[20px] md:w-[48%]"
     >
-      <div className="aspect-[4/5] w-full md:aspect-[4/5]">
+      <div className="aspect-[3/4] w-full">
         <img
           src={image}
           alt={label}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
         />
       </div>
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, transparent 55%, color-mix(in oklab, black 45%, transparent) 100%)",
+            "linear-gradient(180deg, color-mix(in oklab, black 10%, transparent) 0%, transparent 35%, transparent 65%, color-mix(in oklab, black 30%, transparent) 100%)",
         }}
       />
-      <span className="absolute bottom-5 left-5 text-lg font-semibold uppercase tracking-[0.2em] text-white drop-shadow md:bottom-6 md:left-6 md:text-2xl">
+      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-xl font-medium uppercase tracking-[0.32em] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] md:text-2xl">
         {label}
       </span>
     </Link>
