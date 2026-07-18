@@ -1511,7 +1511,7 @@ type ContactMessage = {
   email: string;
   phone: string | null;
   message: string;
-  status: string;
+  is_read: boolean;
   created_at: string;
 };
 
@@ -1540,10 +1540,10 @@ function MessagesAdmin() {
   async function markRead(id: string) {
     const { error } = await supabase
       .from("contact_messages")
-      .update({ status: "read" })
+      .update({ is_read: true })
       .eq("id", id);
     if (error) return toast.error(error.message);
-    setRows((r) => r.map((x) => (x.id === id ? { ...x, status: "read" } : x)));
+    setRows((r) => r.map((x) => (x.id === id ? { ...x, is_read: true } : x)));
   }
 
   async function remove(id: string) {
@@ -1583,7 +1583,7 @@ function MessagesAdmin() {
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="font-medium text-[color:var(--forest)]">{m.name}</p>
-                    {m.status === "new" && (
+                    {!m.is_read && (
                       <span className="rounded-full bg-[color:var(--matcha)] px-2 py-0.5 text-[10px] font-medium uppercase tracking-widest text-white">
                         new
                       </span>
@@ -1596,7 +1596,7 @@ function MessagesAdmin() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  {m.status === "new" && (
+                  {!m.is_read && (
                     <button
                       onClick={() => markRead(m.id)}
                       className="rounded-lg border border-[color:var(--border)] bg-white px-3 py-1.5 text-xs hover:bg-[color:var(--pale)]"
