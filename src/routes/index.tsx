@@ -120,13 +120,9 @@ function Home() {
   );
 }
 
-function FeaturedCarousel({
-  products,
-  label,
-}: {
-  products: ReturnType<typeof useSuspenseQuery<typeof productsQuery>>["data"];
-  label: string;
-}) {
+import type { Product } from "@/lib/queries";
+
+function FeaturedCarousel({ products, label }: { products: Product[]; label: string }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(1);
   const perView = 2;
