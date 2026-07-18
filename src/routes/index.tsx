@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { productsQuery, settingsQuery } from "@/lib/queries";
+import { productsQuery, settingsQuery, type Product } from "@/lib/queries";
 import { getProductImage } from "@/lib/brand-assets";
 import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 import { Newsletter } from "@/components/site/Newsletter";
@@ -119,8 +119,6 @@ function Home() {
     </main>
   );
 }
-
-import type { Product } from "@/lib/queries";
 
 function FeaturedCarousel({ products, label }: { products: Product[]; label: string }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
