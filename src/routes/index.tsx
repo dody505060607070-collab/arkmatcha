@@ -105,17 +105,27 @@ function Home() {
       <FeaturedCarousel products={products} label={featuredLabel} />
 
       {/* Newsletter */}
-      <section className="container-soft py-16 text-center">
-        <h2 className="font-serif text-3xl text-[color:var(--forest)] md:text-4xl">
+      <section className="container-soft py-20 text-center">
+        <h2 className="text-4xl font-semibold tracking-tight text-[color:var(--forest)] md:text-5xl">
           Subscribe to our emails
         </h2>
-        <p className="mx-auto mt-3 max-w-md text-sm text-[color:var(--muted-foreground)]">
+        <p className="mx-auto mt-4 max-w-md text-[color:var(--muted-foreground)]">
           Join our email list for exclusive offers and the latest news.
         </p>
-        <div className="mx-auto mt-6 max-w-md">
+        <div className="mx-auto mt-8 max-w-md">
           <Newsletter compact />
         </div>
+        <a
+          href="https://www.instagram.com/arkmatcha"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Instagram"
+          className="mx-auto mt-10 inline-flex text-[color:var(--forest)]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        </a>
       </section>
+
     </main>
   );
 }
