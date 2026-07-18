@@ -50,56 +50,56 @@ function Home() {
     <main>
       <AnnouncementBar />
 
-      {/* Hero */}
-      <section className="container-soft pt-6 md:pt-8">
+      {/* Full-screen hero — landscape image fills the first viewport */}
+      <section
+        className="relative flex w-full items-center justify-center overflow-hidden"
+        style={{
+          background: "var(--matcha)",
+          minHeight: "calc(100svh - 120px)",
+        }}
+      >
+        <img
+          src={heroImage}
+          alt="Ark Matcha ceremonial grade"
+          loading="eager"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* Soft overlay for legibility */}
         <div
-          className="relative overflow-hidden rounded-3xl"
-          style={{ background: "var(--matcha)" }}
-        >
-          {/* Sticker-style badge */}
-          <div className="absolute left-4 top-6 md:left-8 md:top-10 z-10 -rotate-6">
-            <div className="rounded-2xl bg-[color:var(--background)] px-4 py-2.5 shadow-md md:px-6 md:py-3">
-              <p className="font-serif text-xl leading-none text-[color:var(--matcha)] md:text-3xl">
-                {heroBadge.split(" ")[0]}
-              </p>
-              <p className="font-serif text-xl leading-none text-[color:var(--matcha)] md:text-3xl">
-                {heroBadge.split(" ").slice(1).join(" ")}
-              </p>
-            </div>
-          </div>
-
-          <img
-            src={heroImage}
-            alt="Ark Matcha ceremonial grade"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-            width={900}
-            height={700}
-            className="mx-auto block aspect-square w-full max-w-2xl object-contain p-8 pt-24 md:aspect-[4/3] md:p-14 md:pt-20"
-          />
-        </div>
-
-        {/* Explore card */}
-        <div
-          className="relative -mt-6 overflow-hidden rounded-3xl px-6 py-8 md:-mt-10 md:px-10 md:py-10"
+          className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(135deg, color-mix(in oklab, var(--matcha) 12%, var(--background)) 0%, color-mix(in oklab, var(--matcha) 22%, var(--background)) 100%)",
+              "linear-gradient(180deg, color-mix(in oklab, var(--matcha) 25%, transparent) 0%, color-mix(in oklab, var(--matcha) 55%, transparent) 100%)",
           }}
-        >
-          <h1 className="font-serif text-3xl leading-tight text-[color:var(--forest)] md:text-5xl">
+        />
+
+        {/* Sticker-style badge */}
+        <div className="absolute left-4 top-6 z-10 -rotate-6 md:left-10 md:top-10">
+          <div className="rounded-2xl bg-[color:var(--background)] px-4 py-2.5 shadow-lg md:px-6 md:py-3">
+            <p className="font-serif text-xl leading-tight text-[color:var(--matcha)] md:text-3xl">
+              {heroBadge.split(" ")[0]}
+            </p>
+            <p className="font-serif text-xl leading-tight text-[color:var(--matcha)] md:text-3xl">
+              {heroBadge.split(" ").slice(1).join(" ")}
+            </p>
+          </div>
+        </div>
+
+        {/* Overlay content */}
+        <div className="relative z-10 flex w-full max-w-2xl flex-col items-center px-6 pb-10 text-center text-white">
+          <h1 className="font-serif text-4xl leading-tight drop-shadow-md md:text-6xl">
             {heroHeadline}
           </h1>
           <Link
             to={heroCtaLink as "/shop"}
-            className="mt-6 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium shadow-sm transition-transform hover:-translate-y-0.5"
-            style={{ background: "var(--matcha)", color: "#fff" }}
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-medium text-[color:var(--matcha)] shadow-md transition-transform hover:-translate-y-0.5"
           >
             {heroCtaText}
           </Link>
         </div>
       </section>
+
 
       {/* Featured Products carousel */}
       <FeaturedCarousel products={products} label={featuredLabel} />
