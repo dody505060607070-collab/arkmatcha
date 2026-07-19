@@ -57,17 +57,34 @@ type Section =
   | "overview"
   | "design"
   | "hero"
+  | "home-sections"
   | "products"
   | "orders"
+  | "reviews"
+  | "discounts"
   | "messages"
   | "content"
   | "social"
   | "newsletter"
-  | "seo"
   | "announcement"
   | "settings";
 
 const sections: { id: Section; label: string; labelAr: string; icon: typeof LayoutDashboard }[] = [
+  { id: "overview", label: "Overview", labelAr: "نظرة عامة", icon: LayoutDashboard },
+  { id: "design", label: "Design Studio", labelAr: "استوديو التصميم", icon: Palette },
+  { id: "hero", label: "Hero Section", labelAr: "الواجهة الرئيسية", icon: Sparkles },
+  { id: "home-sections", label: "Home Sections", labelAr: "أقسام الصفحة الرئيسية", icon: HomeIcon },
+  { id: "content", label: "Content", labelAr: "نصوص الصفحات", icon: FileText },
+  { id: "products", label: "Products", labelAr: "المنتجات", icon: Package },
+  { id: "reviews", label: "Reviews", labelAr: "آراء العملاء", icon: Star },
+  { id: "discounts", label: "Discount Codes", labelAr: "أكواد الخصم", icon: Tag },
+  { id: "orders", label: "Orders", labelAr: "الطلبات", icon: ShoppingBag },
+  { id: "messages", label: "Messages", labelAr: "رسائل التواصل", icon: MessageSquare },
+  { id: "social", label: "Social & Contact", labelAr: "السوشيال والتواصل", icon: Share2 },
+  { id: "newsletter", label: "Newsletter", labelAr: "قائمة البريد", icon: Mail },
+  { id: "announcement", label: "Announcement Bar", labelAr: "شريط الإعلان", icon: Megaphone },
+  { id: "settings", label: "Settings", labelAr: "الإعدادات", icon: SettingsIcon },
+];
   { id: "overview", label: "Overview", labelAr: "نظرة عامة", icon: LayoutDashboard },
   { id: "design", label: "Design Studio", labelAr: "استوديو التصميم", icon: Palette },
   { id: "hero", label: "Hero Section", labelAr: "الواجهة الرئيسية", icon: Sparkles },
