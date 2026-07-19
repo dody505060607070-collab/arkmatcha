@@ -124,7 +124,12 @@ function Home() {
         </div>
       </section>
 
+      <TrustBar />
       <FeaturedCarousel products={products} label={featuredLabel} />
+      <StoryStrip />
+      <ReviewsSection />
+      <EditorialBand />
+      <InstagramGrid />
 
       {/* Newsletter */}
       <section className="container-soft py-16 text-center">
