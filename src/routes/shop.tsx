@@ -26,9 +26,6 @@ export const Route = createFileRoute("/shop")({
   component: Shop,
 });
 
-type Availability = "all" | "in_stock" | "sold_out";
-type PriceSort = "featured" | "price_asc" | "price_desc";
-type AlphaSort = "none" | "az" | "za";
 
 function pickSecondary(product: Product): string | null {
   const main = getProductImage(product.slug, product.image_url);
