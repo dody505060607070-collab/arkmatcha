@@ -5,8 +5,8 @@ import { settingsQuery } from "@/lib/queries";
 export function TopStrip() {
   const { data: settings } = useQuery(settingsQuery);
   const home = (settings?.content as any)?.home ?? {};
-  const visible = home.stripVisible !== false && !!home.stripText?.trim?.();
-  const text: string = home.stripText || "Your Fav Matcha Store";
+  const visible = home.stripVisible !== false;
+  const text: string = (home.stripText && home.stripText.trim()) || "your fav matcha store";
   const font: string = home.stripFont || "Shrikhand";
 
   useEffect(() => {
