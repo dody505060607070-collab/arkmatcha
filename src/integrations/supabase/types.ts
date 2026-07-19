@@ -44,6 +44,42 @@ export type Database = {
         }
         Relationships: []
       }
+      discount_codes: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          percent_off: number
+          updated_at: string
+          usage_limit: number | null
+          used_count: number
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          percent_off?: number
+          updated_at?: string
+          usage_limit?: number | null
+          used_count?: number
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          percent_off?: number
+          updated_at?: string
+          usage_limit?: number | null
+          used_count?: number
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           created_at: string
@@ -191,6 +227,45 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          author_name: string
+          created_at: string
+          featured: boolean
+          id: string
+          location: string | null
+          product_slug: string | null
+          quote: string
+          rating: number
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          author_name: string
+          created_at?: string
+          featured?: boolean
+          id?: string
+          location?: string | null
+          product_slug?: string | null
+          quote: string
+          rating?: number
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          author_name?: string
+          created_at?: string
+          featured?: boolean
+          id?: string
+          location?: string | null
+          product_slug?: string | null
+          quote?: string
+          rating?: number
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           announcement_text: string | null
@@ -199,6 +274,8 @@ export type Database = {
           coming_soon_text: string
           contact_email: string
           content: Json
+          editorial_image: string | null
+          editorial_quote: string | null
           featured_label: string | null
           footer_text: string
           hero_cta_link: string | null
@@ -209,16 +286,20 @@ export type Database = {
           hero_subheadline: string
           hero_tagline: string | null
           id: number
+          instagram_grid: string[] | null
           instagram_url: string
           logo_url: string | null
           phone: string
           seo_description: string | null
           seo_title: string | null
           shipping_fee: number
+          story_steps: Json | null
           theme: Json
           tiktok_url: string
+          trust_pills: string[] | null
           typography: Json
           updated_at: string
+          wishlist_enabled: boolean
         }
         Insert: {
           announcement_text?: string | null
@@ -227,6 +308,8 @@ export type Database = {
           coming_soon_text?: string
           contact_email?: string
           content?: Json
+          editorial_image?: string | null
+          editorial_quote?: string | null
           featured_label?: string | null
           footer_text?: string
           hero_cta_link?: string | null
@@ -237,16 +320,20 @@ export type Database = {
           hero_subheadline?: string
           hero_tagline?: string | null
           id?: number
+          instagram_grid?: string[] | null
           instagram_url?: string
           logo_url?: string | null
           phone?: string
           seo_description?: string | null
           seo_title?: string | null
           shipping_fee?: number
+          story_steps?: Json | null
           theme?: Json
           tiktok_url?: string
+          trust_pills?: string[] | null
           typography?: Json
           updated_at?: string
+          wishlist_enabled?: boolean
         }
         Update: {
           announcement_text?: string | null
@@ -255,6 +342,8 @@ export type Database = {
           coming_soon_text?: string
           contact_email?: string
           content?: Json
+          editorial_image?: string | null
+          editorial_quote?: string | null
           featured_label?: string | null
           footer_text?: string
           hero_cta_link?: string | null
@@ -265,16 +354,20 @@ export type Database = {
           hero_subheadline?: string
           hero_tagline?: string | null
           id?: number
+          instagram_grid?: string[] | null
           instagram_url?: string
           logo_url?: string | null
           phone?: string
           seo_description?: string | null
           seo_title?: string | null
           shipping_fee?: number
+          story_steps?: Json | null
           theme?: Json
           tiktok_url?: string
+          trust_pills?: string[] | null
           typography?: Json
           updated_at?: string
+          wishlist_enabled?: boolean
         }
         Relationships: []
       }
