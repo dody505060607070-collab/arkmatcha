@@ -67,10 +67,10 @@ function Home() {
                 src={logo}
                 alt=""
                 aria-hidden="true"
-                className="pointer-events-none absolute -right-8 -top-6 h-16 w-16 rotate-12 opacity-90 md:-right-10 md:-top-8 md:h-20 md:w-20 animate-[spin_18s_linear_infinite]"
+                className="pointer-events-none absolute -right-6 -top-5 h-12 w-12 rotate-12 opacity-90 md:-right-8 md:-top-6 md:h-16 md:w-16 animate-[spin_18s_linear_infinite]"
               />
-              <div className="relative -rotate-6 rounded-2xl bg-[color:var(--background)] px-4 py-2.5 shadow-md md:px-5 md:py-3">
-                <p className="whitespace-pre-line font-serif text-lg leading-[1.05] tracking-tight text-[color:var(--matcha)] md:text-2xl">
+              <div className="relative -rotate-6 rounded-xl bg-[color:var(--background)] px-3 py-2 shadow-md md:px-4 md:py-2.5">
+                <p className="whitespace-pre-line font-serif text-sm leading-[1.05] tracking-tight text-[color:var(--matcha)] md:text-lg">
                   {heroBadge}
                 </p>
               </div>

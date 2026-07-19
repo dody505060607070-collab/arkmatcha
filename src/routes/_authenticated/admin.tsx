@@ -1098,7 +1098,7 @@ function SettingsAdmin() {
 
 /* ---------------- Design Studio (Theme + Typography + Logo + Live Preview) ---------------- */
 function DesignAdmin() {
-  const { data: s, refetch } = useSettings();
+  const { data: s, save: saveSettingsHook } = useSettings();
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [logoUrl, setLogoUrl] = useState("");
   const [theme, setTheme] = useState<ThemeColors>(DEFAULT_THEME);
@@ -1135,10 +1135,7 @@ function DesignAdmin() {
 
   async function save() {
     setSaving(true);
-    await saveSettings(
-      { logo_url: logoUrl, theme, typography: typo } as Partial<SiteSettings>,
-      refetch
-    );
+    await saveSettingsHook({ logo_url: logoUrl, theme, typography: typo } as Partial<SiteSettings>);
     setSaving(false);
     // Reload iframe so content/logo changes flush
     if (iframeRef.current) iframeRef.current.src = iframeRef.current.src;
