@@ -135,11 +135,24 @@ a { color: ${linkColor}; }
 }
 `;
 
+  // Inject the Google Font <link> client-side only. Rendering it during SSR
+  // causes a hydration mismatch when the settings-derived `fontHref` differs
+  // between the server render and the client's first render.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const id = "ark-theme-font";
+    let el = document.getElementById(id) as HTMLLinkElement | null;
+    if (!el) {
+      el = document.createElement("link");
+      el.id = id;
+      el.rel = "stylesheet";
+      document.head.appendChild(el);
+    }
+    if (el.href !== fontHref) el.href = fontHref;
+  }, [fontHref]);
+
   return (
-    <>
-      <link rel="stylesheet" href={fontHref} suppressHydrationWarning />
-      <style dangerouslySetInnerHTML={{ __html: css }} suppressHydrationWarning />
-    </>
+    <style dangerouslySetInnerHTML={{ __html: css }} suppressHydrationWarning />
   );
 }
 
