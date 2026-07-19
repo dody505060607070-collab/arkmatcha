@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "/" },
-      { rel: "preload", as: "image", href: heroEditorial.url, fetchpriority: "high" },
+      { rel: "preload", as: "image", href: heroEditorial.url, fetchPriority: "high" },
     ],
   }),
   loader: async ({ context }) => {
