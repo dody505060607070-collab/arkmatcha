@@ -17,6 +17,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ScrollReveal } from "@/components/site/ScrollReveal";
 import { ThemeApplier } from "@/components/site/ThemeApplier";
+import { settingsQuery } from "@/lib/queries";
 import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
@@ -53,6 +54,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: ({ context }) => context.queryClient.ensureQueryData(settingsQuery),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
