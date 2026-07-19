@@ -3,10 +3,10 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { productsQuery, settingsQuery, type Product } from "@/lib/queries";
-import { getProductImage } from "@/lib/brand-assets";
-import { AnnouncementBar } from "@/components/site/AnnouncementBar";
+import { getProductImage, brandAssets } from "@/lib/brand-assets";
 import { Newsletter } from "@/components/site/Newsletter";
-import heroWhisk from "@/assets/ark-hero-whisk.png.asset.json";
+import { ProductCardImage } from "@/components/site/ProductCardImage";
+import heroEditorial from "@/assets/ark-hero-editorial.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "/" },
-      { rel: "preload", as: "image", href: heroWhisk.url, fetchpriority: "high" },
+      { rel: "preload", as: "image", href: heroEditorial.url, fetchpriority: "high" },
     ],
   }),
   loader: async ({ context }) => {
@@ -37,34 +37,42 @@ function Home() {
   const { data: products } = useSuspenseQuery(productsQuery);
   const { data: settings } = useSuspenseQuery(settingsQuery);
 
-  const heroImage = settings?.hero_image?.trim() ? settings.hero_image : heroWhisk.url;
+  const heroImage = settings?.hero_image?.trim() ? settings.hero_image : heroEditorial.url;
   const heroBadge =
-    settings?.content?.home?.heroBadge?.trim() || "MATCHA LOVER";
+    settings?.content?.home?.heroBadge?.trim() || "SIP THE\nRITUAL";
   const heroHeadline =
-    settings?.hero_headline?.trim() || "Explore Your Preferred Size";
-  const heroCtaText = settings?.hero_cta_text?.trim() || "Shop now";
+    settings?.hero_headline?.trim() || "Slow mornings, brighter days.";
+  const heroSub =
+    settings?.content?.home?.heroSub?.trim() ||
+    "Stone-milled in Japan. Whisked at home. A small green pause you'll look forward to.";
+  const heroCtaText = settings?.hero_cta_text?.trim() || "Shop the collection";
   const heroCtaLink = settings?.hero_cta_link?.trim() || "/shop";
   const featuredLabel = settings?.featured_label?.trim() || "Featured products";
+  const logo = settings?.logo_url?.trim() || brandAssets.logo;
 
   return (
     <main>
-      <AnnouncementBar />
-
       {/* Hero */}
-      <section className="container-soft pt-6 md:pt-8">
+      <section className="container-soft pt-4 md:pt-6">
         <div
           className="relative overflow-hidden rounded-3xl"
           style={{ background: "var(--matcha)" }}
         >
-          {/* Sticker-style badge */}
-          <div className="absolute left-4 top-6 md:left-8 md:top-10 z-10 -rotate-6">
-            <div className="rounded-2xl bg-[color:var(--background)] px-4 py-2.5 shadow-md md:px-6 md:py-3">
-              <p className="font-serif text-xl leading-none text-[color:var(--matcha)] md:text-3xl">
-                {heroBadge.split(" ")[0]}
-              </p>
-              <p className="font-serif text-xl leading-none text-[color:var(--matcha)] md:text-3xl">
-                {heroBadge.split(" ").slice(1).join(" ")}
-              </p>
+          {/* Sticker-style badge with rotating logo behind it */}
+          <div className="absolute left-3 top-4 z-20 md:left-8 md:top-8">
+            <div className="relative">
+              {/* Logo watermark, replaces the star from the reference */}
+              <img
+                src={logo}
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-8 -top-6 h-16 w-16 rotate-12 opacity-90 md:-right-10 md:-top-8 md:h-20 md:w-20 animate-[spin_18s_linear_infinite]"
+              />
+              <div className="relative -rotate-6 rounded-2xl bg-[color:var(--background)] px-4 py-2.5 shadow-md md:px-5 md:py-3">
+                <p className="whitespace-pre-line font-serif text-lg leading-[1.05] tracking-tight text-[color:var(--matcha)] md:text-2xl">
+                  {heroBadge}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -74,34 +82,43 @@ function Home() {
             loading="eager"
             fetchPriority="high"
             decoding="async"
-            width={900}
-            height={700}
-            className="mx-auto block aspect-square w-full max-w-2xl object-contain p-8 pt-24 md:aspect-[4/3] md:p-14 md:pt-20"
+            width={1400}
+            height={1100}
+            className="block h-[62vh] max-h-[560px] min-h-[360px] w-full object-cover md:h-[70vh] md:max-h-[680px]"
           />
         </div>
 
-        {/* Explore card */}
+        {/* Explore / CTA card — new copy, less Mellow-esque */}
         <div
-          className="relative -mt-6 overflow-hidden rounded-3xl px-6 py-8 md:-mt-10 md:px-10 md:py-10"
+          className="relative -mt-8 overflow-hidden rounded-3xl px-6 py-8 md:-mt-10 md:px-10 md:py-10"
           style={{
-            background:
-              "linear-gradient(135deg, color-mix(in oklab, var(--matcha) 12%, var(--background)) 0%, color-mix(in oklab, var(--matcha) 22%, var(--background)) 100%)",
+            background: "var(--background)",
+            border: "1px solid var(--border)",
           }}
         >
-          <h1 className="font-serif text-3xl leading-tight text-[color:var(--forest)] md:text-5xl">
-            {heroHeadline}
-          </h1>
-          <Link
-            to={heroCtaLink as "/shop"}
-            className="mt-6 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium shadow-sm transition-transform hover:-translate-y-0.5"
-            style={{ background: "var(--matcha)", color: "#fff" }}
-          >
-            {heroCtaText}
-          </Link>
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-xl">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-[color:var(--olive)]">
+                Ceremonial · Kyoto, Japan
+              </p>
+              <h1 className="mt-3 font-serif text-3xl leading-tight text-[color:var(--forest)] md:text-5xl">
+                {heroHeadline}
+              </h1>
+              <p className="mt-3 text-sm leading-relaxed text-[color:var(--forest)]/80 md:text-base">
+                {heroSub}
+              </p>
+            </div>
+            <Link
+              to={heroCtaLink as "/shop"}
+              className="inline-flex shrink-0 items-center gap-2 rounded-full px-6 py-3 text-sm font-medium shadow-sm transition-transform hover:-translate-y-0.5"
+              style={{ background: "var(--matcha)", color: "#fff" }}
+            >
+              {heroCtaText} →
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Featured Products carousel */}
       <FeaturedCarousel products={products} label={featuredLabel} />
 
       {/* Newsletter */}
@@ -109,7 +126,7 @@ function Home() {
         <h2 className="font-serif text-3xl text-[color:var(--forest)] md:text-4xl">
           Subscribe to our emails
         </h2>
-        <p className="mx-auto mt-3 max-w-md text-sm text-[color:var(--muted-foreground)]">
+        <p className="mx-auto mt-3 max-w-md text-sm text-[color:var(--forest)]/70">
           Join our email list for exclusive offers and the latest news.
         </p>
         <div className="mx-auto mt-6 max-w-md">
@@ -118,6 +135,13 @@ function Home() {
       </section>
     </main>
   );
+}
+
+function pickSecondary(product: Product): string | null {
+  const main = getProductImage(product.slug, product.image_url);
+  const gallery = (product.gallery ?? []).filter(Boolean);
+  const secondary = gallery.find((g) => g && g !== main);
+  return secondary ?? null;
 }
 
 function FeaturedCarousel({ products, label }: { products: Product[]; label: string }) {
@@ -156,6 +180,8 @@ function FeaturedCarousel({ products, label }: { products: Product[]; label: str
       >
         {products.map((product) => {
           const label = product.name;
+          const main = getProductImage(product.slug, product.image_url);
+          const secondary = pickSecondary(product);
           return (
             <Link
               key={product.id}
@@ -169,15 +195,7 @@ function FeaturedCarousel({ products, label }: { products: Product[]; label: str
                   className="relative overflow-hidden rounded-2xl"
                   style={{ background: "var(--card-bg, #fff)" }}
                 >
-                  <img
-                    src={getProductImage(product.slug, product.image_url)}
-                    alt={label}
-                    loading="lazy"
-                    decoding="async"
-                    width={600}
-                    height={600}
-                    className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                  />
+                  <ProductCardImage main={main} secondary={secondary} alt={label} />
                   {product.in_stock === false && (
                     <span className="absolute left-2 top-2 rounded-full bg-[color:var(--matcha)] px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
                       Sold out
@@ -198,14 +216,9 @@ function FeaturedCarousel({ products, label }: { products: Product[]; label: str
                 (product.discount_percentage ?? 0) > 0 ? (
                   <p className="mt-1 text-center text-sm">
                     <span className="text-[color:var(--forest)]">
-                      LE{" "}
-                      {(
-                        Number(product.price) *
-                        (1 - product.discount_percentage / 100)
-                      ).toFixed(2)}{" "}
-                      EGP
+                      LE {(Number(product.price) * (1 - product.discount_percentage / 100)).toFixed(2)} EGP
                     </span>
-                    <span className="ml-2 text-xs text-[color:var(--muted-foreground)] line-through">
+                    <span className="ml-2 text-xs text-[color:var(--forest)]/50 line-through">
                       {Number(product.price).toFixed(2)}
                     </span>
                   </p>

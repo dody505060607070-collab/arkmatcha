@@ -1,12 +1,12 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Instagram, LogIn, Menu, Search, ShoppingBag, X } from "lucide-react";
+import { Instagram, LogIn, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCart } from "@/lib/cart";
 import { brandAssets } from "@/lib/brand-assets";
 import { settingsQuery } from "@/lib/queries";
 
-const drawerLinks = [
+const navLinks = [
   { to: "/", label: "Home" },
   { to: "/shop", label: "Catalog" },
   { to: "/contact", label: "Contact" },
@@ -17,14 +17,17 @@ export function Header() {
   const count = useCart((s) => s.items.reduce((n, i) => n + i.quantity, 0));
   const { data: settings } = useQuery(settingsQuery);
   const logo = settings?.logo_url?.trim() || brandAssets.logo;
+  const announcement =
+    settings?.content?.home?.announcementTagline?.trim() ||
+    settings?.announcement_text?.trim() ||
+    "Your Favorite Ceremonial Matcha";
+  const showAnnouncement = settings?.announcement_visible !== false;
   const [open, setOpen] = useState(false);
 
-  // Close drawer on route change
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
-  // Lock body scroll while drawer open
   useEffect(() => {
     if (typeof document === "undefined") return;
     document.body.style.overflow = open ? "hidden" : "";
@@ -36,39 +39,67 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-40" style={{ background: "var(--background)" }}>
+        {/* Tiny announcement, sits ABOVE the logo */}
+        {showAnnouncement ? (
+          <p className="pt-3 text-center text-[10px] uppercase tracking-[0.28em] text-[color:var(--matcha)] md:text-[11px]">
+            {announcement}
+          </p>
+        ) : null}
+
         <div className="container-soft">
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center py-4">
-            <div className="flex items-center">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center py-3">
+            <div className="flex items-center gap-1">
+              {/* Hamburger — mobile only */}
               <button
-                aria-label="Menu"
+                aria-label="Open menu"
                 type="button"
                 onClick={() => setOpen(true)}
-                className="grid h-10 w-10 place-items-center text-[color:var(--forest)]"
+                className="grid h-10 w-10 place-items-center text-[color:var(--forest)] md:hidden"
               >
                 <Menu className="h-5 w-5" />
               </button>
+              {/* Desktop inline nav */}
+              <nav className="hidden items-center gap-7 md:flex">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    className="text-sm text-[color:var(--forest)] transition-opacity hover:opacity-70"
+                    activeProps={{ className: "text-sm text-[color:var(--matcha)] font-medium underline underline-offset-4" }}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
             </div>
 
             <Link
               to="/"
               aria-label="Ark Matcha home"
-              className="grid h-14 w-14 place-items-center overflow-hidden rounded-full"
+              className="grid h-14 w-14 place-items-center overflow-hidden rounded-full md:h-16 md:w-16"
             >
               <img src={logo} alt="Ark Matcha" className="h-full w-full object-contain" />
             </Link>
 
-            <div className="flex items-center justify-end gap-2">
+            <div className="flex items-center justify-end gap-1">
               <button
                 aria-label="Search"
                 type="button"
-                className="grid h-10 w-10 place-items-center text-[color:var(--forest)]"
+                className="grid h-10 w-10 place-items-center text-[color:var(--forest)] transition-opacity hover:opacity-70"
               >
                 <Search className="h-5 w-5" />
               </button>
               <Link
+                to="/auth"
+                aria-label="Account"
+                className="hidden h-10 w-10 place-items-center text-[color:var(--forest)] transition-opacity hover:opacity-70 md:grid"
+              >
+                <User className="h-5 w-5" />
+              </Link>
+              <Link
                 to="/cart"
                 aria-label="Cart"
-                className="relative grid h-10 w-10 place-items-center text-[color:var(--forest)]"
+                className="relative grid h-10 w-10 place-items-center text-[color:var(--forest)] transition-opacity hover:opacity-70"
               >
                 <ShoppingBag className="h-5 w-5" />
                 {count > 0 ? (
@@ -82,22 +113,16 @@ export function Header() {
         </div>
       </header>
 
-      {/* Side drawer */}
+      {/* Full-screen mobile drawer */}
       <div
-        className={`fixed inset-0 z-50 transition-opacity duration-300 ${
-          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        className={`fixed inset-0 z-50 md:hidden ${
+          open ? "pointer-events-auto" : "pointer-events-none"
         }`}
         aria-hidden={!open}
       >
-        <button
-          type="button"
-          aria-label="Close menu"
-          onClick={() => setOpen(false)}
-          className="absolute inset-0 bg-black/30"
-        />
-        <aside
-          className={`absolute inset-y-0 left-0 flex w-[86%] max-w-sm flex-col shadow-xl transition-transform duration-300 ${
-            open ? "translate-x-0" : "-translate-x-full"
+        <div
+          className={`absolute inset-0 flex flex-col transition-opacity duration-300 ${
+            open ? "opacity-100" : "opacity-0"
           }`}
           style={{ background: "var(--background)" }}
         >
@@ -108,12 +133,16 @@ export function Header() {
               onClick={() => setOpen(false)}
               className="grid h-10 w-10 place-items-center text-[color:var(--forest)]"
             >
-              <X className="h-5 w-5" />
+              <X className="h-6 w-6" />
             </button>
-            <div className="grid h-12 w-12 place-items-center overflow-hidden rounded-full">
+            <Link
+              to="/"
+              aria-label="Ark Matcha home"
+              className="grid h-20 w-20 place-items-center overflow-hidden rounded-full"
+            >
               <img src={logo} alt="Ark Matcha" className="h-full w-full object-contain" />
-            </div>
-            <div className="flex justify-end gap-2">
+            </Link>
+            <div className="flex justify-end gap-1">
               <button aria-label="Search" className="grid h-10 w-10 place-items-center text-[color:var(--forest)]">
                 <Search className="h-5 w-5" />
               </button>
@@ -123,17 +152,17 @@ export function Header() {
             </div>
           </div>
 
-          <nav className="mt-2 flex flex-col">
-            {drawerLinks.map((link) => {
+          <nav className="mt-6 flex flex-1 flex-col">
+            {navLinks.map((link) => {
               const active = pathname === link.to;
               return (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="border-t border-[color:var(--border)] px-6 py-4 text-lg text-[color:var(--forest)]"
+                  className="border-t border-[color:var(--border)] px-6 py-5 font-serif text-2xl text-[color:var(--forest)] last:border-b"
                   style={{
                     background: active
-                      ? "color-mix(in oklab, var(--forest) 6%, transparent)"
+                      ? "color-mix(in oklab, var(--matcha) 8%, transparent)"
                       : "transparent",
                   }}
                 >
@@ -143,11 +172,8 @@ export function Header() {
             })}
           </nav>
 
-          <div className="mt-auto border-t border-[color:var(--border)] px-6 py-5">
-            <Link
-              to="/auth"
-              className="flex items-center gap-3 text-[color:var(--forest)]"
-            >
+          <div className="border-t border-[color:var(--border)] px-6 py-6">
+            <Link to="/auth" className="flex items-center gap-3 text-[color:var(--forest)]">
               <LogIn className="h-4 w-4" /> Log in
             </Link>
             <a
@@ -160,7 +186,7 @@ export function Header() {
               <Instagram className="h-5 w-5" />
             </a>
           </div>
-        </aside>
+        </div>
       </div>
     </>
   );
