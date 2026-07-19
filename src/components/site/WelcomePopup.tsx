@@ -5,6 +5,7 @@ import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { settingsQuery } from "@/lib/queries";
 import { supabase } from "@/integrations/supabase/client";
+import { brandAssets } from "@/lib/brand-assets";
 
 const STORAGE_KEY = "ark_welcome_dismissed_v2";
 
@@ -23,6 +24,7 @@ export function WelcomePopup() {
   const ctaText: string = home.welcomeCtaText || "Shop the collection";
   const ctaLink: string = home.welcomeCtaLink || "/shop";
   const image: string = home.welcomeImage || "";
+  const logo: string = settings?.logo_url?.trim() || brandAssets.logo;
 
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -111,7 +113,7 @@ export function WelcomePopup() {
         <div className="grid md:grid-cols-2">
           {/* Visual side */}
           <div
-            className="relative hidden min-h-[420px] md:block"
+            className="relative hidden min-h-[420px] overflow-hidden md:block"
             style={{ background: "var(--matcha)" }}
           >
             {image ? (
@@ -121,21 +123,31 @@ export function WelcomePopup() {
                 className="absolute inset-0 h-full w-full object-cover"
               />
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center p-10">
-                <div className="text-center text-white">
-                  <p className="font-serif text-[10px] uppercase tracking-[0.4em] opacity-80">
-                    Ark Matcha
-                  </p>
-                  <p className="mt-6 font-serif text-6xl leading-none tracking-tight">
-                    {discountLabel}
-                  </p>
-                  <p className="mt-6 text-xs uppercase tracking-[0.3em] opacity-80">
-                    Welcome offer
-                  </p>
+              <>
+                {/* Rotating logo watermark */}
+                <img
+                  src={logo}
+                  alt=""
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-1/2 top-1/2 h-[110%] w-[110%] -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.12] animate-[spin_22s_linear_infinite]"
+                />
+                <div className="relative flex h-full items-center justify-center p-10">
+                  <div className="text-center text-white">
+                    <p className="font-serif text-[10px] uppercase tracking-[0.4em] opacity-80">
+                      Ark Matcha
+                    </p>
+                    <p className="mt-6 font-serif text-6xl leading-none tracking-tight">
+                      {discountLabel}
+                    </p>
+                    <p className="mt-6 text-xs uppercase tracking-[0.3em] opacity-80">
+                      Welcome offer
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
+
 
           {/* Content side */}
           <div className="p-6 md:p-9">
@@ -160,6 +172,12 @@ export function WelcomePopup() {
                 </p>
                 <p className="font-serif text-xl">{discountLabel}</p>
               </div>
+              <img
+                src={logo}
+                alt=""
+                aria-hidden="true"
+                className="h-10 w-10 rounded-full bg-white/10 p-1 animate-[spin_18s_linear_infinite]"
+              />
             </div>
 
             {!subscribed ? (
