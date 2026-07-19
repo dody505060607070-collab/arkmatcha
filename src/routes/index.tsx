@@ -91,7 +91,7 @@ function Home() {
                     // @ts-ignore
                     disablePictureInPicture
                     controlsList="nodownload noplaybackrate nofullscreen"
-                    className="block h-[62vh] max-h-[560px] min-h-[360px] w-full object-cover md:h-[70vh] md:max-h-[680px]"
+                    className="block h-[42vh] max-h-[420px] min-h-[240px] w-full object-cover md:h-[70vh] md:max-h-[680px]"
                   />
                   {/* transparent overlay blocks all pointer interaction */}
                   <div className="absolute inset-0" aria-hidden="true" />
