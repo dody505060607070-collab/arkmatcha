@@ -1135,10 +1135,7 @@ function DesignAdmin() {
 
   async function save() {
     setSaving(true);
-    await saveSettings(
-      { logo_url: logoUrl, theme, typography: typo } as Partial<SiteSettings>,
-      refetch
-    );
+    await saveSettingsHook({ logo_url: logoUrl, theme, typography: typo } as Partial<SiteSettings>);
     setSaving(false);
     // Reload iframe so content/logo changes flush
     if (iframeRef.current) iframeRef.current.src = iframeRef.current.src;
