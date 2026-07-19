@@ -17,6 +17,8 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ScrollReveal } from "@/components/site/ScrollReveal";
 import { ThemeApplier } from "@/components/site/ThemeApplier";
+import { TopStrip } from "@/components/site/TopStrip";
+import { WelcomePopup } from "@/components/site/WelcomePopup";
 import { settingsQuery } from "@/lib/queries";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -121,12 +123,14 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <ThemeApplier />
       <div className="flex min-h-screen flex-col">
+        {!hideChrome && <TopStrip />}
         {!hideChrome && <Header />}
         <div className="flex-1">
           <Outlet />
         </div>
         {!hideChrome && <Footer />}
       </div>
+      {!hideChrome && <WelcomePopup />}
       <ScrollReveal />
       <Toaster richColors position="top-center" />
     </QueryClientProvider>
