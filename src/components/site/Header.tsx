@@ -15,14 +15,20 @@ const navLinks = [
 export function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const count = useCart((s) => s.items.reduce((n, i) => n + i.quantity, 0));
+  const [hydrated, setHydrated] = useState(false);
   const { data: settings } = useQuery(settingsQuery);
-  const logo = settings?.logo_url?.trim() || brandAssets.logo;
+  const liveSettings = hydrated ? settings : undefined;
+  const logo = liveSettings?.logo_url?.trim() || brandAssets.logo;
   const announcement =
-    settings?.content?.home?.announcementTagline?.trim() ||
-    settings?.announcement_text?.trim() ||
+    liveSettings?.content?.home?.announcementTagline?.trim() ||
+    liveSettings?.announcement_text?.trim() ||
     "Your Favorite Ceremonial Matcha";
-  const showAnnouncement = settings?.announcement_visible !== false;
+  const showAnnouncement = hydrated && liveSettings?.announcement_visible !== false;
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     setOpen(false);
@@ -177,7 +183,7 @@ export function Header() {
               <LogIn className="h-4 w-4" /> Log in
             </Link>
             <a
-              href={settings?.instagram_url ?? "https://www.instagram.com/arkmatcha"}
+              href={liveSettings?.instagram_url ?? "https://www.instagram.com/arkmatcha"}
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram"
