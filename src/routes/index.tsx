@@ -6,6 +6,11 @@ import { productsQuery, settingsQuery, type Product } from "@/lib/queries";
 import { getProductImage, brandAssets } from "@/lib/brand-assets";
 import { Newsletter } from "@/components/site/Newsletter";
 import { ProductCardImage } from "@/components/site/ProductCardImage";
+import { TrustBar } from "@/components/site/TrustBar";
+import { StoryStrip } from "@/components/site/StoryStrip";
+import { ReviewsSection } from "@/components/site/ReviewsSection";
+import { EditorialBand } from "@/components/site/EditorialBand";
+import { InstagramGrid } from "@/components/site/InstagramGrid";
 import heroEditorial from "@/assets/ark-hero-editorial.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -119,7 +124,12 @@ function Home() {
         </div>
       </section>
 
+      <TrustBar />
       <FeaturedCarousel products={products} label={featuredLabel} />
+      <StoryStrip />
+      <ReviewsSection />
+      <EditorialBand />
+      <InstagramGrid />
 
       {/* Newsletter */}
       <section className="container-soft py-16 text-center">

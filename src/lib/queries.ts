@@ -112,6 +112,34 @@ export type SiteSettings = {
   theme: ThemeColors;
   typography: Typography;
   content: ContentMap;
+  /* Home CMS strips */
+  trust_pills: string[] | null;
+  story_steps: { title: string; body: string }[] | null;
+  instagram_grid: string[] | null;
+  editorial_image: string | null;
+  editorial_quote: string | null;
+  wishlist_enabled: boolean;
+};
+
+export type Review = {
+  id: string;
+  author_name: string;
+  location: string | null;
+  rating: number;
+  quote: string;
+  product_slug: string | null;
+  featured: boolean;
+  sort_order: number;
+};
+
+export type DiscountCode = {
+  id: string;
+  code: string;
+  percent_off: number;
+  active: boolean;
+  usage_limit: number | null;
+  used_count: number;
+  expires_at: string | null;
 };
 
 export const productsQuery = queryOptions({
@@ -139,6 +167,43 @@ export const settingsQuery = queryOptions({
     const { data, error } = await supabase.from("site_settings").select("*").eq("id", 1).maybeSingle();
     if (error) throw error;
     return data as unknown as SiteSettings;
+  },
+});
+
+export const reviewsQuery = queryOptions({
+  queryKey: ["reviews"],
+  queryFn: async (): Promise<Review[]> => {
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*")
+      .eq("featured", true)
+      .order("sort_order");
+    if (error) throw error;
+    return (data ?? []) as unknown as Review[];
+  },
+});
+
+export const allReviewsQuery = queryOptions({
+  queryKey: ["reviews-all"],
+  queryFn: async (): Promise<Review[]> => {
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*")
+      .order("sort_order");
+    if (error) throw error;
+    return (data ?? []) as unknown as Review[];
+  },
+});
+
+export const discountCodesQuery = queryOptions({
+  queryKey: ["discount_codes"],
+  queryFn: async (): Promise<DiscountCode[]> => {
+    const { data, error } = await supabase
+      .from("discount_codes")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return (data ?? []) as unknown as DiscountCode[];
   },
 });
 
