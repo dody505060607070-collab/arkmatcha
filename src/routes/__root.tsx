@@ -123,7 +123,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <ThemeApplier />
       <div className="flex min-h-screen flex-col">
-        {!hideChrome && <TopStrip />}
+        
         {!hideChrome && <Header />}
         <div className="flex-1">
           <Outlet />
