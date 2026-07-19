@@ -107,7 +107,7 @@ function Home() {
                 decoding="async"
                 width={1400}
                 height={1100}
-                className="block h-[62vh] max-h-[560px] min-h-[360px] w-full object-cover md:h-[70vh] md:max-h-[680px]"
+                className="block h-[42vh] max-h-[420px] min-h-[240px] w-full object-cover md:h-[70vh] md:max-h-[680px]"
               />
             );
           })()}
