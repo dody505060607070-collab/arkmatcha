@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -28,40 +27,30 @@ export function Newsletter({ compact = false }: { compact?: boolean }) {
     setEmail("");
   }
 
-  const form = (
-    <form onSubmit={submit} className="relative">
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        aria-label="Email"
-        className="w-full rounded-md border border-[color:var(--border)] bg-transparent px-4 py-4 pr-14 text-base text-[color:var(--forest)] placeholder:text-[color:var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[color:var(--matcha)]/40"
-      />
-      <button
-        type="submit"
-        disabled={loading}
-        aria-label="Subscribe"
-        className="absolute right-2 top-1/2 -translate-y-1/2 grid h-10 w-10 place-items-center rounded-md text-[color:var(--forest)] disabled:opacity-50"
-      >
-        <ArrowRight className="h-5 w-5" />
-      </button>
-    </form>
-  );
-
-  if (compact) return form;
-
   return (
-    <section className="container-soft py-20">
-      <div className="mx-auto max-w-xl text-center">
-        <h2 className="text-4xl font-semibold tracking-tight text-[color:var(--forest)] md:text-5xl">
-          Subscribe to our emails
-        </h2>
-        <p className="mt-4 text-[color:var(--muted-foreground)]">
-          Join our email list for exclusive offers and the latest news.
-        </p>
-        <div className="mt-8">{form}</div>
+    <section className={compact ? "" : "container-soft py-20"}>
+      <div className="max-w-xl mx-auto text-center">
+        {!compact && (
+          <>
+            <h2 className="text-3xl md:text-4xl mb-3">Be First to Know</h2>
+            <p className="text-[color:var(--muted-foreground)] mb-8">
+              Sign up to receive launch updates and early access.
+            </p>
+          </>
+        )}
+        <form onSubmit={submit} className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your@email.com"
+            className="flex-1 px-5 py-3 rounded-full bg-[color:var(--cream)] border border-[color:var(--border)] focus:outline-none focus:ring-2 focus:ring-[color:var(--olive)]"
+          />
+          <button type="submit" disabled={loading} className="btn-primary disabled:opacity-60">
+            {loading ? "Sending..." : "Notify Me"}
+          </button>
+        </form>
       </div>
     </section>
   );

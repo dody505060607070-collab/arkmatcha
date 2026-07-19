@@ -6,9 +6,7 @@ import { productsQuery, settingsQuery, type Product } from "@/lib/queries";
 import { getProductImage } from "@/lib/brand-assets";
 import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 import { Newsletter } from "@/components/site/Newsletter";
-import heroFlatlay from "@/assets/ark-hero-flatlay.jpeg.asset.json";
-import tileMatcha from "@/assets/ark-matcha-30g-v2.jpeg.asset.json";
-import tileWhisk from "@/assets/ark-whisk.png.asset.json";
+import heroWhisk from "@/assets/ark-hero-whisk.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,12 +16,12 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Shop Ark Matcha ceremonial grade matcha, available in 30g and 50g premium tins, plus authentic Japanese tools.",
+          "Shop Ark Matcha ceremonial grade matcha, available in 30g and 50g premium tins.",
       },
     ],
     links: [
       { rel: "canonical", href: "/" },
-      { rel: "preload", as: "image", href: heroFlatlay.url, fetchpriority: "high" },
+      { rel: "preload", as: "image", href: heroWhisk.url, fetchpriority: "high" },
     ],
   }),
   loader: async ({ context }) => {
@@ -39,8 +37,12 @@ function Home() {
   const { data: products } = useSuspenseQuery(productsQuery);
   const { data: settings } = useSuspenseQuery(settingsQuery);
 
-  const heroImage = settings?.hero_image?.trim() ? settings.hero_image : heroFlatlay.url;
-  const heroCtaText = settings?.hero_cta_text?.trim() || "SHOP ALL";
+  const heroImage = settings?.hero_image?.trim() ? settings.hero_image : heroWhisk.url;
+  const heroBadge =
+    settings?.content?.home?.heroBadge?.trim() || "MATCHA LOVER";
+  const heroHeadline =
+    settings?.hero_headline?.trim() || "Explore Your Preferred Size";
+  const heroCtaText = settings?.hero_cta_text?.trim() || "Shop now";
   const heroCtaLink = settings?.hero_cta_link?.trim() || "/shop";
   const featuredLabel = settings?.featured_label?.trim() || "Featured products";
 
@@ -48,131 +50,73 @@ function Home() {
     <main>
       <AnnouncementBar />
 
-      {/* HERO — full-viewport lifestyle image with a single centered white pill CTA */}
-      <section className="relative w-full overflow-hidden">
+      {/* Hero */}
+      <section className="container-soft pt-6 md:pt-8">
         <div
-          className="relative w-full"
-          style={{ height: "calc(100svh - 96px)", minHeight: "520px" }}
+          className="relative overflow-hidden rounded-3xl"
+          style={{ background: "var(--matcha)" }}
         >
+          {/* Sticker-style badge */}
+          <div className="absolute left-4 top-6 md:left-8 md:top-10 z-10 -rotate-6">
+            <div className="rounded-2xl bg-[color:var(--background)] px-4 py-2.5 shadow-md md:px-6 md:py-3">
+              <p className="font-serif text-xl leading-none text-[color:var(--matcha)] md:text-3xl">
+                {heroBadge.split(" ")[0]}
+              </p>
+              <p className="font-serif text-xl leading-none text-[color:var(--matcha)] md:text-3xl">
+                {heroBadge.split(" ").slice(1).join(" ")}
+              </p>
+            </div>
+          </div>
+
           <img
             src={heroImage}
-            alt="Ark Matcha ceremonial grade tins"
+            alt="Ark Matcha ceremonial grade"
             loading="eager"
-            decoding="async"
             fetchPriority="high"
-            className="absolute inset-0 h-full w-full object-cover"
+            decoding="async"
+            width={900}
+            height={700}
+            className="mx-auto block aspect-square w-full max-w-2xl object-contain p-8 pt-24 md:aspect-[4/3] md:p-14 md:pt-20"
           />
+        </div>
+
+        {/* Explore card */}
+        <div
+          className="relative -mt-6 overflow-hidden rounded-3xl px-6 py-8 md:-mt-10 md:px-10 md:py-10"
+          style={{
+            background:
+              "linear-gradient(135deg, color-mix(in oklab, var(--matcha) 12%, var(--background)) 0%, color-mix(in oklab, var(--matcha) 22%, var(--background)) 100%)",
+          }}
+        >
+          <h1 className="font-serif text-3xl leading-tight text-[color:var(--forest)] md:text-5xl">
+            {heroHeadline}
+          </h1>
           <Link
             to={heroCtaLink as "/shop"}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white px-10 py-3.5 text-[11px] font-medium uppercase tracking-[0.28em] text-[color:var(--forest)] shadow-[0_10px_30px_-10px_rgba(0,0,0,0.35)] transition-transform md:px-12 md:py-4 md:text-xs"
+            className="mt-6 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium shadow-sm transition-transform hover:-translate-y-0.5"
+            style={{ background: "var(--matcha)", color: "#fff" }}
           >
             {heroCtaText}
           </Link>
         </div>
       </section>
 
-      {/* CATEGORY TILES — horizontal peek-scroll carousel, Rocky's Matcha style */}
-      <section className="mt-10 md:mt-16" aria-label="Shop by category">
-        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 pb-2 md:gap-6 md:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <CategoryTile
-            data-reveal
-            data-reveal-style="up"
-            to="/shop"
-            image={tileMatcha.url}
-            label="MATCHA"
-          />
-          <CategoryTile
-            data-reveal
-            data-reveal-style="up"
-            data-reveal-delay="1"
-            to="/shop"
-            image={tileWhisk.url}
-            label="MATCHA TOOLS"
-          />
-        </div>
+      {/* Featured Products carousel */}
+      <FeaturedCarousel products={products} label={featuredLabel} />
 
-        <div className="mt-10 flex justify-center px-4 md:mt-14">
-          <Link
-            to="/shop"
-            data-reveal
-            data-reveal-style="fade"
-            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--forest)] px-12 py-3.5 text-[11px] font-medium uppercase tracking-[0.28em] text-white shadow-[0_10px_30px_-12px_rgba(0,0,0,0.4)] transition-transform hover:-translate-y-0.5 md:px-14 md:py-4 md:text-xs"
-          >
-            Shop all
-          </Link>
-        </div>
-      </section>
-
-      {/* FEATURED PRODUCTS */}
-      <div data-reveal data-reveal-style="up">
-        <FeaturedCarousel products={products} label={featuredLabel} />
-      </div>
-
-      {/* NEWSLETTER */}
-      <section
-        className="container-soft py-24 text-center"
-        data-reveal
-        data-reveal-style="fade"
-      >
-        <h2 className="text-3xl font-semibold tracking-tight text-[color:var(--forest)] md:text-5xl">
-          Join Our Newsletter
+      {/* Newsletter */}
+      <section className="container-soft py-16 text-center">
+        <h2 className="font-serif text-3xl text-[color:var(--forest)] md:text-4xl">
+          Subscribe to our emails
         </h2>
-        <p className="mx-auto mt-4 max-w-md text-[color:var(--muted-foreground)]">
-          Be the first to hear about new drops, rituals, and exclusive offers.
+        <p className="mx-auto mt-3 max-w-md text-sm text-[color:var(--muted-foreground)]">
+          Join our email list for exclusive offers and the latest news.
         </p>
-        <div className="mx-auto mt-8 max-w-md">
+        <div className="mx-auto mt-6 max-w-md">
           <Newsletter compact />
         </div>
-        <a
-          href={settings?.instagram_url ?? "https://www.instagram.com/arkmatcha"}
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Instagram"
-          className="mx-auto mt-10 inline-flex text-[color:var(--forest)]"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-        </a>
       </section>
     </main>
-  );
-}
-
-function CategoryTile({
-  to,
-  image,
-  label,
-  ...rest
-}: {
-  to: string;
-  image: string;
-  label: string;
-} & React.HTMLAttributes<HTMLAnchorElement>) {
-  return (
-    <Link
-      to={to as "/shop"}
-      {...rest}
-      className="group relative block w-[85%] shrink-0 snap-start overflow-hidden rounded-[20px] md:w-[48%]"
-    >
-      <div className="aspect-[3/4] w-full">
-        <img
-          src={image}
-          alt={label}
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-        />
-      </div>
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, color-mix(in oklab, black 10%, transparent) 0%, transparent 35%, transparent 65%, color-mix(in oklab, black 30%, transparent) 100%)",
-        }}
-      />
-      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-xl font-medium uppercase tracking-[0.32em] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] md:text-2xl">
-        {label}
-      </span>
-    </Link>
   );
 }
 
@@ -200,7 +144,7 @@ function FeaturedCarousel({ products, label }: { products: Product[]; label: str
   };
 
   return (
-    <section className="container-soft pt-20">
+    <section className="container-soft pt-16">
       <h2 className="font-serif text-2xl text-[color:var(--forest)] md:text-3xl">
         {label}
       </h2>

@@ -20,11 +20,6 @@ export function ThemeApplier() {
 
   const [previewTheme, setPreviewTheme] = useState<ThemeColors | null>(null);
   const [previewTypo, setPreviewTypo] = useState<Typography | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -142,7 +137,7 @@ a { color: ${linkColor}; }
 
   return (
     <>
-      {mounted ? <link rel="stylesheet" href={fontHref} /> : null}
+      <link rel="stylesheet" href={fontHref} suppressHydrationWarning />
       <style dangerouslySetInnerHTML={{ __html: css }} suppressHydrationWarning />
     </>
   );
