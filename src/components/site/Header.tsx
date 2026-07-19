@@ -64,19 +64,6 @@ export function Header() {
               >
                 <Menu className="h-5 w-5" />
               </button>
-              {/* Desktop inline nav */}
-              <nav className="hidden items-center gap-7 md:flex">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    className="text-sm text-[color:var(--forest)] transition-opacity hover:opacity-70"
-                    activeProps={{ className: "text-sm text-[color:var(--matcha)] font-medium underline underline-offset-4" }}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </nav>
             </div>
 
             <Link
@@ -116,7 +103,22 @@ export function Header() {
               </Link>
             </div>
           </div>
+
+          {/* Desktop nav — centered under the logo */}
+          <nav className="hidden items-center justify-center gap-10 pb-3 md:flex">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-base text-[color:var(--forest)] transition-opacity hover:opacity-70"
+                activeProps={{ className: "text-base text-[color:var(--matcha)] font-medium underline underline-offset-8" }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
+
       </header>
 
       {/* Full-screen mobile drawer */}

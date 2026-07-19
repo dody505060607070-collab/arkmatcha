@@ -69,56 +69,59 @@ function Shop() {
         </h1>
 
         {/* Filter / sort toolbar */}
-        <div className="mt-6 flex flex-wrap items-center gap-3 border-y border-[color:var(--border)] py-4">
-          <label className="flex items-center gap-2 text-xs uppercase tracking-widest text-[color:var(--forest)]">
-            Availability
-            <select
-              value={availability}
-              onChange={(e) => setAvailability(e.target.value as Availability)}
-              className="rounded-full border border-[color:var(--border)] bg-transparent px-3 py-1.5 text-xs text-[color:var(--forest)]"
-            >
-              <option value="all">All</option>
-              <option value="in_stock">In stock</option>
-              <option value="sold_out">Sold out</option>
-            </select>
-          </label>
+        <div className="mt-6 border-y border-[color:var(--border)] py-4">
+          <div className="grid grid-cols-2 gap-3 md:flex md:flex-wrap md:items-center">
+            <label className="flex min-w-0 flex-col gap-1 text-[10px] uppercase tracking-[0.2em] text-[color:var(--forest)]/70 md:flex-row md:items-center md:gap-2 md:text-xs md:tracking-widest md:text-[color:var(--forest)]">
+              Availability
+              <select
+                value={availability}
+                onChange={(e) => setAvailability(e.target.value as Availability)}
+                className="w-full rounded-full border border-[color:var(--border)] bg-transparent px-3 py-2 text-xs text-[color:var(--forest)] md:w-auto"
+              >
+                <option value="all">All</option>
+                <option value="in_stock">In stock</option>
+                <option value="sold_out">Sold out</option>
+              </select>
+            </label>
 
-          <label className="flex items-center gap-2 text-xs uppercase tracking-widest text-[color:var(--forest)]">
-            Price
-            <select
-              value={priceSort}
-              onChange={(e) => {
-                setPriceSort(e.target.value as PriceSort);
-                setAlphaSort("none");
-              }}
-              className="rounded-full border border-[color:var(--border)] bg-transparent px-3 py-1.5 text-xs text-[color:var(--forest)]"
-            >
-              <option value="featured">Featured</option>
-              <option value="price_asc">Low to high</option>
-              <option value="price_desc">High to low</option>
-            </select>
-          </label>
+            <label className="flex min-w-0 flex-col gap-1 text-[10px] uppercase tracking-[0.2em] text-[color:var(--forest)]/70 md:flex-row md:items-center md:gap-2 md:text-xs md:tracking-widest md:text-[color:var(--forest)]">
+              Price
+              <select
+                value={priceSort}
+                onChange={(e) => {
+                  setPriceSort(e.target.value as PriceSort);
+                  setAlphaSort("none");
+                }}
+                className="w-full rounded-full border border-[color:var(--border)] bg-transparent px-3 py-2 text-xs text-[color:var(--forest)] md:w-auto"
+              >
+                <option value="featured">Featured</option>
+                <option value="price_asc">Low to high</option>
+                <option value="price_desc">High to low</option>
+              </select>
+            </label>
 
-          <label className="flex items-center gap-2 text-xs uppercase tracking-widest text-[color:var(--forest)]">
-            Sort by
-            <select
-              value={alphaSort}
-              onChange={(e) => {
-                setAlphaSort(e.target.value as AlphaSort);
-                if (e.target.value !== "none") setPriceSort("featured");
-              }}
-              className="rounded-full border border-[color:var(--border)] bg-transparent px-3 py-1.5 text-xs text-[color:var(--forest)]"
-            >
-              <option value="none">Default</option>
-              <option value="az">Alphabetical, A–Z</option>
-              <option value="za">Alphabetical, Z–A</option>
-            </select>
-          </label>
+            <label className="col-span-2 flex min-w-0 flex-col gap-1 text-[10px] uppercase tracking-[0.2em] text-[color:var(--forest)]/70 md:col-span-1 md:flex-row md:items-center md:gap-2 md:text-xs md:tracking-widest md:text-[color:var(--forest)]">
+              Sort by
+              <select
+                value={alphaSort}
+                onChange={(e) => {
+                  setAlphaSort(e.target.value as AlphaSort);
+                  if (e.target.value !== "none") setPriceSort("featured");
+                }}
+                className="w-full rounded-full border border-[color:var(--border)] bg-transparent px-3 py-2 text-xs text-[color:var(--forest)] md:w-auto"
+              >
+                <option value="none">Default</option>
+                <option value="az">Alphabetical, A–Z</option>
+                <option value="za">Alphabetical, Z–A</option>
+              </select>
+            </label>
 
-          <span className="ml-auto text-xs text-[color:var(--forest)]/70">
-            {products.length} {products.length === 1 ? "product" : "products"}
-          </span>
+            <span className="col-span-2 mt-1 text-xs text-[color:var(--forest)]/70 md:col-span-1 md:ml-auto md:mt-0">
+              {products.length} {products.length === 1 ? "product" : "products"}
+            </span>
+          </div>
         </div>
+
 
         <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
           {products.map((product) => {
