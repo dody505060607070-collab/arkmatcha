@@ -23,6 +23,10 @@ import {
   Palette,
   Type as TypeIcon,
   Image as ImageIcon,
+  Star,
+  Tag,
+  Home as HomeIcon,
+  Plus,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
