@@ -24,6 +24,7 @@ export function WelcomePopup() {
   const ctaText: string = home.welcomeCtaText || "Shop the collection";
   const ctaLink: string = home.welcomeCtaLink || "/shop";
   const image: string = home.welcomeImage || "";
+  const logo: string = settings?.logo_url?.trim() || brandAssets.logo;
 
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
