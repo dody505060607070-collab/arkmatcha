@@ -1098,7 +1098,7 @@ function SettingsAdmin() {
 
 /* ---------------- Design Studio (Theme + Typography + Logo + Live Preview) ---------------- */
 function DesignAdmin() {
-  const { data: s, refetch } = useSettings();
+  const { data: s, save: saveSettingsHook } = useSettings();
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [logoUrl, setLogoUrl] = useState("");
   const [theme, setTheme] = useState<ThemeColors>(DEFAULT_THEME);
