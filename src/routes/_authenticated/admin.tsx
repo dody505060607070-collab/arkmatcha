@@ -85,19 +85,6 @@ const sections: { id: Section; label: string; labelAr: string; icon: typeof Layo
   { id: "announcement", label: "Announcement Bar", labelAr: "شريط الإعلان", icon: Megaphone },
   { id: "settings", label: "Settings", labelAr: "الإعدادات", icon: SettingsIcon },
 ];
-  { id: "overview", label: "Overview", labelAr: "نظرة عامة", icon: LayoutDashboard },
-  { id: "design", label: "Design Studio", labelAr: "استوديو التصميم", icon: Palette },
-  { id: "hero", label: "Hero Section", labelAr: "الواجهة الرئيسية", icon: Sparkles },
-  { id: "content", label: "Content", labelAr: "نصوص الصفحات", icon: FileText },
-  { id: "products", label: "Products", labelAr: "المنتجات", icon: Package },
-  { id: "orders", label: "Orders", labelAr: "الطلبات", icon: ShoppingBag },
-  { id: "messages", label: "Messages", labelAr: "رسائل التواصل", icon: MessageSquare },
-  { id: "social", label: "Social & Contact", labelAr: "السوشيال والتواصل", icon: Share2 },
-  { id: "newsletter", label: "Newsletter", labelAr: "قائمة البريد", icon: Mail },
-  { id: "seo", label: "SEO", labelAr: "تحسين محركات البحث", icon: Globe },
-  { id: "announcement", label: "Announcement Bar", labelAr: "شريط الإعلان", icon: Megaphone },
-  { id: "settings", label: "Settings", labelAr: "الإعدادات", icon: SettingsIcon },
-];
 
 function AdminPage() {
   const navigate = useNavigate();
