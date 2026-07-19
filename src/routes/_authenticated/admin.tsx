@@ -280,8 +280,9 @@ function Overview() {
 function HeroAdmin() {
   const { data: s, refetch } = useQuery(settingsQuery);
   const [form, setForm] = useState<Partial<SiteSettings>>({});
+  const [home, setHome] = useState<Record<string, any>>({});
   useEffect(() => {
-    if (s)
+    if (s) {
       setForm({
         hero_image: s.hero_image,
         hero_label: s.hero_label,
@@ -291,23 +292,37 @@ function HeroAdmin() {
         hero_cta_link: s.hero_cta_link,
         featured_label: s.featured_label,
       });
+      setHome((s.content as any)?.home ?? {});
+    }
   }, [s]);
+
+  function updHome(patch: Record<string, any>) {
+    setHome((prev) => ({ ...prev, ...patch }));
+  }
+
+  async function save() {
+    const nextContent = {
+      ...(s?.content ?? {}),
+      home: { ...((s?.content as any)?.home ?? {}), ...home },
+    };
+    await saveSettings({ ...form, content: nextContent } as Partial<SiteSettings>, refetch);
+  }
 
   return (
     <div>
-      <PageHeader title="Hero Section" subtitle="التحكم الكامل في الواجهة الأولى اللي بتظهر لأي زائر على الصفحة الرئيسية." />
+      <PageHeader title="Hero Section" subtitle="التحكم الكامل في الواجهة الأولى، الشريط العلوي، ورسالة الترحيب." />
       <HelpPanel title="إيه هو الـ Hero Section؟">
         <p>
-          ده أول جزء من الموقع بيشوفه الزائر — الصورة الكبيرة والعنوان والزرار. أي تعديل هنا بيتغير على طول في الصفحة
-          الرئيسية.
+          ده أول جزء من الموقع بيشوفه الزائر — الصورة/الفيديو الكبير والعنوان والزرار. أي تعديل هنا بيتغير على طول في الصفحة
+          الرئيسية بعد ما تدوس Save.
         </p>
         <ul className="list-inside list-disc space-y-1 pr-2">
-          <li><b>Hero Image URL</b>: رابط الصورة الأساسية (سيبها فاضية عشان تستخدم الصورة الافتراضية).</li>
-          <li><b>Label</b>: النص الصغير فوق العنوان (مثال: "Ceremonial · Japan").</li>
-          <li><b>Headline</b>: العنوان الكبير بخط Fraunces.</li>
-          <li><b>Tagline</b>: الوصف اللي تحت العنوان.</li>
-          <li><b>CTA Text/Link</b>: كلمة الزرار والصفحة اللي بيوديها (مثلاً <code>/shop</code>).</li>
-          <li><b>Featured label</b>: النص اللي بيظهر فوق شبكة المنتجات.</li>
+          <li><b>Hero Image URL</b>: رابط الصورة (سيبها فاضية عشان تستخدم الصورة الافتراضية).</li>
+          <li><b>Hero Video URL</b>: لو حطيت رابط فيديو، الفيديو هيشتغل تلقائيًا في اللوب من غير صوت وما حدش يقدر يوقفه أو يدوس عليه. الفيديو بياخد أولوية على الصورة.</li>
+          <li><b>Label / Headline / Tagline</b>: النصوص اللي بتظهر تحت الصورة.</li>
+          <li><b>CTA</b>: نص الزرار وصفحة الوجهة (<code>/shop</code>).</li>
+          <li><b>Top Strip</b>: شريط صغير فوق خالص بخط funky زي "Your Fav Matcha Store".</li>
+          <li><b>Welcome Popup</b>: رسالة ترحيب بتظهر لأول زيارة، الزائر يقدر يقفلها.</li>
         </ul>
       </HelpPanel>
 
@@ -316,6 +331,9 @@ function HeroAdmin() {
           <div className="grid gap-4">
             <Field label="Hero Image URL" hint="رابط الصورة — سيبها فاضية للصورة الافتراضية">
               <input value={form.hero_image ?? ""} onChange={(e) => setForm({ ...form, hero_image: e.target.value })} className={inputClass} placeholder="https://..." />
+            </Field>
+            <Field label="Hero Video URL (اختياري)" hint="لو موجود، هيشتغل بدل الصورة، loop، بدون صوت، وما حدش يقدر يوقفه">
+              <input value={home.heroVideo ?? ""} onChange={(e) => updHome({ heroVideo: e.target.value })} className={inputClass} placeholder="https://.../video.mp4" />
             </Field>
             <Field label="Label (small text above headline)" hint="النص الصغير فوق العنوان">
               <input value={form.hero_label ?? ""} onChange={(e) => setForm({ ...form, hero_label: e.target.value })} className={inputClass} />
@@ -337,36 +355,64 @@ function HeroAdmin() {
             <Field label="Featured products label" hint="نص فوق شبكة المنتجات">
               <input value={form.featured_label ?? ""} onChange={(e) => setForm({ ...form, featured_label: e.target.value })} className={inputClass} />
             </Field>
-            <div>
-              <button onClick={() => saveSettings(form, refetch)} className="btn-primary">Save changes</button>
-            </div>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-dashed border-[color:var(--olive)]/40 bg-gradient-to-br from-white to-[color:var(--cream)] p-6">
-          <p className="mb-3 text-[10px] uppercase tracking-[0.3em] text-[color:var(--muted-foreground)]">Live preview · معاينة مباشرة</p>
-          <div className="overflow-hidden rounded-2xl border border-[color:var(--border)] bg-white">
-            <div className="grid grid-cols-2">
-              <div className="bg-[color:var(--olive)]/5 aspect-square">
-                {form.hero_image ? (
-                  <img src={form.hero_image} alt="preview" className="h-full w-full object-contain" />
-                ) : (
-                  <div className="grid h-full place-items-center text-xs text-[color:var(--muted-foreground)]">Default image</div>
-                )}
-              </div>
-              <div className="flex flex-col justify-center gap-2 p-4">
-                <span className="text-[9px] uppercase tracking-[0.25em] text-[color:var(--olive)]">{form.hero_label}</span>
-                <h2 className="font-serif text-base text-[color:var(--petal-strong)]">{form.hero_headline}</h2>
-                <p className="text-[10px] text-[color:var(--olive)]">{form.hero_tagline}</p>
-                <span className="mt-1 inline-flex w-fit rounded-full bg-[color:var(--matcha)] px-3 py-1 text-[10px] font-medium text-white">{form.hero_cta_text}</span>
-              </div>
+        <div className="grid gap-6">
+          {/* Top Strip */}
+          <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm">
+            <h3 className="font-serif text-lg text-[color:var(--forest)]">Top Strip · شريط علوي</h3>
+            <p className="mt-1 text-xs text-[color:var(--muted-foreground)]">شريط صغير فوق الموقع خالص بخط funky ولون أخضر matcha.</p>
+            <div className="mt-4 grid gap-3">
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={home.stripVisible !== false}
+                  onChange={(e) => updHome({ stripVisible: e.target.checked })}
+                />
+                Visible · ظاهر
+              </label>
+              <Field label="Text · النص">
+                <input value={home.stripText ?? ""} onChange={(e) => updHome({ stripText: e.target.value })} className={inputClass} placeholder="Your Fav Matcha Store" />
+              </Field>
+              <Field label="Font · الخط" hint="اسم خط من Google Fonts (مثال: Shrikhand, Bungee, Pacifico, Modak)">
+                <input value={home.stripFont ?? ""} onChange={(e) => updHome({ stripFont: e.target.value })} className={inputClass} placeholder="Shrikhand" />
+              </Field>
+            </div>
+          </div>
+
+          {/* Welcome Popup */}
+          <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm">
+            <h3 className="font-serif text-lg text-[color:var(--forest)]">Welcome Popup · رسالة ترحيب</h3>
+            <p className="mt-1 text-xs text-[color:var(--muted-foreground)]">رسالة بسيطة بتظهر مرة واحدة لكل زائر، ويقدر يقفلها.</p>
+            <div className="mt-4 grid gap-3">
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={home.welcomeEnabled === true}
+                  onChange={(e) => updHome({ welcomeEnabled: e.target.checked })}
+                />
+                Enabled · مفعّلة
+              </label>
+              <Field label="Title · العنوان">
+                <input value={home.welcomeTitle ?? ""} onChange={(e) => updHome({ welcomeTitle: e.target.value })} className={inputClass} placeholder="Welcome to Ark Matcha" />
+              </Field>
+              <Field label="Message · الرسالة">
+                <textarea rows={3} value={home.welcomeMessage ?? ""} onChange={(e) => updHome({ welcomeMessage: e.target.value })} className={inputClass} placeholder="Ceremonial grade matcha, whisked at home." />
+              </Field>
             </div>
           </div>
         </div>
       </div>
+
+      <div className="mt-6">
+        <button onClick={save} className="btn-primary">Save changes</button>
+      </div>
     </div>
   );
 }
+
+
 
 /* ---------------- Products ---------------- */
 function ProductsAdmin() {
