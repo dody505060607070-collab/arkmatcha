@@ -37,12 +37,16 @@ import {
   AVAILABLE_FONTS,
   FONT_CATALOG,
   FONT_CATEGORIES,
+  allReviewsQuery,
+  discountCodesQuery,
   type FontCategory,
   type Product,
   type SiteSettings,
   type ThemeColors,
   type Typography,
   type ContentMap,
+  type Review,
+  type DiscountCode,
 } from "@/lib/queries";
 
 export const Route = createFileRoute("/_authenticated/admin")({
