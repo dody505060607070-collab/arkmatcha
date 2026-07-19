@@ -115,27 +115,27 @@ function Home() {
 
         {/* Explore / CTA card */}
         <div
-          className="relative -mt-8 overflow-hidden rounded-3xl px-6 py-8 md:-mt-10 md:px-10 md:py-10"
+          className="relative -mt-10 overflow-hidden rounded-3xl px-5 py-5 md:-mt-10 md:px-10 md:py-10"
           style={{
             background: "var(--background)",
             border: "1px solid var(--border)",
           }}
         >
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-6">
             <div className="max-w-xl">
               <p className="text-[10px] uppercase tracking-[0.35em] text-[color:var(--olive)]">
                 Ceremonial · Kyoto, Japan
               </p>
-              <h1 className="mt-3 font-serif text-3xl leading-tight text-[color:var(--forest)] md:text-5xl">
+              <h1 className="mt-2 font-serif text-2xl leading-tight text-[color:var(--forest)] md:mt-3 md:text-5xl">
                 {heroHeadline}
               </h1>
-              <p className="mt-3 text-sm leading-relaxed text-[color:var(--forest)]/80 md:text-base">
+              <p className="mt-2 text-xs leading-relaxed text-[color:var(--forest)]/80 md:mt-3 md:text-base">
                 {heroSub}
               </p>
             </div>
             <Link
               to={heroCtaLink as "/shop"}
-              className="inline-flex shrink-0 items-center gap-2 rounded-full px-6 py-3 text-sm font-medium shadow-sm transition-transform hover:-translate-y-0.5"
+              className="inline-flex w-fit shrink-0 items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium shadow-sm transition-transform hover:-translate-y-0.5 md:px-6 md:py-3"
               style={{ background: "var(--matcha)", color: "#fff" }}
             >
               {heroCtaText} →
