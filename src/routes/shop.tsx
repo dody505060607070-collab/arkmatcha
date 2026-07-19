@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+
 import { productsQuery, settingsQuery, type Product } from "@/lib/queries";
 import { getProductImage } from "@/lib/brand-assets";
 import { useContent } from "@/lib/useContent";
