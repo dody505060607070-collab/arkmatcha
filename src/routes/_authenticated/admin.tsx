@@ -1647,3 +1647,253 @@ function MessagesAdmin() {
 // Silence unused import warning when FontPicker replaces the old select.
 void AVAILABLE_FONTS;
 
+/* ---------------- Home Sections (Trust / Story / Editorial / Instagram) ---------------- */
+
+function HomeSectionsAdmin() {
+  const { data: s, refetch } = useSettings();
+  const [form, setForm] = useState<Partial<SiteSettings>>({});
+  useEffect(() => {
+    if (!s) return;
+    setForm({
+      trust_pills: s.trust_pills ?? [],
+      story_steps: s.story_steps ?? [],
+      instagram_grid: s.instagram_grid ?? [],
+      editorial_image: s.editorial_image ?? "",
+      editorial_quote: s.editorial_quote ?? "",
+    });
+  }, [s]);
+
+  const pills = form.trust_pills ?? [];
+  const steps = form.story_steps ?? [];
+  const grid = form.instagram_grid ?? [];
+
+  return (
+    <div className="space-y-6">
+      <PageHeader title="Home Sections" subtitle="تحكّم في الشرايط اللي بتظهر تحت الـ Hero: مميزات، قصة المنتج، صورة تحريرية، وشبكة إنستجرام." />
+      <HelpPanel title="نصائح">
+        <p>كل قسم اختياري — سيبه فاضي عشان يختفي من الصفحة الرئيسية.</p>
+      </HelpPanel>
+
+      {/* Trust Pills */}
+      <div className="rounded-2xl border border-[color:var(--border)] bg-white p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-serif text-lg">Trust Pills</h3>
+            <p className="text-xs opacity-70" dir="rtl">شارات الثقة (مثال: صُنع في اليابان، شحن سريع...)</p>
+          </div>
+          <button className="btn-secondary text-xs" onClick={() => setForm({ ...form, trust_pills: [...pills, ""] })}>
+            <Plus className="h-3.5 w-3.5 inline" /> Add pill
+          </button>
+        </div>
+        <div className="space-y-2">
+          {pills.map((p, i) => (
+            <div key={i} className="flex gap-2">
+              <input value={p} onChange={(e) => {
+                const next = [...pills]; next[i] = e.target.value;
+                setForm({ ...form, trust_pills: next });
+              }} className={inputClass} placeholder="Made in Japan" />
+              <button className="rounded-lg border border-red-200 bg-red-50 px-3 text-red-700" onClick={() => {
+                setForm({ ...form, trust_pills: pills.filter((_, j) => j !== i) });
+              }}><Trash2 className="h-4 w-4" /></button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Story Steps */}
+      <div className="rounded-2xl border border-[color:var(--border)] bg-white p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-serif text-lg">Story Steps</h3>
+            <p className="text-xs opacity-70" dir="rtl">خطوات قصة المنتج (مثلاً: Sourced → Milled → Sealed)</p>
+          </div>
+          <button className="btn-secondary text-xs" onClick={() => setForm({ ...form, story_steps: [...steps, { title: "", body: "" }] })}>
+            <Plus className="h-3.5 w-3.5 inline" /> Add step
+          </button>
+        </div>
+        <div className="space-y-3">
+          {steps.map((st, i) => (
+            <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-2 border-t pt-3">
+              <input value={st.title} onChange={(e) => {
+                const next = [...steps]; next[i] = { ...next[i], title: e.target.value };
+                setForm({ ...form, story_steps: next });
+              }} className={inputClass} placeholder="Sourced" />
+              <div className="flex gap-2">
+                <input value={st.body} onChange={(e) => {
+                  const next = [...steps]; next[i] = { ...next[i], body: e.target.value };
+                  setForm({ ...form, story_steps: next });
+                }} className={inputClass} placeholder="Shaded tencha leaves from Uji, Japan." />
+                <button className="rounded-lg border border-red-200 bg-red-50 px-3 text-red-700" onClick={() => {
+                  setForm({ ...form, story_steps: steps.filter((_, j) => j !== i) });
+                }}><Trash2 className="h-4 w-4" /></button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Editorial Band */}
+      <div className="rounded-2xl border border-[color:var(--border)] bg-white p-5 space-y-3">
+        <h3 className="font-serif text-lg">Editorial Band</h3>
+        <p className="text-xs opacity-70" dir="rtl">صورة عريضة مع اقتباس قصير.</p>
+        <Field label="Image URL">
+          <input value={form.editorial_image ?? ""} onChange={(e) => setForm({ ...form, editorial_image: e.target.value })} className={inputClass} placeholder="https://..." />
+        </Field>
+        <Field label="Quote">
+          <textarea rows={3} value={form.editorial_quote ?? ""} onChange={(e) => setForm({ ...form, editorial_quote: e.target.value })} className={inputClass} />
+        </Field>
+      </div>
+
+      {/* Instagram Grid */}
+      <div className="rounded-2xl border border-[color:var(--border)] bg-white p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-serif text-lg">Instagram Grid</h3>
+            <p className="text-xs opacity-70" dir="rtl">6 صور من إنستجرام (أدخل روابط الصور).</p>
+          </div>
+          <button className="btn-secondary text-xs" onClick={() => setForm({ ...form, instagram_grid: [...grid, ""] })}>
+            <Plus className="h-3.5 w-3.5 inline" /> Add image
+          </button>
+        </div>
+        <div className="space-y-2">
+          {grid.map((g, i) => (
+            <div key={i} className="flex gap-2">
+              <input value={g} onChange={(e) => {
+                const next = [...grid]; next[i] = e.target.value;
+                setForm({ ...form, instagram_grid: next });
+              }} className={inputClass} placeholder="https://..." />
+              <button className="rounded-lg border border-red-200 bg-red-50 px-3 text-red-700" onClick={() => {
+                setForm({ ...form, instagram_grid: grid.filter((_, j) => j !== i) });
+              }}><Trash2 className="h-4 w-4" /></button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <button onClick={() => saveSettings(form, refetch)} className="btn-primary">Save changes</button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Reviews ---------------- */
+
+function ReviewsAdmin() {
+  const qc = useQueryClient();
+  const { data: reviews = [], refetch } = useQuery(allReviewsQuery);
+
+  async function addReview() {
+    const { error } = await supabase.from("reviews").insert({
+      author_name: "New reviewer",
+      rating: 5,
+      quote: "Amazing matcha.",
+      featured: true,
+      sort_order: reviews.length,
+    });
+    if (error) return toast.error(error.message);
+    toast.success("Review added");
+    refetch();
+  }
+
+  async function updateReview(id: string, patch: Partial<Review>) {
+    const { error } = await supabase.from("reviews").update(patch).eq("id", id);
+    if (error) return toast.error(error.message);
+    qc.invalidateQueries({ queryKey: ["reviews"] });
+    refetch();
+  }
+
+  async function deleteReview(id: string) {
+    const { error } = await supabase.from("reviews").delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    toast.success("Deleted");
+    refetch();
+  }
+
+  return (
+    <div className="space-y-6">
+      <PageHeader title="Reviews" subtitle="آراء العملاء اللي بتظهر في الصفحة الرئيسية." />
+      <div>
+        <button onClick={addReview} className="btn-primary"><Plus className="h-4 w-4 inline" /> Add review</button>
+      </div>
+      <div className="space-y-3">
+        {reviews.map((r) => (
+          <div key={r.id} className="rounded-2xl border border-[color:var(--border)] bg-white p-4 space-y-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+              <input defaultValue={r.author_name} onBlur={(e) => updateReview(r.id, { author_name: e.target.value })} className={inputClass} placeholder="Name" />
+              <input defaultValue={r.location ?? ""} onBlur={(e) => updateReview(r.id, { location: e.target.value })} className={inputClass} placeholder="Location" />
+              <input type="number" min={1} max={5} defaultValue={r.rating} onBlur={(e) => updateReview(r.id, { rating: Number(e.target.value) })} className={inputClass} placeholder="Rating (1-5)" />
+            </div>
+            <textarea rows={2} defaultValue={r.quote} onBlur={(e) => updateReview(r.id, { quote: e.target.value })} className={inputClass} />
+            <div className="flex items-center justify-between">
+              <label className="flex items-center gap-2 text-sm">
+                <input type="checkbox" defaultChecked={r.featured} onChange={(e) => updateReview(r.id, { featured: e.target.checked })} />
+                Featured
+              </label>
+              <button onClick={() => deleteReview(r.id)} className="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs text-red-700">
+                <Trash2 className="h-3.5 w-3.5" /> Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Discount Codes ---------------- */
+
+function DiscountCodesAdmin() {
+  const { data: codes = [], refetch } = useQuery(discountCodesQuery);
+
+  async function addCode() {
+    const code = prompt("Discount code (e.g. WELCOME10)?")?.trim().toUpperCase();
+    if (!code) return;
+    const percent = Number(prompt("Percent off (1-100)?") ?? "10");
+    const { error } = await supabase.from("discount_codes").insert({ code, percent_off: percent, active: true });
+    if (error) return toast.error(error.message);
+    toast.success("Code created");
+    refetch();
+  }
+
+  async function updateCode(id: string, patch: Partial<DiscountCode>) {
+    const { error } = await supabase.from("discount_codes").update(patch).eq("id", id);
+    if (error) return toast.error(error.message);
+    refetch();
+  }
+
+  async function deleteCode(id: string) {
+    const { error } = await supabase.from("discount_codes").delete().eq("id", id);
+    if (error) return toast.error(error.message);
+    refetch();
+  }
+
+  return (
+    <div className="space-y-6">
+      <PageHeader title="Discount Codes" subtitle="أكواد الخصم اللي العميل يقدر يستخدمها في الشيك أوت." />
+      <div>
+        <button onClick={addCode} className="btn-primary"><Plus className="h-4 w-4 inline" /> New code</button>
+      </div>
+      <div className="space-y-2">
+        {codes.map((c) => (
+          <div key={c.id} className="rounded-xl border border-[color:var(--border)] bg-white p-4 flex flex-wrap items-center gap-3">
+            <div className="font-mono text-sm tracking-wider">{c.code}</div>
+            <input type="number" defaultValue={c.percent_off} onBlur={(e) => updateCode(c.id, { percent_off: Number(e.target.value) })} className={`${inputClass} w-24`} />
+            <span className="text-xs opacity-70">% off</span>
+            <label className="flex items-center gap-1 text-sm ml-auto">
+              <input type="checkbox" defaultChecked={c.active} onChange={(e) => updateCode(c.id, { active: e.target.checked })} />
+              Active
+            </label>
+            <span className="text-xs opacity-70">Used {c.used_count}{c.usage_limit ? `/${c.usage_limit}` : ""}</span>
+            <button onClick={() => deleteCode(c.id)} className="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-red-50 px-2 py-1 text-xs text-red-700">
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        ))}
+        {codes.length === 0 && <p className="text-sm opacity-60">No discount codes yet.</p>}
+      </div>
+    </div>
+  );
+}
+
+
