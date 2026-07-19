@@ -45,7 +45,8 @@ function Home() {
     settings?.hero_headline?.trim() || "Slow mornings, brighter days.";
   const heroSub =
     settings?.content?.home?.heroSub?.trim() ||
-    "Stone-milled in Japan. Whisked at home. A small green pause you'll look forward to.";
+    "Ceremonial grade matcha, whisked at home.";
+
   const heroCtaText = settings?.hero_cta_text?.trim() || "Shop the collection";
   const heroCtaLink = settings?.hero_cta_link?.trim() || "/shop";
   const featuredLabel = settings?.featured_label?.trim() || "Featured products";
