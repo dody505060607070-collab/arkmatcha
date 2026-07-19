@@ -5,6 +5,7 @@ import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { settingsQuery } from "@/lib/queries";
 import { supabase } from "@/integrations/supabase/client";
+import { brandAssets } from "@/lib/brand-assets";
 
 const STORAGE_KEY = "ark_welcome_dismissed_v2";
 
