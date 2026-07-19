@@ -172,6 +172,12 @@ export function WelcomePopup() {
                 </p>
                 <p className="font-serif text-xl">{discountLabel}</p>
               </div>
+              <img
+                src={logo}
+                alt=""
+                aria-hidden="true"
+                className="h-10 w-10 rounded-full bg-white/10 p-1 animate-[spin_18s_linear_infinite]"
+              />
             </div>
 
             {!subscribed ? (
