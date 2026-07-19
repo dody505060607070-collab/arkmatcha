@@ -138,13 +138,15 @@ function AdminPage() {
         {section === "overview" && <Overview />}
         {section === "design" && <DesignAdmin />}
         {section === "hero" && <HeroAdmin />}
+        {section === "home-sections" && <HomeSectionsAdmin />}
         {section === "products" && <ProductsAdmin />}
+        {section === "reviews" && <ReviewsAdmin />}
+        {section === "discounts" && <DiscountCodesAdmin />}
         {section === "orders" && <OrdersAdmin />}
         {section === "messages" && <MessagesAdmin />}
         {section === "content" && <ContentAdmin />}
         {section === "social" && <SocialAdmin />}
         {section === "newsletter" && <NewsletterAdmin />}
-        {section === "seo" && <SeoAdmin />}
         {section === "announcement" && <AnnouncementAdmin />}
         {section === "settings" && <SettingsAdmin />}
       </main>
