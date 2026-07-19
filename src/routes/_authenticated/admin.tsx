@@ -384,7 +384,9 @@ function HeroAdmin() {
           {/* Welcome Popup */}
           <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm">
             <h3 className="font-serif text-lg text-[color:var(--forest)]">Welcome Popup · رسالة ترحيب</h3>
-            <p className="mt-1 text-xs text-[color:var(--muted-foreground)]">رسالة بسيطة بتظهر مرة واحدة لكل زائر، ويقدر يقفلها.</p>
+            <p className="mt-1 text-xs text-[color:var(--muted-foreground)]">
+              بوب-أب أنيق بيظهر مرة واحدة لكل زائر، فيه كود خصم وحقل إيميل يشترك في النشرة.
+            </p>
             <div className="mt-4 grid gap-3">
               <label className="flex items-center gap-2 text-sm">
                 <input
@@ -394,12 +396,37 @@ function HeroAdmin() {
                 />
                 Enabled · مفعّلة
               </label>
+              <Field label="Eyebrow · نص علوي صغير">
+                <input value={home.welcomeEyebrow ?? ""} onChange={(e) => updHome({ welcomeEyebrow: e.target.value })} className={inputClass} placeholder="Members only" />
+              </Field>
               <Field label="Title · العنوان">
-                <input value={home.welcomeTitle ?? ""} onChange={(e) => updHome({ welcomeTitle: e.target.value })} className={inputClass} placeholder="Welcome to Ark Matcha" />
+                <input value={home.welcomeTitle ?? ""} onChange={(e) => updHome({ welcomeTitle: e.target.value })} className={inputClass} placeholder="A little gift, on us." />
               </Field>
               <Field label="Message · الرسالة">
-                <textarea rows={3} value={home.welcomeMessage ?? ""} onChange={(e) => updHome({ welcomeMessage: e.target.value })} className={inputClass} placeholder="Ceremonial grade matcha, whisked at home." />
+                <textarea rows={3} value={home.welcomeMessage ?? ""} onChange={(e) => updHome({ welcomeMessage: e.target.value })} className={inputClass} placeholder="Join the Ark ritual and unlock 10% off your first tin." />
               </Field>
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Discount label · شكل الخصم">
+                  <input value={home.welcomeDiscountLabel ?? ""} onChange={(e) => updHome({ welcomeDiscountLabel: e.target.value })} className={inputClass} placeholder="10% OFF" />
+                </Field>
+                <Field label="Discount code · الكود">
+                  <input value={home.welcomeDiscountCode ?? ""} onChange={(e) => updHome({ welcomeDiscountCode: e.target.value })} className={inputClass} placeholder="ARK10" />
+                </Field>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="CTA text · نص الزرار">
+                  <input value={home.welcomeCtaText ?? ""} onChange={(e) => updHome({ welcomeCtaText: e.target.value })} className={inputClass} placeholder="Shop the collection" />
+                </Field>
+                <Field label="CTA link · رابط الزرار">
+                  <input value={home.welcomeCtaLink ?? ""} onChange={(e) => updHome({ welcomeCtaLink: e.target.value })} className={inputClass} placeholder="/shop" />
+                </Field>
+              </div>
+              <Field label="Image URL · صورة اختيارية (تظهر على desktop)">
+                <input value={home.welcomeImage ?? ""} onChange={(e) => updHome({ welcomeImage: e.target.value })} className={inputClass} placeholder="https://..." />
+              </Field>
+              <p className="text-[11px] text-[color:var(--muted-foreground)]">
+                البوب-أب بيتخزن أنه اتقفل للزائر؛ عشان تشوف تجربة جديدة امسح الـ localStorage.
+              </p>
             </div>
           </div>
         </div>
