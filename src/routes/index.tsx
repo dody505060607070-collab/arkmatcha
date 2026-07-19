@@ -150,16 +150,21 @@ function Home() {
           {featuredLabel}
         </h2>
         <div className="mt-6 grid grid-cols-2 gap-4 md:gap-6">
-          {products.map((product) => {
+          {products.map((product, idx) => {
             const label = product.name;
             const main = getProductImage(product.slug, product.image_url);
             const secondary = pickSecondary(product);
+            const side = idx % 2 === 0 ? "left" : "right";
+            const delay = ((idx % 5) + 1) as 1 | 2 | 3 | 4 | 5;
             return (
               <Link
                 key={product.id}
                 to="/product/$slug"
                 params={{ slug: product.slug }}
                 className="group block"
+                data-reveal
+                data-reveal-style={side}
+                data-reveal-delay={String(delay)}
               >
                 {product.image_visible !== false ? (
                   <div
