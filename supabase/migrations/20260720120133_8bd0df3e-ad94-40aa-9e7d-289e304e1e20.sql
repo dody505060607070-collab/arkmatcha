@@ -1,0 +1,1 @@
+UPDATE public.products SET gallery = to_jsonb(ARRAY[image_url, '/__l5e/assets-v1/489250cc-558f-4ac4-a245-70579e84d7da/matcha-powder-swatch.jpeg']) WHERE slug IN ('ark-matcha-30g','ark-matcha-50g');
