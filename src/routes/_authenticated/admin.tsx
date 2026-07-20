@@ -525,6 +525,8 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
     price_visible: product.price_visible ?? true,
     ingredients: product.ingredients,
     storage: product.storage,
+    extra_info_title: product.extra_info_title ?? "",
+    extra_info_body: product.extra_info_body ?? "",
   });
 
   const [saving, setSaving] = useState(false);
@@ -551,6 +553,8 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
         price_visible: form.price_visible,
         ingredients: form.ingredients,
         storage: form.storage,
+        extra_info_title: form.extra_info_title || null,
+        extra_info_body: form.extra_info_body || null,
         updated_at: new Date().toISOString(),
       })
       .eq("id", product.id);
@@ -611,7 +615,10 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
         <Field label="Short description" hint="وصف قصير يظهر تحت الاسم" className="md:col-span-2"><textarea rows={2} value={form.short_description} onChange={(e) => setForm({ ...form, short_description: e.target.value })} className={inputClass} /></Field>
         <Field label="Full description" hint="الوصف الكامل في صفحة المنتج" className="md:col-span-2"><textarea rows={4} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className={inputClass} /></Field>
         <Field label="Ingredients" hint="المكونات"><textarea rows={2} value={form.ingredients} onChange={(e) => setForm({ ...form, ingredients: e.target.value })} className={inputClass} /></Field>
+        <Field label="Ingredients" hint="المكونات"><textarea rows={2} value={form.ingredients} onChange={(e) => setForm({ ...form, ingredients: e.target.value })} className={inputClass} /></Field>
         <Field label="Storage" hint="طريقة التخزين"><textarea rows={2} value={form.storage} onChange={(e) => setForm({ ...form, storage: e.target.value })} className={inputClass} /></Field>
+        <Field label="Extra info — title" hint="عنوان القسم الإضافي تحت Ingredients (سيبها فاضية عشان تخفيه)"><input value={form.extra_info_title} placeholder="e.g. Tasting notes" onChange={(e) => setForm({ ...form, extra_info_title: e.target.value })} className={inputClass} /></Field>
+        <Field label="Extra info — body" hint="نص القسم الإضافي (يقبل عدة أسطر)"><textarea rows={3} value={form.extra_info_body} onChange={(e) => setForm({ ...form, extra_info_body: e.target.value })} className={inputClass} /></Field>
       </div>
       <div className="mt-5 flex justify-between gap-3">
         {onDelete ? (
