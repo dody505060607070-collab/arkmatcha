@@ -259,6 +259,16 @@ function ProductPage() {
           <h3 className="mb-2 font-serif text-xl">Ingredients</h3>
           <p className="text-sm text-[color:var(--muted-foreground)]">{product.ingredients}</p>
         </div>
+        {product.extra_info_title || product.extra_info_body ? (
+          <div className="soft-panel p-6 md:p-8">
+            {product.extra_info_title ? (
+              <h3 className="mb-2 font-serif text-xl">{product.extra_info_title}</h3>
+            ) : null}
+            {product.extra_info_body ? (
+              <p className="whitespace-pre-line text-sm text-[color:var(--muted-foreground)]">{product.extra_info_body}</p>
+            ) : null}
+          </div>
+        ) : null}
         <div className="soft-panel p-6 md:p-8">
           <h3 className="mb-2 font-serif text-xl">Storage</h3>
           <p className="text-sm text-[color:var(--muted-foreground)]">{product.storage}</p>

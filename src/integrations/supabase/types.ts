@@ -163,6 +163,8 @@ export type Database = {
           created_at: string
           description: string
           discount_percentage: number
+          extra_info_body: string | null
+          extra_info_title: string | null
           gallery: Json
           id: string
           image_url: string
@@ -185,6 +187,8 @@ export type Database = {
           created_at?: string
           description?: string
           discount_percentage?: number
+          extra_info_body?: string | null
+          extra_info_title?: string | null
           gallery?: Json
           id?: string
           image_url?: string
@@ -207,6 +211,8 @@ export type Database = {
           created_at?: string
           description?: string
           discount_percentage?: number
+          extra_info_body?: string | null
+          extra_info_title?: string | null
           gallery?: Json
           id?: string
           image_url?: string

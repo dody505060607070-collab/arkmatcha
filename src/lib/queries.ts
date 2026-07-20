@@ -20,6 +20,8 @@ export type Product = {
   price_visible: boolean;
   discount_percentage: number;
   sort_order: number;
+  extra_info_title: string | null;
+  extra_info_body: string | null;
 };
 
 export type ThemeColors = {
