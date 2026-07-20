@@ -12,11 +12,11 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Ark Matcha | Ceremonial Grade Matcha Made in Japan" },
-      { property: "og:title", content: "Ark Matcha | Ceremonial Grade Matcha" },
+      { property: "og:title", content: "Ark Matcha | Ceremonial Grade Matcha Made in Japan" },
       {
         property: "og:description",
         content:
-          "Shop Ark Matcha ceremonial grade matcha, available in 30g and 50g premium tins.",
+          "Shop Ark Matcha ceremonial grade matcha made in Japan, available in 30g and 50g premium tins. A calm, elegant matcha ritual made for smooth daily energy.",
       },
     ],
     links: [
