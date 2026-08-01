@@ -30,7 +30,9 @@ import {
   Printer,
   Copy,
   Download,
+  Bell,
 } from "lucide-react";
+import { NotificationsAdmin } from "@/components/admin/NotificationsAdmin";
 import { GOVERNORATES } from "@/lib/egypt-governorates";
 import { supabase } from "@/integrations/supabase/client";
 import { buildLabelText, printLabel, downloadLabel } from "@/lib/shipping-label";
