@@ -7,6 +7,7 @@ import { settingsQuery } from "@/lib/queries";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { governoratesWithRates, shippingForWithRates } from "@/lib/egypt-governorates";
 import { toast } from "sonner";
+import { notifyAdmins } from "@/lib/push-client";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
