@@ -60,7 +60,9 @@ function CheckoutPage() {
       return;
     }
     setLoading(true);
+    const orderId = crypto.randomUUID();
     const { error } = await supabase.from("orders").insert({
+      id: orderId,
       ...parsed.data,
       whatsapp: parsed.data.whatsapp || null,
       email: parsed.data.email || null,
