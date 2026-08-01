@@ -794,7 +794,38 @@ function OrdersAdmin() {
                   <span>Total (Cash on Delivery)</span><span>EGP {Number(o.total).toFixed(2)}</span>
                 </li>
               </ul>
+              <div className="mt-4 flex flex-wrap gap-2 border-t border-[color:var(--border)] pt-3">
+                <button
+                  type="button"
+                  onClick={() => { if (!printLabel(o)) toast.error("Allow pop-ups to print the label"); }}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-[color:var(--olive)] px-3 py-1.5 text-xs text-white"
+                >
+                  <Printer className="h-3.5 w-3.5" /> بوليصة شحن — طباعة / PDF
+                </button>
+                <button
+                  type="button"
+                  onClick={() => downloadLabel(o)}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-[color:var(--border)] bg-white px-3 py-1.5 text-xs"
+                >
+                  <Download className="h-3.5 w-3.5" /> تنزيل الملف
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(buildLabelText(o));
+                      toast.success("تم نسخ بيانات الشحن");
+                    } catch {
+                      toast.error("Copy failed");
+                    }
+                  }}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-[color:var(--border)] bg-white px-3 py-1.5 text-xs"
+                >
+                  <Copy className="h-3.5 w-3.5" /> نسخ كل البيانات
+                </button>
+              </div>
             </div>
+
           ))}
         </div>
       )}
