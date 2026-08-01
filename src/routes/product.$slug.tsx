@@ -97,6 +97,17 @@ function ProductPage() {
     el.scrollBy({ left: dir * el.clientWidth, behavior: "smooth" });
   }
 
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el || gallery.length <= 1) return;
+    const onScroll = () => {
+      const index = Math.round(el.scrollLeft / el.clientWidth);
+      setCurrentIndex(Math.max(0, Math.min(index, gallery.length - 1)));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [gallery.length]);
+
 
   return (
     <main className="container-soft py-8 md:py-12">
