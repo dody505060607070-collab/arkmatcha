@@ -81,6 +81,7 @@ function CheckoutPage() {
     });
     setLoading(false);
     if (error) { toast.error(error.message); return; }
+    notifyAdmins("order", orderId);
     clear();
     setDone(true);
   }
