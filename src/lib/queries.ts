@@ -121,6 +121,7 @@ export type SiteSettings = {
   editorial_image: string | null;
   editorial_quote: string | null;
   wishlist_enabled: boolean;
+  shipping_rates: Record<string, number> | null;
 };
 
 export type Review = {
