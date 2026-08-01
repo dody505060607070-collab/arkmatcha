@@ -64,12 +64,32 @@ function Home() {
           <div className="absolute left-3 top-4 z-20 md:left-8 md:top-8">
             <div className="relative">
               {/* Logo watermark, replaces the star from the reference */}
-              <img
-                src={logo}
-                alt=""
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-6 -top-5 h-12 w-12 rotate-12 opacity-90 md:-right-8 md:-top-6 md:h-16 md:w-16 animate-[spin_18s_linear_infinite]"
-              />
+              {(() => {
+                const spinColor = (settings?.content as any)?.home?.heroSpinColor?.trim?.();
+                const base =
+                  "pointer-events-none absolute -right-6 -top-5 h-12 w-12 rotate-12 opacity-90 md:-right-8 md:-top-6 md:h-16 md:w-16 animate-[spin_18s_linear_infinite]";
+                if (spinColor) {
+                  return (
+                    <div
+                      aria-hidden="true"
+                      className={base}
+                      style={{
+                        backgroundColor: spinColor,
+                        WebkitMaskImage: `url(${logo})`,
+                        maskImage: `url(${logo})`,
+                        WebkitMaskRepeat: "no-repeat",
+                        maskRepeat: "no-repeat",
+                        WebkitMaskPosition: "center",
+                        maskPosition: "center",
+                        WebkitMaskSize: "contain",
+                        maskSize: "contain",
+                      }}
+                    />
+                  );
+                }
+                return <img src={logo} alt="" aria-hidden="true" className={base} />;
+              })()}
+
               <div className="relative -rotate-6 rounded-xl bg-[color:var(--background)] px-3 py-2 shadow-md md:px-4 md:py-2.5">
                 <p className="whitespace-pre-line font-serif text-sm leading-[1.05] tracking-tight text-[color:var(--matcha)] md:text-lg">
                   {heroBadge}
