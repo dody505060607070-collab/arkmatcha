@@ -1,0 +1,1 @@
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS shipping_rates jsonb NOT NULL DEFAULT '{}'::jsonb;
