@@ -31,6 +31,7 @@ import {
   Copy,
   Download,
 } from "lucide-react";
+import { GOVERNORATES } from "@/lib/egypt-governorates";
 import { supabase } from "@/integrations/supabase/client";
 import { buildLabelText, printLabel, downloadLabel } from "@/lib/shipping-label";
 import {
