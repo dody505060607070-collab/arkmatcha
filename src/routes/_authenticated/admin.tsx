@@ -31,6 +31,7 @@ import {
   Copy,
   Download,
 } from "lucide-react";
+import { GOVERNORATES } from "@/lib/egypt-governorates";
 import { supabase } from "@/integrations/supabase/client";
 import { buildLabelText, printLabel, downloadLabel } from "@/lib/shipping-label";
 import {
@@ -1142,28 +1143,91 @@ function AnnouncementAdmin() {
 function SettingsAdmin() {
   const { data: s, refetch } = useSettings();
   const [shipping, setShipping] = useState<string>("");
-  useEffect(() => { if (s) setShipping(String(s.shipping_fee)); }, [s]);
-  const schema = z.object({ shipping: z.string().refine((v) => !isNaN(Number(v)) && Number(v) >= 0, "Enter a valid number") });
+  const [rates, setRates] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+  useEffect(() => {
+    if (!s) return;
+    setShipping(String(s.shipping_fee));
+    const saved = (s.shipping_rates ?? {}) as Record<string, number>;
+    const next: Record<string, string> = {};
+    for (const g of GOVERNORATES) {
+      const v = saved[g.value];
+      next[g.value] = String(typeof v === "number" ? v : g.shipping);
+    }
+    setRates(next);
+  }, [s]);
+
   async function save() {
-    const parsed = schema.safeParse({ shipping });
-    if (!parsed.success) { toast.error(parsed.error.issues[0].message); return; }
-    await saveSettings({ shipping_fee: Number(shipping) }, refetch);
+    if (isNaN(Number(shipping)) || Number(shipping) < 0) { toast.error("سعر الشحن الافتراضي غير صحيح"); return; }
+    const out: Record<string, number> = {};
+    for (const g of GOVERNORATES) {
+      const raw = rates[g.value];
+      const n = Number(raw);
+      if (raw === "" || isNaN(n) || n < 0) { toast.error(`سعر ${g.label} غير صحيح`); return; }
+      out[g.value] = n;
+    }
+    setSaving(true);
+    await saveSettings({ shipping_fee: Number(shipping), shipping_rates: out }, refetch);
+    setSaving(false);
   }
+
+  function resetDefaults() {
+    const next: Record<string, string> = {};
+    for (const g of GOVERNORATES) next[g.value] = String(g.shipping);
+    setRates(next);
+  }
+
+  function applyToAll() {
+    const n = Number(shipping);
+    if (isNaN(n) || n < 0) { toast.error("اكتب سعر افتراضي صحيح الأول"); return; }
+    const next: Record<string, string> = {};
+    for (const g of GOVERNORATES) next[g.value] = String(n);
+    setRates(next);
+  }
+
   return (
     <div>
-      <PageHeader title="Settings" subtitle="الإعدادات العامة للمتجر — سعر الشحن الافتراضي." />
-      <HelpPanel title="إعدادات المتجر">
-        <p>سعر الشحن الافتراضي بيتحدد هنا. لو المحافظة ليها سعر مخصص، السعر بتاعها بيتطبق تلقائيًا في الـ Checkout.</p>
+      <PageHeader title="Shipping & Settings" subtitle="أسعار الشحن لكل محافظة — بتتحدث على الموقع فورًا." />
+      <HelpPanel title="أسعار الشحن">
+        <p>هنا تقدر تغيّر سعر شحن كل محافظة يدويًا. بعد ما تدوس <b>Save</b> السعر بيبقى live على صفحة الـ Checkout على طول، والعميل بيشوف السعر الجديد لما يختار محافظته.</p>
+        <p><b>Default shipping fee</b> هو السعر اللي بيتستخدم لو محافظة مالهاش سعر محدد. زرار <b>Apply to all</b> بيحط السعر الافتراضي على كل المحافظات، و<b>Reset</b> بيرجّع الأسعار الأصلية.</p>
       </HelpPanel>
-      <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm grid gap-4 max-w-md">
+
+      <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm grid gap-4 max-w-md mb-6">
         <Field label="Default shipping fee (EGP)" hint="سعر الشحن الافتراضي بالجنيه">
-          <input value={shipping} onChange={(e) => setShipping(e.target.value)} className={inputClass} />
+          <input value={shipping} onChange={(e) => setShipping(e.target.value)} className={inputClass} inputMode="numeric" />
         </Field>
-        <div><button onClick={save} className="btn-primary">Save</button></div>
+        <div className="flex gap-2 flex-wrap">
+          <button onClick={applyToAll} className="rounded-xl border border-[color:var(--border)] px-4 py-2 text-sm">Apply to all · طبّق على الكل</button>
+          <button onClick={resetDefaults} className="rounded-xl border border-[color:var(--border)] px-4 py-2 text-sm">Reset · رجّع الأصلي</button>
+        </div>
+      </div>
+
+      <div className="rounded-2xl bg-white p-6 border border-[color:var(--border)] shadow-sm">
+        <h3 className="font-serif text-lg mb-1">Governorate rates</h3>
+        <p className="text-xs text-[color:var(--muted-foreground)] mb-4" dir="rtl">غيّر سعر أي محافظة بالجنيه المصري.</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {GOVERNORATES.map((g) => (
+            <label key={g.value} className="flex items-center gap-3 rounded-xl border border-[color:var(--border)] px-3 py-2">
+              <span className="flex-1 text-sm leading-tight">{g.label}</span>
+              <input
+                value={rates[g.value] ?? ""}
+                onChange={(e) => setRates((r) => ({ ...r, [g.value]: e.target.value }))}
+                inputMode="numeric"
+                className="w-20 rounded-lg border border-[color:var(--border)] px-2 py-1 text-sm text-right"
+              />
+              <span className="text-[10px] opacity-60">EGP</span>
+            </label>
+          ))}
+        </div>
+        <div className="mt-5">
+          <button onClick={save} disabled={saving} className="btn-primary">{saving ? "Saving…" : "Save"}</button>
+        </div>
       </div>
     </div>
   );
 }
+
 
 /* ---------------- Design Studio (Theme + Typography + Logo + Live Preview) ---------------- */
 function DesignAdmin() {

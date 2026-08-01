@@ -299,6 +299,7 @@ export type Database = {
           seo_description: string | null
           seo_title: string | null
           shipping_fee: number
+          shipping_rates: Json
           story_steps: Json | null
           theme: Json
           tiktok_url: string
@@ -333,6 +334,7 @@ export type Database = {
           seo_description?: string | null
           seo_title?: string | null
           shipping_fee?: number
+          shipping_rates?: Json
           story_steps?: Json | null
           theme?: Json
           tiktok_url?: string
@@ -367,6 +369,7 @@ export type Database = {
           seo_description?: string | null
           seo_title?: string | null
           shipping_fee?: number
+          shipping_rates?: Json
           story_steps?: Json | null
           theme?: Json
           tiktok_url?: string
