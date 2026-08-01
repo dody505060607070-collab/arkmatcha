@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { supabase } from "@/integrations/supabase/client";
+import { notifyAdmins } from "@/lib/push-client";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
