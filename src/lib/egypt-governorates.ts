@@ -32,3 +32,22 @@ export const GOVERNORATES: Governorate[] = [
 export function shippingFor(value: string): number {
   return GOVERNORATES.find((g) => g.value === value)?.shipping ?? 0;
 }
+
+/** Merge admin-managed overrides (site_settings.shipping_rates) with defaults. */
+export function governoratesWithRates(
+  rates?: Record<string, number> | null,
+): Governorate[] {
+  return GOVERNORATES.map((g) => {
+    const v = rates?.[g.value];
+    return typeof v === "number" && !isNaN(v) ? { ...g, shipping: v } : g;
+  });
+}
+
+export function shippingForWithRates(
+  value: string,
+  rates?: Record<string, number> | null,
+): number {
+  const v = rates?.[value];
+  if (typeof v === "number" && !isNaN(v)) return v;
+  return shippingFor(value);
+}
