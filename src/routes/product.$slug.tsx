@@ -54,6 +54,7 @@ function ProductPage() {
   const [colorId, setColorId] = useState(KIT_COLORS[0].id);
   const navigate = useNavigate();
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!product) {
     throw notFound();
