@@ -67,6 +67,7 @@ type Section =
   | "home-sections"
   | "products"
   | "orders"
+  | "notifications"
   | "reviews"
   | "discounts"
   | "messages"
