@@ -190,6 +190,25 @@ function ProductPage() {
                   >
                     <ChevronRight className="h-5 w-5 text-[color:var(--petal-strong)]" />
                   </button>
+                  <div className="mt-3 flex items-center justify-center gap-2">
+                    {gallery.map((_, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        aria-label={`Go to image ${index + 1}`}
+                        onClick={() => {
+                          const el = scrollerRef.current;
+                          if (!el) return;
+                          el.scrollTo({ left: index * el.clientWidth, behavior: "smooth" });
+                        }}
+                        className={`h-2 rounded-full transition-all ${
+                          index === currentIndex
+                            ? "w-5 bg-[color:var(--matcha)]"
+                            : "w-2 bg-[color:var(--border)] hover:bg-[color:var(--olive)]"
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </>
               ) : null}
             </div>
