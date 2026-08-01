@@ -340,6 +340,30 @@ function HeroAdmin() {
             <Field label="Hero Video URL (اختياري)" hint="لو موجود، هيشتغل بدل الصورة، loop، بدون صوت، وما حدش يقدر يوقفه">
               <input value={home.heroVideo ?? ""} onChange={(e) => updHome({ heroVideo: e.target.value })} className={inputClass} placeholder="https://.../video.mp4" />
             </Field>
+            <Field label="تغيير لون الحلزونة (Spinning logo color)" hint="لون اللوجو اللي بيلف فوق صورة الـ Hero — سيبه فاضي عشان يرجع بألوانه الأصلية">
+              <div className="flex items-center gap-3">
+                <input
+                  type="color"
+                  value={home.heroSpinColor || "#3D4837"}
+                  onChange={(e) => updHome({ heroSpinColor: e.target.value })}
+                  className="h-10 w-14 cursor-pointer rounded-lg border border-[color:var(--border)] bg-white p-1"
+                />
+                <input
+                  value={home.heroSpinColor ?? ""}
+                  onChange={(e) => updHome({ heroSpinColor: e.target.value })}
+                  className={inputClass}
+                  placeholder="#3D4837"
+                />
+                <button
+                  type="button"
+                  onClick={() => updHome({ heroSpinColor: "" })}
+                  className="shrink-0 rounded-xl border border-[color:var(--border)] px-3 py-2 text-xs"
+                >
+                  Reset
+                </button>
+              </div>
+            </Field>
+
             <Field label="Label (small text above headline)" hint="النص الصغير فوق العنوان">
               <input value={form.hero_label ?? ""} onChange={(e) => setForm({ ...form, hero_label: e.target.value })} className={inputClass} />
             </Field>
