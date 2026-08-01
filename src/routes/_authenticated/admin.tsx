@@ -27,8 +27,12 @@ import {
   Tag,
   Home as HomeIcon,
   Plus,
+  Printer,
+  Copy,
+  Download,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { buildLabelText, printLabel, downloadLabel } from "@/lib/shipping-label";
 import {
   productsQuery,
   settingsQuery,
