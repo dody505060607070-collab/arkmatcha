@@ -4,7 +4,8 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/lib/cart";
 import { settingsQuery } from "@/lib/queries";
-import { GOVERNORATES, shippingFor } from "@/lib/egypt-governorates";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { governoratesWithRates, shippingForWithRates } from "@/lib/egypt-governorates";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/checkout")({
@@ -36,8 +37,11 @@ function CheckoutPage() {
   const items = useCart((s) => s.items);
   const subtotal = useCart((s) => s.subtotal());
   const clear = useCart((s) => s.clear);
+  const { data: settings } = useSuspenseQuery(settingsQuery);
+  const rates = (settings?.shipping_rates ?? null) as Record<string, number> | null;
+  const governorates = governoratesWithRates(rates);
   const [governorate, setGovernorate] = useState<string>("");
-  const shipping = governorate ? shippingFor(governorate) : 0;
+  const shipping = governorate ? shippingForWithRates(governorate, rates) : 0;
   const total = subtotal + (items.length > 0 ? shipping : 0);
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -123,7 +127,7 @@ function CheckoutPage() {
                 className={input}
               >
                 <option value="">Select your governorate…</option>
-                {GOVERNORATES.map((g) => (
+                {governorates.map((g) => (
                   <option key={g.value} value={g.value}>{g.label} — EGP {g.shipping}</option>
                 ))}
               </select>
