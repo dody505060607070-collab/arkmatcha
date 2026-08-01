@@ -1,0 +1,21 @@
+{
+  "name": "Ark Matcha",
+  "short_name": "Ark Matcha",
+  "start_url": "/admin",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ECF3E3",
+  "theme_color": "#3D4837",
+  "icons": [
+    {
+      "src": "/__l5e/assets-v1/8f4624c0-d86a-4cab-b783-e3f61967975a/ark-matcha-logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/__l5e/assets-v1/8f4624c0-d86a-4cab-b783-e3f61967975a/ark-matcha-logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

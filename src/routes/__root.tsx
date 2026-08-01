@@ -86,6 +86,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/__l5e/assets-v1/8f4624c0-d86a-4cab-b783-e3f61967975a/ark-matcha-logo.jpg" },
     ],
   }),

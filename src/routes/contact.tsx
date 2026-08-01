@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { supabase } from "@/integrations/supabase/client";
+import { notifyAdmins } from "@/lib/push-client";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -48,7 +49,9 @@ function ContactPage() {
       return;
     }
     setLoading(true);
+    const messageId = crypto.randomUUID();
     const { error } = await supabase.from("contact_messages").insert({
+      id: messageId,
       name: parsed.data.name || "Anonymous",
       email: parsed.data.email,
       phone: parsed.data.phone || null,
@@ -59,6 +62,7 @@ function ContactPage() {
       toast.error(error.message);
       return;
     }
+    notifyAdmins("contact", messageId);
     toast.success("Message sent. We'll be in touch soon.");
     setForm({ name: "", email: "", phone: "", message: "" });
   }

@@ -30,7 +30,9 @@ import {
   Printer,
   Copy,
   Download,
+  Bell,
 } from "lucide-react";
+import { NotificationsAdmin } from "@/components/admin/NotificationsAdmin";
 import { GOVERNORATES } from "@/lib/egypt-governorates";
 import { supabase } from "@/integrations/supabase/client";
 import { buildLabelText, printLabel, downloadLabel } from "@/lib/shipping-label";
@@ -65,6 +67,7 @@ type Section =
   | "home-sections"
   | "products"
   | "orders"
+  | "notifications"
   | "reviews"
   | "discounts"
   | "messages"
@@ -84,6 +87,7 @@ const sections: { id: Section; label: string; labelAr: string; icon: typeof Layo
   { id: "reviews", label: "Reviews", labelAr: "آراء العملاء", icon: Star },
   { id: "discounts", label: "Discount Codes", labelAr: "أكواد الخصم", icon: Tag },
   { id: "orders", label: "Orders", labelAr: "الطلبات", icon: ShoppingBag },
+  { id: "notifications", label: "Notifications", labelAr: "الإشعارات", icon: Bell },
   { id: "messages", label: "Messages", labelAr: "رسائل التواصل", icon: MessageSquare },
   { id: "social", label: "Social & Contact", labelAr: "السوشيال والتواصل", icon: Share2 },
   { id: "newsletter", label: "Newsletter", labelAr: "قائمة البريد", icon: Mail },
@@ -148,6 +152,7 @@ function AdminPage() {
         {section === "reviews" && <ReviewsAdmin />}
         {section === "discounts" && <DiscountCodesAdmin />}
         {section === "orders" && <OrdersAdmin />}
+        {section === "notifications" && <NotificationsAdmin />}
         {section === "messages" && <MessagesAdmin />}
         {section === "content" && <ContentAdmin />}
         {section === "social" && <SocialAdmin />}
