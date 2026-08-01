@@ -22,6 +22,7 @@ export function getProductImage(slug: string, imageUrl?: string | null) {
 }
 
 export function getProductGallery(product: Pick<Product, "slug" | "image_url" | "gallery">) {
-  const fallback = getProductImage(product.slug, product.image_url);
-  return product.gallery?.length ? product.gallery : [fallback];
+  const main = getProductImage(product.slug, product.image_url);
+  const rest = (product.gallery ?? []).filter((url) => url && url !== main);
+  return [main, ...rest];
 }

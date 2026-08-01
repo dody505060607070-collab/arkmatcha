@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import { productQuery, productsQuery } from "@/lib/queries";
 import { useCart } from "@/lib/cart";
@@ -54,6 +54,7 @@ function ProductPage() {
   const [colorId, setColorId] = useState(KIT_COLORS[0].id);
   const navigate = useNavigate();
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!product) {
     throw notFound();
@@ -95,6 +96,17 @@ function ProductPage() {
     if (!el) return;
     el.scrollBy({ left: dir * el.clientWidth, behavior: "smooth" });
   }
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el || gallery.length <= 1) return;
+    const onScroll = () => {
+      const index = Math.round(el.scrollLeft / el.clientWidth);
+      setCurrentIndex(Math.max(0, Math.min(index, gallery.length - 1)));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [gallery.length]);
 
 
   return (
@@ -178,6 +190,25 @@ function ProductPage() {
                   >
                     <ChevronRight className="h-5 w-5 text-[color:var(--petal-strong)]" />
                   </button>
+                  <div className="mt-3 flex items-center justify-center gap-2">
+                    {gallery.map((_, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        aria-label={`Go to image ${index + 1}`}
+                        onClick={() => {
+                          const el = scrollerRef.current;
+                          if (!el) return;
+                          el.scrollTo({ left: index * el.clientWidth, behavior: "smooth" });
+                        }}
+                        className={`h-2 rounded-full transition-all ${
+                          index === currentIndex
+                            ? "w-5 bg-[color:var(--matcha)]"
+                            : "w-2 bg-[color:var(--border)] hover:bg-[color:var(--olive)]"
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </>
               ) : null}
             </div>
