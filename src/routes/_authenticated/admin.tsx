@@ -84,6 +84,7 @@ const sections: { id: Section; label: string; labelAr: string; icon: typeof Layo
   { id: "reviews", label: "Reviews", labelAr: "آراء العملاء", icon: Star },
   { id: "discounts", label: "Discount Codes", labelAr: "أكواد الخصم", icon: Tag },
   { id: "orders", label: "Orders", labelAr: "الطلبات", icon: ShoppingBag },
+  { id: "notifications", label: "Notifications", labelAr: "الإشعارات", icon: Bell },
   { id: "messages", label: "Messages", labelAr: "رسائل التواصل", icon: MessageSquare },
   { id: "social", label: "Social & Contact", labelAr: "السوشيال والتواصل", icon: Share2 },
   { id: "newsletter", label: "Newsletter", labelAr: "قائمة البريد", icon: Mail },
