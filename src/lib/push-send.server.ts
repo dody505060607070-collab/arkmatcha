@@ -1,4 +1,6 @@
-import { ApplicationServerKeys, generatePushHTTPRequest } from "webpush-webcrypto";
+import { ApplicationServerKeys, generatePushHTTPRequest, setWebCrypto } from "webpush-webcrypto";
+
+setWebCrypto(globalThis.crypto);
 
 export type PushTarget = {
   endpoint: string;
