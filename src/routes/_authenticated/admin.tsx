@@ -152,6 +152,7 @@ function AdminPage() {
         {section === "reviews" && <ReviewsAdmin />}
         {section === "discounts" && <DiscountCodesAdmin />}
         {section === "orders" && <OrdersAdmin />}
+        {section === "notifications" && <NotificationsAdmin />}
         {section === "messages" && <MessagesAdmin />}
         {section === "content" && <ContentAdmin />}
         {section === "social" && <SocialAdmin />}
