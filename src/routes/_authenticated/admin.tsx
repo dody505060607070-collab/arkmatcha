@@ -555,6 +555,9 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
     image_url: product.image_url,
     gallery: (product.gallery ?? []).join("\n"),
     in_stock: product.in_stock,
+    track_inventory: product.track_inventory ?? false,
+    quantity: String(product.quantity ?? 0),
+    variants: (product.variants ?? []) as Array<{ name: string; color: string; quantity: number }>,
     image_visible: product.image_visible ?? true,
     price_visible: product.price_visible ?? true,
     ingredients: product.ingredients,
@@ -583,6 +586,9 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
         image_url: form.image_url,
         gallery: form.gallery.split("\n").map((s) => s.trim()).filter(Boolean),
         in_stock: form.in_stock,
+        track_inventory: form.track_inventory,
+        quantity: Number(form.quantity) || 0,
+        variants: form.variants,
         image_visible: form.image_visible,
         price_visible: form.price_visible,
         ingredients: form.ingredients,
@@ -653,6 +659,135 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
         <Field label="Storage" hint="طريقة التخزين"><textarea rows={2} value={form.storage} onChange={(e) => setForm({ ...form, storage: e.target.value })} className={inputClass} /></Field>
         <Field label="Extra info — title" hint="عنوان القسم الإضافي تحت Ingredients (سيبها فاضية عشان تخفيه)"><input value={form.extra_info_title} placeholder="e.g. Tasting notes" onChange={(e) => setForm({ ...form, extra_info_title: e.target.value })} className={inputClass} /></Field>
         <Field label="Extra info — body" hint="نص القسم الإضافي (يقبل عدة أسطر)"><textarea rows={3} value={form.extra_info_body} onChange={(e) => setForm({ ...form, extra_info_body: e.target.value })} className={inputClass} /></Field>
+
+        <div className="md:col-span-2 border-t border-[color:var(--border)] pt-5 mt-2">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-serif text-lg">Inventory & Variants · المخزون والأنواع</h3>
+            <label className="flex items-center gap-2 text-sm font-medium cursor-pointer">
+              <input 
+                type="checkbox" 
+                checked={form.track_inventory} 
+                onChange={(e) => setForm({ ...form, track_inventory: e.target.checked })} 
+                className="rounded border-[color:var(--border)] text-[color:var(--matcha)] focus:ring-[color:var(--matcha)]"
+              />
+              تفعيل تتبع المخزون (Track Inventory)
+            </label>
+          </div>
+
+          {form.track_inventory && (
+            <div className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-4 bg-[color:var(--cream)]/30 p-4 rounded-xl border border-[color:var(--border)]">
+                <Field label="Base Quantity" hint="الكمية المتوفرة (لو مفيش أنواع)">
+                  <input 
+                    type="number" 
+                    value={form.quantity} 
+                    onChange={(e) => setForm({ ...form, quantity: e.target.value })} 
+                    className={inputClass}
+                    disabled={form.variants.length > 0}
+                  />
+                  {form.variants.length > 0 && (
+                    <p className="text-[10px] text-[color:var(--muted-foreground)] mt-1">يتم حساب الكمية تلقائياً من مجموع الأنواع.</p>
+                  )}
+                </Field>
+                <div className="flex flex-col justify-end pb-1">
+                  <p className="text-xs text-[color:var(--muted-foreground)]" dir="rtl">
+                    لو المنتج ليه أنواع (زي ألوان الـ Kit)، سيب الكمية الأساسية 0 وضيف الأنواع تحت.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs uppercase tracking-widest text-[color:var(--muted-foreground)]">Product Variants · أنواع المنتج</h4>
+                  <button 
+                    type="button" 
+                    onClick={() => setForm({ ...form, variants: [...form.variants, { name: "", color: "#3D4837", quantity: 0 }] })}
+                    className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg border border-[color:var(--border)] bg-white hover:bg-[color:var(--pale)]"
+                  >
+                    <Plus className="h-3.5 w-3.5" /> Add Variant · إضافة نوع
+                  </button>
+                </div>
+
+                <div className="grid gap-3">
+                  {form.variants.map((v, idx) => (
+                    <div key={idx} className="flex flex-wrap items-end gap-3 p-3 bg-white rounded-xl border border-[color:var(--border)] relative group">
+                      <div className="flex-1 min-w-[120px]">
+                        <label className="text-[10px] uppercase tracking-tighter text-[color:var(--muted-foreground)] mb-1 block">Name (e.g. Pink)</label>
+                        <input 
+                          value={v.name} 
+                          onChange={(e) => {
+                            const next = [...form.variants];
+                            next[idx] = { ...v, name: e.target.value };
+                            setForm({ ...form, variants: next });
+                          }}
+                          placeholder="Variant name"
+                          className={inputClass}
+                        />
+                      </div>
+                      <div className="w-24">
+                        <label className="text-[10px] uppercase tracking-tighter text-[color:var(--muted-foreground)] mb-1 block">Color</label>
+                        <div className="flex items-center gap-2">
+                          <input 
+                            type="color" 
+                            value={v.color} 
+                            onChange={(e) => {
+                              const next = [...form.variants];
+                              next[idx] = { ...v, color: e.target.value };
+                              setForm({ ...form, variants: next });
+                            }}
+                            className="h-9 w-10 shrink-0 cursor-pointer rounded border border-[color:var(--border)] bg-white p-1"
+                          />
+                          <input 
+                            value={v.color} 
+                            onChange={(e) => {
+                              const next = [...form.variants];
+                              next[idx] = { ...v, color: e.target.value };
+                              setForm({ ...form, variants: next });
+                            }}
+                            className={`${inputClass} px-2`}
+                            placeholder="#000"
+                          />
+                        </div>
+                      </div>
+                      <div className="w-24">
+                        <label className="text-[10px] uppercase tracking-tighter text-[color:var(--muted-foreground)] mb-1 block">Qty</label>
+                        <input 
+                          type="number"
+                          value={v.quantity} 
+                          onChange={(e) => {
+                            const next = [...form.variants];
+                            next[idx] = { ...v, quantity: Number(e.target.value) || 0 };
+                            // Also update base quantity as sum of variants
+                            const totalQty = next.reduce((sum, current) => sum + current.quantity, 0);
+                            setForm({ ...form, variants: next, quantity: String(totalQty) });
+                          }}
+                          className={inputClass}
+                        />
+                      </div>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          const next = form.variants.filter((_, i) => i !== idx);
+                          const totalQty = next.reduce((sum, current) => sum + current.quantity, 0);
+                          setForm({ ...form, variants: next, quantity: String(totalQty) });
+                        }}
+                        className="p-2.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Remove variant"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ))}
+                  {form.variants.length === 0 && (
+                    <p className="text-center py-4 text-xs text-[color:var(--muted-foreground)] border-2 border-dashed border-[color:var(--border)] rounded-xl">
+                      No variants added yet.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       <div className="mt-5 flex justify-between gap-3">
         {onDelete ? (
