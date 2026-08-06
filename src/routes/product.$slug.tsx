@@ -39,6 +39,7 @@ export const Route = createFileRoute("/product/$slug")({
 });
 
 const KIT_SLUG = "ark-matcha-kit";
+// Note: KIT_COLORS is kept for legacy/default but ideally we should use product.variants
 const KIT_COLORS = [
   { id: "white", label: "White", swatch: "#F2F2F0", index: 0 },
   { id: "pink", label: "Pink", swatch: "#F1CFCB", index: 1 },
@@ -51,7 +52,7 @@ function ProductPage() {
   const { data: products } = useSuspenseQuery(productsQuery);
   const add = useCart((s) => s.add);
   const [quantity, setQuantity] = useState(1);
-  const [colorId, setColorId] = useState(KIT_COLORS[0].id);
+  const [selectedVariantName, setSelectedVariantName] = useState<string | null>(null);
   const navigate = useNavigate();
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -61,14 +62,47 @@ function ProductPage() {
   }
 
   const isKit = product.slug === KIT_SLUG;
+  // Use product.variants if available, otherwise fall back to legacy KIT_COLORS for the specific kit
+  const variants = useMemo(() => {
+    if (product.variants && product.variants.length > 0) {
+      return product.variants.map((v, idx) => ({
+        id: v.name.toLowerCase().replace(/\s+/g, "-"),
+        label: v.name,
+        swatch: v.color,
+        index: idx,
+        quantity: v.quantity
+      }));
+    }
+    if (isKit) return KIT_COLORS.map(c => ({ ...c, quantity: 999 })); // Default high quantity for legacy
+    return [];
+  }, [product, isKit]);
+
+  // Set initial variant if not set
+  useEffect(() => {
+    if (variants.length > 0 && !selectedVariantName) {
+      setSelectedVariantName(variants[0].label);
+    }
+  }, [variants, selectedVariantName]);
+
   const gallery = useMemo(() => {
     const base = getProductGallery(product);
     return Array.from(new Set(base.length ? base : [getProductImage(product.slug, product.image_url)]));
   }, [product]);
 
   const currentProduct = product;
-  const selectedColor = KIT_COLORS.find((c) => c.id === colorId) ?? KIT_COLORS[0];
-  const kitImage = gallery[selectedColor.index] ?? gallery[0];
+  const activeVariant = variants.find((v) => v.label === selectedVariantName) ?? variants[0];
+  const kitImage = isKit ? (gallery[activeVariant?.index ?? 0] ?? gallery[0]) : gallery[0];
+
+  // Stock status logic
+  const isOutOfStock = useMemo(() => {
+    if (!product.in_stock) return true;
+    if (!product.track_inventory) return false;
+    
+    if (variants.length > 0) {
+      return (activeVariant?.quantity ?? 0) <= 0;
+    }
+    return (product.quantity ?? 0) <= 0;
+  }, [product.in_stock, product.track_inventory, product.quantity, variants, activeVariant]);
 
   const discountPct = product.discount_percentage ?? 0;
   const effectivePrice = product.price != null && discountPct > 0
@@ -76,19 +110,20 @@ function ProductPage() {
     : product.price != null ? Number(product.price) : null;
 
   function addToCart() {
-    const colorSuffix = isKit ? ` — ${selectedColor.label}` : "";
+    if (isOutOfStock) return;
+    const variantSuffix = activeVariant ? ` — ${activeVariant.label}` : "";
     add(
       {
-        productId: isKit ? `${currentProduct.id}:${selectedColor.id}` : currentProduct.id,
+        productId: activeVariant ? `${currentProduct.id}:${activeVariant.label}` : currentProduct.id,
         slug: currentProduct.slug,
-        name: `${currentProduct.name}${colorSuffix}`,
+        name: `${currentProduct.name}${variantSuffix}`,
         size: currentProduct.size,
         price: effectivePrice,
-        image: isKit ? kitImage : getProductImage(currentProduct.slug, currentProduct.image_url),
+        image: activeVariant ? kitImage : getProductImage(currentProduct.slug, currentProduct.image_url),
       },
       quantity,
     );
-    toast.success(`${currentProduct.name}${colorSuffix} added to cart`);
+    toast.success(`${currentProduct.name}${variantSuffix} added to cart`);
   }
 
   function scrollBy(dir: 1 | -1) {
@@ -113,13 +148,13 @@ function ProductPage() {
     <main className="container-soft py-8 md:py-12">
       <div className="grid gap-8 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:items-start">
         {product.image_visible !== false ? (
-          isKit ? (
+          variants.length > 0 ? (
             <div>
               <div className="overflow-hidden rounded-2xl bg-white">
                 <img
                   key={kitImage}
                   src={kitImage}
-                  alt={`${product.name} — ${selectedColor.label}`}
+                  alt={`${product.name} — ${activeVariant?.label}`}
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
@@ -129,22 +164,37 @@ function ProductPage() {
                 />
 
               </div>
-              <div className="mt-4 flex items-center gap-3">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
-                  Color: {selectedColor.label}
-                </span>
+              <div className="mt-4 flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
+                    Option: {activeVariant?.label}
+                  </span>
+                  {product.track_inventory && activeVariant && (
+                    <span className={`text-[10px] uppercase tracking-[0.1em] ${activeVariant.quantity > 0 ? "text-[color:var(--muted-foreground)]" : "text-red-600 font-bold"}`}>
+                      {activeVariant.quantity > 0 ? `${activeVariant.quantity} available` : "Out of stock"}
+                    </span>
+                  )}
+                </div>
                 <div className="flex items-center gap-2">
-                  {KIT_COLORS.map((c) => {
-                    const active = c.id === selectedColor.id;
+                  {variants.map((v) => {
+                    const active = v.label === selectedVariantName;
+                    const outOfStock = product.track_inventory && v.quantity <= 0;
                     return (
                       <button
-                        key={c.id}
+                        key={v.id}
                         type="button"
-                        aria-label={c.label}
-                        onClick={() => setColorId(c.id)}
-                        className={`h-8 w-8 rounded-full border transition ${active ? "ring-2 ring-offset-2 ring-[color:var(--matcha)]" : "border-black/10 hover:scale-105"}`}
-                        style={{ backgroundColor: c.swatch }}
-                      />
+                        aria-label={v.label}
+                        onClick={() => setSelectedVariantName(v.label)}
+                        className={`group relative h-10 w-10 rounded-full border transition ${active ? "ring-2 ring-offset-2 ring-[color:var(--matcha)]" : "border-black/10 hover:scale-105"}`}
+                        style={{ backgroundColor: v.swatch }}
+                      >
+                        {outOfStock && (
+                          <span className="absolute inset-0 flex items-center justify-center bg-white/40 rounded-full overflow-hidden">
+                            <span className="h-[1px] w-full bg-red-600 rotate-45" />
+                          </span>
+                        )}
+                        <span className="sr-only">{v.label} {outOfStock ? "(Out of stock)" : ""}</span>
+                      </button>
                     );
                   })}
                 </div>
@@ -245,7 +295,7 @@ function ProductPage() {
             )}
           </div>
 
-          {!product.in_stock && (
+          {isOutOfStock && (
             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-red-50 border border-red-200 px-3 py-1.5 text-xs font-medium uppercase tracking-widest text-red-700">
               ✕ Sold out
             </div>
@@ -261,8 +311,8 @@ function ProductPage() {
                 <Plus className="h-4 w-4" />
               </button>
             </div>
-            <button onClick={addToCart} className="btn-primary flex-1" disabled={!product.in_stock}>
-              {product.in_stock ? "Add to Cart" : "Sold out"}
+            <button onClick={addToCart} className="btn-primary flex-1" disabled={isOutOfStock}>
+              {isOutOfStock ? "Sold out" : "Add to Cart"}
             </button>
           </div>
 
@@ -272,7 +322,7 @@ function ProductPage() {
               navigate({ to: "/checkout" });
             }}
             className="btn-ghost mt-3 w-full"
-            disabled={!product.in_stock}
+            disabled={isOutOfStock}
           >
             Buy Now
           </button>

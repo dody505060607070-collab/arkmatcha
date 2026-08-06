@@ -84,6 +84,7 @@ export function Header() {
               </button>
               <Link
                 to="/auth"
+                search={{ e: undefined }}
                 aria-label="Account"
                 className="hidden h-10 w-10 place-items-center text-[color:var(--forest)] transition-opacity hover:opacity-70 md:grid"
               >
@@ -181,7 +182,7 @@ export function Header() {
           </nav>
 
           <div className="border-t border-[color:var(--border)] px-6 py-6">
-            <Link to="/auth" className="flex items-center gap-3 text-[color:var(--forest)]">
+            <Link to="/auth" search={{ e: undefined }} className="flex items-center gap-3 text-[color:var(--forest)]">
               <LogIn className="h-4 w-4" /> Log in
             </Link>
             <a

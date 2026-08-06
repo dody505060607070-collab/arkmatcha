@@ -69,13 +69,18 @@ function CheckoutPage() {
       email: parsed.data.email || null,
       building: parsed.data.building || null,
       notes: parsed.data.notes || null,
-      items: items.map((i) => ({
-        product_id: i.productId,
-        name: i.name,
-        size: i.size,
-        price: i.price,
-        quantity: i.quantity,
-      })),
+      items: items.map((i) => {
+        const [id, variant] = i.productId.split(":");
+        return {
+          id: id,
+          product_id: id, // Keep for backward compatibility/clarity
+          name: i.name,
+          size: i.size,
+          price: i.price,
+          quantity: i.quantity,
+          variant: variant || null,
+        };
+      }),
       subtotal,
       shipping_fee: shipping,
       total,

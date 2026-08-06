@@ -68,16 +68,24 @@ function Shop() {
                 {product.image_visible !== false ? (
                   <div className="relative overflow-hidden rounded-2xl bg-white">
                     <ProductCardImage main={main} secondary={secondary} alt={label} />
-                    {product.in_stock === false && (
-                      <span className="absolute left-2 top-2 rounded-full bg-[color:var(--matcha)] px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
-                        Sold out
-                      </span>
-                    )}
-                    {product.in_stock !== false && (product.discount_percentage ?? 0) > 0 && (
-                      <span className="absolute left-2 top-2 rounded-full bg-[color:var(--matcha)] px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
-                        -{product.discount_percentage}%
-                      </span>
-                    )}
+                    {(() => {
+                      const soldOut = product.in_stock === false || (product.track_inventory && product.quantity <= 0);
+                      if (soldOut) {
+                        return (
+                          <span className="absolute left-2 top-2 rounded-full bg-[color:var(--matcha)] px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
+                            Sold out
+                          </span>
+                        );
+                      }
+                      if ((product.discount_percentage ?? 0) > 0) {
+                        return (
+                          <span className="absolute left-2 top-2 rounded-full bg-[color:var(--matcha)] px-2.5 py-1 text-[9px] font-medium uppercase tracking-widest text-white shadow-sm">
+                            -{product.discount_percentage}%
+                          </span>
+                        );
+                      }
+                      return null;
+                    })()}
                   </div>
                 ) : null}
 
