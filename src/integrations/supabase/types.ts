@@ -176,12 +176,15 @@ export type Database = {
           nutrition: Json
           price: number | null
           price_visible: boolean
+          quantity: number | null
           short_description: string
           size: string
           slug: string
           sort_order: number
           storage: string
+          track_inventory: boolean | null
           updated_at: string
+          variants: Json | null
         }
         Insert: {
           created_at?: string
@@ -200,12 +203,15 @@ export type Database = {
           nutrition?: Json
           price?: number | null
           price_visible?: boolean
+          quantity?: number | null
           short_description?: string
           size: string
           slug: string
           sort_order?: number
           storage?: string
+          track_inventory?: boolean | null
           updated_at?: string
+          variants?: Json | null
         }
         Update: {
           created_at?: string
@@ -224,12 +230,15 @@ export type Database = {
           nutrition?: Json
           price?: number | null
           price_visible?: boolean
+          quantity?: number | null
           short_description?: string
           size?: string
           slug?: string
           sort_order?: number
           storage?: string
+          track_inventory?: boolean | null
           updated_at?: string
+          variants?: Json | null
         }
         Relationships: []
       }
