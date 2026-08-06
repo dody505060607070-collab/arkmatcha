@@ -22,6 +22,13 @@ export type Product = {
   sort_order: number;
   extra_info_title: string | null;
   extra_info_body: string | null;
+  track_inventory: boolean;
+  quantity: number;
+  variants: Array<{
+    name: string;
+    color: string;
+    quantity: number;
+  }>;
 };
 
 export type ThemeColors = {
