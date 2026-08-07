@@ -752,7 +752,7 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
                         </div>
                       </div>
                       <div className="w-24">
-                        <label className="text-[10px] uppercase tracking-tighter text-[color:var(--muted-foreground)] mb-1 block">Qty</label>
+                        <label className="text-[10px] uppercase tracking-tighter text-[color:var(--muted-foreground)] mb-1 block">Quantity / الكمية</label>
                         <input 
                           type="number"
                           value={v.quantity} 
