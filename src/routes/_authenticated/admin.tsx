@@ -670,7 +670,7 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
                 onChange={(e) => setForm({ ...form, track_inventory: e.target.checked })} 
                 className="rounded border-[color:var(--border)] text-[color:var(--matcha)] focus:ring-[color:var(--matcha)]"
               />
-              تفعيل تتبع المخزون (Track Inventory)
+              تفعيل تتبع المخزون وكميات المنتجات (Track Inventory & Quantities)
             </label>
           </div>
 
