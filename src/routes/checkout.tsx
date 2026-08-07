@@ -24,7 +24,6 @@ export const Route = createFileRoute("/checkout")({
 const schema = z.object({
   full_name: z.string().trim().min(2, "Please enter your full name").max(120),
   phone: z.string().trim().min(5).max(40),
-  whatsapp: z.string().trim().max(40).optional().or(z.literal("")),
   email: z.string().trim().email("Invalid email").max(254).optional().or(z.literal("")),
   governorate: z.string().trim().min(1, "Please select your governorate").max(80),
   city: z.string().trim().min(1, "Please enter your city or area").max(80),
@@ -65,7 +64,6 @@ function CheckoutPage() {
     const { error } = await supabase.from("orders").insert({
       id: orderId,
       ...parsed.data,
-      whatsapp: parsed.data.whatsapp || null,
       email: parsed.data.email || null,
       building: parsed.data.building || null,
       notes: parsed.data.notes || null,
@@ -124,7 +122,6 @@ function CheckoutPage() {
           <div className="grid sm:grid-cols-2 gap-4">
             <label className="block"><span className="text-sm">Full name *</span><input name="full_name" required className={input} /></label>
             <label className="block"><span className="text-sm">Phone number *</span><input name="phone" required className={input} /></label>
-            <label className="block"><span className="text-sm">WhatsApp number</span><input name="whatsapp" className={input} /></label>
             <label className="block"><span className="text-sm">Email</span><input type="email" name="email" className={input} /></label>
             <label className="block sm:col-span-2">
               <span className="text-sm">Governorate * <span className="text-[color:var(--muted-foreground)]">(shipping is added based on your governorate)</span></span>
@@ -160,7 +157,7 @@ function CheckoutPage() {
           </ul>
           <dl className="space-y-2 text-sm border-t border-[color:var(--border)] pt-4">
             <div className="flex justify-between"><dt>Subtotal</dt><dd>EGP {subtotal.toFixed(2)}</dd></div>
-            <div className="flex justify-between"><dt>Shipping</dt><dd>{shipping > 0 ? `EGP ${shipping.toFixed(2)}` : "Free"}</dd></div>
+            <div className="flex justify-between"><dt>Shipping</dt><dd>{(governorate && shipping > 0) ? `EGP ${shipping.toFixed(2)}` : (governorate ? "Free" : "Select governorate")}</dd></div>
             <div className="flex justify-between font-serif text-lg pt-2 border-t border-[color:var(--border)] mt-2">
               <dt>Total</dt><dd>EGP {total.toFixed(2)}</dd>
             </div>
