@@ -714,7 +714,7 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
                   {form.variants.map((v, idx) => (
                     <div key={idx} className="flex flex-wrap items-end gap-3 p-3 bg-white rounded-xl border border-[color:var(--border)] relative group">
                       <div className="flex-1 min-w-[120px]">
-                        <label className="text-[10px] uppercase tracking-tighter text-[color:var(--muted-foreground)] mb-1 block">Name (e.g. Pink)</label>
+                        <label className="text-[10px] uppercase tracking-tighter text-[color:var(--muted-foreground)] mb-1 block">Name / Color (e.g. Pink)</label>
                         <input 
                           value={v.name} 
                           onChange={(e) => {
