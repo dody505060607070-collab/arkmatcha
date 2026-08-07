@@ -331,7 +331,7 @@ function HeroAdmin() {
           <li><b>Hero Video URL</b>: لو حطيت رابط فيديو، الفيديو هيشتغل تلقائيًا في اللوب من غير صوت وما حدش يقدر يوقفه أو يدوس عليه. الفيديو بياخد أولوية على الصورة.</li>
           <li><b>Label / Headline / Tagline</b>: النصوص اللي بتظهر تحت الصورة.</li>
           <li><b>CTA</b>: نص الزرار وصفحة الوجهة (<code>/shop</code>).</li>
-          <li><b>Top Strip</b>: شريط صغير فوق خالص بخط funky زي "Your Fav Matcha Store".</li>
+          <li><b>Spinning Logo</b>: يمكنك التحكم في لون اللوجو الذي يدور فوق صورة الـ Hero.</li>
           <li><b>Welcome Popup</b>: رسالة ترحيب بتظهر لأول زيارة، الزائر يقدر يقفلها.</li>
         </ul>
       </HelpPanel>
