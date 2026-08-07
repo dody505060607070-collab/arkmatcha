@@ -331,7 +331,7 @@ function HeroAdmin() {
           <li><b>Hero Video URL</b>: لو حطيت رابط فيديو، الفيديو هيشتغل تلقائيًا في اللوب من غير صوت وما حدش يقدر يوقفه أو يدوس عليه. الفيديو بياخد أولوية على الصورة.</li>
           <li><b>Label / Headline / Tagline</b>: النصوص اللي بتظهر تحت الصورة.</li>
           <li><b>CTA</b>: نص الزرار وصفحة الوجهة (<code>/shop</code>).</li>
-          <li><b>Top Strip</b>: شريط صغير فوق خالص بخط funky زي "Your Fav Matcha Store".</li>
+          <li><b>Spinning Logo</b>: يمكنك التحكم في لون اللوجو الذي يدور فوق صورة الـ Hero.</li>
           <li><b>Welcome Popup</b>: رسالة ترحيب بتظهر لأول زيارة، الزائر يقدر يقفلها.</li>
         </ul>
       </HelpPanel>
@@ -670,14 +670,14 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
                 onChange={(e) => setForm({ ...form, track_inventory: e.target.checked })} 
                 className="rounded border-[color:var(--border)] text-[color:var(--matcha)] focus:ring-[color:var(--matcha)]"
               />
-              تفعيل تتبع المخزون (Track Inventory)
+              تفعيل تتبع المخزون وكميات المنتجات (Track Inventory & Quantities)
             </label>
           </div>
 
           {form.track_inventory && (
             <div className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4 bg-[color:var(--cream)]/30 p-4 rounded-xl border border-[color:var(--border)]">
-                <Field label="Base Quantity" hint="الكمية المتوفرة (لو مفيش أنواع)">
+                <Field label="Total Quantity" hint="إجمالي الكمية المتوفرة">
                   <input 
                     type="number" 
                     value={form.quantity} 
@@ -686,12 +686,14 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
                     disabled={form.variants.length > 0}
                   />
                   {form.variants.length > 0 && (
-                    <p className="text-[10px] text-[color:var(--muted-foreground)] mt-1">يتم حساب الكمية تلقائياً من مجموع الأنواع.</p>
+                    <p className="text-[10px] text-[color:var(--muted-foreground)] mt-1">
+                      يتم تحديث هذا الرقم تلقائياً بناءً على مجموع كميات الأنواع بالأسفل.
+                    </p>
                   )}
                 </Field>
                 <div className="flex flex-col justify-end pb-1">
                   <p className="text-xs text-[color:var(--muted-foreground)]" dir="rtl">
-                    لو المنتج ليه أنواع (زي ألوان الـ Kit)، سيب الكمية الأساسية 0 وضيف الأنواع تحت.
+                    لو المنتج ليه أنواع (زي ألوان الـ Kit)، الكمية الإجمالية هتتحسب لوحدها من الأنواع اللي هتضيفها تحت.
                   </p>
                 </div>
               </div>
@@ -712,7 +714,7 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
                   {form.variants.map((v, idx) => (
                     <div key={idx} className="flex flex-wrap items-end gap-3 p-3 bg-white rounded-xl border border-[color:var(--border)] relative group">
                       <div className="flex-1 min-w-[120px]">
-                        <label className="text-[10px] uppercase tracking-tighter text-[color:var(--muted-foreground)] mb-1 block">Name (e.g. Pink)</label>
+                        <label className="text-[10px] uppercase tracking-tighter text-[color:var(--muted-foreground)] mb-1 block">Name / Color (e.g. Pink)</label>
                         <input 
                           value={v.name} 
                           onChange={(e) => {
@@ -750,7 +752,7 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
                         </div>
                       </div>
                       <div className="w-24">
-                        <label className="text-[10px] uppercase tracking-tighter text-[color:var(--muted-foreground)] mb-1 block">Qty</label>
+                        <label className="text-[10px] uppercase tracking-tighter text-[color:var(--muted-foreground)] mb-1 block">Quantity / الكمية</label>
                         <input 
                           type="number"
                           value={v.quantity} 
