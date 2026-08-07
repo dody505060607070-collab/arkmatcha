@@ -677,7 +677,7 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
           {form.track_inventory && (
             <div className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4 bg-[color:var(--cream)]/30 p-4 rounded-xl border border-[color:var(--border)]">
-                <Field label="Base Quantity" hint="الكمية المتوفرة (لو مفيش أنواع)">
+                <Field label="Total Quantity" hint="إجمالي الكمية المتوفرة">
                   <input 
                     type="number" 
                     value={form.quantity} 
@@ -686,12 +686,14 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
                     disabled={form.variants.length > 0}
                   />
                   {form.variants.length > 0 && (
-                    <p className="text-[10px] text-[color:var(--muted-foreground)] mt-1">يتم حساب الكمية تلقائياً من مجموع الأنواع.</p>
+                    <p className="text-[10px] text-[color:var(--muted-foreground)] mt-1">
+                      يتم تحديث هذا الرقم تلقائياً بناءً على مجموع كميات الأنواع بالأسفل.
+                    </p>
                   )}
                 </Field>
                 <div className="flex flex-col justify-end pb-1">
                   <p className="text-xs text-[color:var(--muted-foreground)]" dir="rtl">
-                    لو المنتج ليه أنواع (زي ألوان الـ Kit)، سيب الكمية الأساسية 0 وضيف الأنواع تحت.
+                    لو المنتج ليه أنواع (زي ألوان الـ Kit)، الكمية الإجمالية هتتحسب لوحدها من الأنواع اللي هتضيفها تحت.
                   </p>
                 </div>
               </div>
