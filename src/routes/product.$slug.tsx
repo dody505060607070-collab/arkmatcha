@@ -169,9 +169,9 @@ function ProductPage() {
                   <span className="text-[10px] uppercase tracking-[0.2em] text-[color:var(--olive)]">
                     Option: {activeVariant?.label}
                   </span>
-                  {product.track_inventory && activeVariant && (
-                    <span className={`text-[10px] uppercase tracking-[0.1em] ${activeVariant.quantity > 0 ? "text-[color:var(--muted-foreground)]" : "text-red-600 font-bold"}`}>
-                      {activeVariant.quantity > 0 ? `${activeVariant.quantity} available` : "Out of stock"}
+                  {product.track_inventory && activeVariant && activeVariant.quantity <= 0 && (
+                    <span className="text-[10px] uppercase tracking-[0.1em] text-red-600 font-bold">
+                      Out of stock
                     </span>
                   )}
                 </div>
