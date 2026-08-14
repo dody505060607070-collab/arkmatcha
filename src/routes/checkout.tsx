@@ -8,6 +8,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { governoratesWithRates, shippingForWithRates } from "@/lib/egypt-governorates";
 import { toast } from "sonner";
 import { notifyAdmins } from "@/lib/push-client";
+import { validateDiscountCode, redeemDiscountCode } from "@/lib/discount.functions";
+
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
