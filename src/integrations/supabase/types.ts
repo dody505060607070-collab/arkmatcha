@@ -104,6 +104,8 @@ export type Database = {
           building: string | null
           city: string
           created_at: string
+          discount_amount: number
+          discount_code: string | null
           email: string | null
           full_name: string
           governorate: string | null
@@ -123,6 +125,8 @@ export type Database = {
           building?: string | null
           city: string
           created_at?: string
+          discount_amount?: number
+          discount_code?: string | null
           email?: string | null
           full_name: string
           governorate?: string | null
@@ -142,6 +146,8 @@ export type Database = {
           building?: string | null
           city?: string
           created_at?: string
+          discount_amount?: number
+          discount_code?: string | null
           email?: string | null
           full_name?: string
           governorate?: string | null
