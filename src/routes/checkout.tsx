@@ -44,9 +44,33 @@ function CheckoutPage() {
   const governorates = governoratesWithRates(rates);
   const [governorate, setGovernorate] = useState<string>("");
   const shipping = governorate ? shippingForWithRates(governorate, rates) : 0;
-  const total = subtotal + (items.length > 0 ? shipping : 0);
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [codeInput, setCodeInput] = useState("");
+  const [checkingCode, setCheckingCode] = useState(false);
+  const [applied, setApplied] = useState<{ code: string; percent: number } | null>(null);
+  const discountAmount = applied ? Math.round(subtotal * applied.percent) / 100 : 0;
+  const total = Math.max(0, subtotal - discountAmount) + (items.length > 0 ? shipping : 0);
+
+  async function applyCode() {
+    const code = codeInput.trim();
+    if (!code) return;
+    setCheckingCode(true);
+    try {
+      const res = await validateDiscountCode({ data: { code } });
+      if (!res.valid) {
+        setApplied(null);
+        toast.error(res.reason ?? "Invalid discount code");
+      } else {
+        setApplied({ code: res.code, percent: res.percent_off });
+        toast.success(`Code applied — ${res.percent_off}% off`);
+      }
+    } catch {
+      toast.error("Could not check this code. Please try again.");
+    } finally {
+      setCheckingCode(false);
+    }
+  }
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -83,14 +107,18 @@ function CheckoutPage() {
       }),
       subtotal,
       shipping_fee: shipping,
+      discount_code: applied?.code ?? null,
+      discount_amount: discountAmount,
       total,
     });
     setLoading(false);
     if (error) { toast.error(error.message); return; }
+    if (applied) { void redeemDiscountCode({ data: { code: applied.code } }); }
     notifyAdmins("order", orderId);
     clear();
     setDone(true);
   }
+
 
   if (done) {
     return (
