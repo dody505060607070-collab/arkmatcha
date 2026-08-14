@@ -185,13 +185,39 @@ function CheckoutPage() {
               </li>
             ))}
           </ul>
+          <div className="mb-4">
+            <span className="text-sm">Discount code</span>
+            <div className="flex gap-2 mt-1">
+              <input
+                value={codeInput}
+                onChange={(e) => setCodeInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); void applyCode(); } }}
+                placeholder="Enter code"
+                maxLength={60}
+                className="flex-1 px-3 py-2 rounded-xl bg-[color:var(--cream)] border border-[color:var(--border)] text-sm uppercase focus:outline-none focus:ring-2 focus:ring-[color:var(--olive)]"
+              />
+              {applied ? (
+                <button type="button" onClick={() => { setApplied(null); setCodeInput(""); }} className="px-3 py-2 rounded-xl border border-[color:var(--border)] text-sm">Remove</button>
+              ) : (
+                <button type="button" onClick={() => void applyCode()} disabled={checkingCode} className="px-4 py-2 rounded-xl bg-[color:var(--olive)] text-[color:var(--cream)] text-sm disabled:opacity-60">
+                  {checkingCode ? "..." : "Apply"}
+                </button>
+              )}
+            </div>
+          </div>
           <dl className="space-y-2 text-sm border-t border-[color:var(--border)] pt-4">
             <div className="flex justify-between"><dt>Subtotal</dt><dd>EGP {subtotal.toFixed(2)}</dd></div>
+            {applied && (
+              <div className="flex justify-between text-[color:var(--olive)]">
+                <dt>Discount ({applied.code} · {applied.percent}%)</dt><dd>− EGP {discountAmount.toFixed(2)}</dd>
+              </div>
+            )}
             <div className="flex justify-between"><dt>Shipping</dt><dd>{(governorate && shipping > 0) ? `EGP ${shipping.toFixed(2)}` : (governorate ? "Free" : "Select governorate")}</dd></div>
             <div className="flex justify-between font-serif text-lg pt-2 border-t border-[color:var(--border)] mt-2">
               <dt>Total</dt><dd>EGP {total.toFixed(2)}</dd>
             </div>
           </dl>
+
           <div className="mt-5 p-4 rounded-xl bg-[color:var(--cream)] text-sm">
             <strong>Cash on Delivery</strong>
             <p className="text-[color:var(--muted-foreground)] mt-1">Pay when your order arrives.</p>
