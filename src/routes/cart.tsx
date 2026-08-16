@@ -1,10 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Minus, Plus, Trash2, Tag, Loader2, X } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { settingsQuery } from "@/lib/queries";
 import { useContent } from "@/lib/useContent";
 import { TinIllustration } from "@/components/site/TinIllustration";
+import { useState } from "react";
+import { validateDiscountCode } from "@/lib/discount.functions";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/cart")({
   head: () => ({
@@ -25,8 +28,35 @@ function CartPage() {
   const subtotal = useCart((s) => s.subtotal());
   const { data: s } = useQuery(settingsQuery);
   const c = useContent();
+  const applied = useCart((s) => s.discount);
+  const setDiscount = useCart((s) => s.setDiscount);
+  const [codeInput, setCodeInput] = useState("");
+  const [checking, setChecking] = useState(false);
+
+  const discountAmount = applied ? Math.round(subtotal * applied.percent) / 100 : 0;
   const shipping = Number(s?.shipping_fee ?? 0);
-  const total = subtotal + (items.length > 0 ? shipping : 0);
+  const total = Math.max(0, subtotal - discountAmount) + (items.length > 0 ? shipping : 0);
+
+  async function applyCode() {
+    const code = codeInput.trim();
+    if (!code) return;
+    setChecking(true);
+    try {
+      const res = await validateDiscountCode({ data: { code } });
+      if (!res.valid) {
+        setDiscount(null);
+        toast.error(res.reason ?? "Invalid discount code");
+      } else {
+        setDiscount({ code: res.code, percent: res.percent_off });
+        toast.success(`Code applied — ${res.percent_off}% off`);
+        setCodeInput("");
+      }
+    } catch {
+      toast.error("Could not check this code. Please try again.");
+    } finally {
+      setChecking(false);
+    }
+  }
   const title = c.cart?.title || "Your Cart";
   const emptyText = c.cart?.empty || "Your cart is empty";
   const checkoutText = c.cart?.checkout || "Checkout";
@@ -83,8 +113,43 @@ function CartPage() {
         </ul>
         <aside className="h-fit rounded-2xl bg-[color:var(--pale)] p-6 border border-[color:var(--border)]">
           <h2 className="font-serif text-xl mb-5">Order Summary</h2>
+          <div className="mb-6">
+            <span className="text-[10px] uppercase tracking-widest text-[color:var(--muted-foreground)] mb-1.5 block">Discount Code</span>
+            <div className="flex gap-2">
+              <input
+                value={codeInput}
+                onChange={(e) => setCodeInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && void applyCode()}
+                placeholder="PROMOCODE"
+                className="flex-1 px-3 py-2 rounded-xl bg-white/50 border border-[color:var(--border)] text-sm uppercase focus:outline-none focus:ring-2 focus:ring-[color:var(--matcha)]"
+              />
+              <button
+                onClick={() => void applyCode()}
+                disabled={checking || !codeInput.trim()}
+                className="px-4 py-2 rounded-xl bg-[color:var(--matcha)] text-white text-sm disabled:opacity-50"
+              >
+                {checking ? <Loader2 className="h-4 w-4 animate-spin" /> : "Apply"}
+              </button>
+            </div>
+            {applied && (
+              <div className="mt-2 flex items-center justify-between px-3 py-2 rounded-xl bg-[color:var(--matcha)]/10 border border-[color:var(--matcha)]/20 text-xs">
+                <div className="flex items-center gap-2 text-[color:var(--matcha)] font-medium">
+                  <Tag className="h-3 w-3" />
+                  <span>{applied.code} (−{applied.percent}%)</span>
+                </div>
+                <button onClick={() => setDiscount(null)} className="text-[color:var(--matcha)] hover:opacity-70">
+                  <X className="h-3 w-3" />
+                </button>
+              </div>
+            )}
+          </div>
           <dl className="space-y-3 text-sm">
             <div className="flex justify-between"><dt className="text-[color:var(--muted-foreground)]">Subtotal</dt><dd>EGP {subtotal.toFixed(2)}</dd></div>
+            {applied && (
+              <div className="flex justify-between text-[color:var(--matcha)] font-medium">
+                <dt>Discount</dt><dd>− EGP {discountAmount.toFixed(2)}</dd>
+              </div>
+            )}
             <div className="flex justify-between"><dt className="text-[color:var(--muted-foreground)]">Shipping</dt><dd>{shipping > 0 ? `EGP ${shipping.toFixed(2)}` : "Free"}</dd></div>
             <div className="border-t border-[color:var(--border)] pt-3 flex justify-between font-serif text-lg">
               <dt>Total</dt><dd>EGP {total.toFixed(2)}</dd>

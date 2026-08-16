@@ -8,7 +8,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { governoratesWithRates, shippingForWithRates } from "@/lib/egypt-governorates";
 import { toast } from "sonner";
 import { notifyAdmins } from "@/lib/push-client";
-import { validateDiscountCode, redeemDiscountCode } from "@/lib/discount.functions";
+import { redeemDiscountCode } from "@/lib/discount.functions";
 
 
 export const Route = createFileRoute("/checkout")({
@@ -46,31 +46,9 @@ function CheckoutPage() {
   const shipping = governorate ? shippingForWithRates(governorate, rates) : 0;
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [codeInput, setCodeInput] = useState("");
-  const [checkingCode, setCheckingCode] = useState(false);
-  const [applied, setApplied] = useState<{ code: string; percent: number } | null>(null);
+  const applied = useCart((s) => s.discount);
   const discountAmount = applied ? Math.round(subtotal * applied.percent) / 100 : 0;
   const total = Math.max(0, subtotal - discountAmount) + (items.length > 0 ? shipping : 0);
-
-  async function applyCode() {
-    const code = codeInput.trim();
-    if (!code) return;
-    setCheckingCode(true);
-    try {
-      const res = await validateDiscountCode({ data: { code } });
-      if (!res.valid) {
-        setApplied(null);
-        toast.error(res.reason ?? "Invalid discount code");
-      } else {
-        setApplied({ code: res.code, percent: res.percent_off });
-        toast.success(`Code applied — ${res.percent_off}% off`);
-      }
-    } catch {
-      toast.error("Could not check this code. Please try again.");
-    } finally {
-      setCheckingCode(false);
-    }
-  }
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -185,26 +163,13 @@ function CheckoutPage() {
               </li>
             ))}
           </ul>
-          <div className="mb-4">
-            <span className="text-sm">Discount code</span>
-            <div className="flex gap-2 mt-1">
-              <input
-                value={codeInput}
-                onChange={(e) => setCodeInput(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); void applyCode(); } }}
-                placeholder="Enter code"
-                maxLength={60}
-                className="flex-1 px-3 py-2 rounded-xl bg-[color:var(--cream)] border border-[color:var(--border)] text-sm uppercase focus:outline-none focus:ring-2 focus:ring-[color:var(--olive)]"
-              />
-              {applied ? (
-                <button type="button" onClick={() => { setApplied(null); setCodeInput(""); }} className="px-3 py-2 rounded-xl border border-[color:var(--border)] text-sm">Remove</button>
-              ) : (
-                <button type="button" onClick={() => void applyCode()} disabled={checkingCode} className="px-4 py-2 rounded-xl bg-[color:var(--olive)] text-[color:var(--cream)] text-sm disabled:opacity-60">
-                  {checkingCode ? "..." : "Apply"}
-                </button>
-              )}
+          {applied && (
+            <div className="mb-4 flex items-center justify-between px-3 py-2 rounded-xl bg-[color:var(--matcha)]/10 border border-[color:var(--matcha)]/20 text-xs">
+              <div className="flex items-center gap-2 text-[color:var(--matcha)] font-medium">
+                <span>Code applied: <strong>{applied.code}</strong> (−{applied.percent}%)</span>
+              </div>
             </div>
-          </div>
+          )}
           <dl className="space-y-2 text-sm border-t border-[color:var(--border)] pt-4">
             <div className="flex justify-between"><dt>Subtotal</dt><dd>EGP {subtotal.toFixed(2)}</dd></div>
             {applied && (
