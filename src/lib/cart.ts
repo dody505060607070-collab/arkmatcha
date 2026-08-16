@@ -13,9 +13,11 @@ export type CartItem = {
 
 type CartState = {
   items: CartItem[];
+  discount: { code: string; percent: number } | null;
   add: (item: Omit<CartItem, "quantity">, qty?: number) => void;
   remove: (productId: string) => void;
   setQuantity: (productId: string, qty: number) => void;
+  setDiscount: (discount: { code: string; percent: number } | null) => void;
   clear: () => void;
   count: () => number;
   subtotal: () => number;
@@ -25,6 +27,7 @@ export const useCart = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      discount: null,
       add: (item, qty = 1) => {
         const existing = get().items.find((i) => i.productId === item.productId);
         if (existing) {
@@ -45,7 +48,8 @@ export const useCart = create<CartState>()(
             .items.map((i) => (i.productId === productId ? { ...i, quantity: Math.max(1, qty) } : i))
             .filter((i) => i.quantity > 0),
         }),
-      clear: () => set({ items: [] }),
+      setDiscount: (discount) => set({ discount }),
+      clear: () => set({ items: [], discount: null }),
       count: () => get().items.reduce((n, i) => n + i.quantity, 0),
       subtotal: () =>
         get().items.reduce((n, i) => n + (i.price ?? 0) * i.quantity, 0),
