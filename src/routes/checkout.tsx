@@ -125,7 +125,7 @@ function CheckoutPage() {
       <main className="container-soft py-24 text-center max-w-xl mx-auto">
         <h1 className="font-serif text-4xl mb-4">Thank you.</h1>
         <p className="text-[color:var(--muted-foreground)] mb-8">
-          Your Ark Matcha order has been received. We will contact you soon to confirm delivery.
+          Your Ark Matcha order has been received.
         </p>
         <Link to="/" className="btn-primary inline-flex">Back home</Link>
       </main>
