@@ -152,33 +152,50 @@ export type DiscountCode = {
   expires_at: string | null;
 };
 
+/** Never let a backend outage crash SSR — fall back to safe empty data. */
+async function safe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await fn();
+  } catch (e) {
+    console.error("[queries] backend unreachable:", e);
+    return fallback;
+  }
+}
+
 export const productsQuery = queryOptions({
   queryKey: ["products"],
-  queryFn: async (): Promise<Product[]> => {
-    const { data, error } = await supabase.from("products").select("*").order("sort_order");
-    if (error) throw error;
-    return (data ?? []) as unknown as Product[];
-  },
+  retry: 1,
+  queryFn: async (): Promise<Product[]> =>
+    safe(async () => {
+      const { data, error } = await supabase.from("products").select("*").order("sort_order");
+      if (error) throw error;
+      return (data ?? []) as unknown as Product[];
+    }, []),
 });
 
 export const productQuery = (slug: string) =>
   queryOptions({
     queryKey: ["product", slug],
-    queryFn: async (): Promise<Product | null> => {
-      const { data, error } = await supabase.from("products").select("*").eq("slug", slug).maybeSingle();
-      if (error) throw error;
-      return data as unknown as Product | null;
-    },
+    retry: 1,
+    queryFn: async (): Promise<Product | null> =>
+      safe(async () => {
+        const { data, error } = await supabase.from("products").select("*").eq("slug", slug).maybeSingle();
+        if (error) throw error;
+        return data as unknown as Product | null;
+      }, null),
   });
 
 export const settingsQuery = queryOptions({
   queryKey: ["site_settings"],
-  queryFn: async (): Promise<SiteSettings> => {
-    const { data, error } = await supabase.from("site_settings").select("*").eq("id", 1).maybeSingle();
-    if (error) throw error;
-    return data as unknown as SiteSettings;
-  },
+  retry: 1,
+  queryFn: async (): Promise<SiteSettings> =>
+    safe(async () => {
+      const { data, error } = await supabase.from("site_settings").select("*").eq("id", 1).maybeSingle();
+      if (error) throw error;
+      return data as unknown as SiteSettings;
+    }, null as unknown as SiteSettings),
 });
+
 
 export const reviewsQuery = queryOptions({
   queryKey: ["reviews"],
