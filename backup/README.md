@@ -22,7 +22,10 @@ Everything here is committed to the repo, so connecting GitHub takes it all with
 3. Re-upload files from `images/` and update the URLs in `products` /
    `site_settings`, or keep the original Cloudinary URLs (they still work).
 
-Refresh this backup any time with `bun scripts/export-backup.ts`.
+Refresh this backup any time with `bun scripts/export-backup.ts` — it wipes
+`data/` and `images/` first, so the folder always mirrors the CURRENT site
+(no stale products or old images). See `backup/BACKUP_INFO.txt` for the
+timestamp and row counts of the last run.
 
 > Note: `orders.json` / `orders.csv` contain real customer personal data
 > (names, phone numbers, addresses). Keep the GitHub repository **private**.

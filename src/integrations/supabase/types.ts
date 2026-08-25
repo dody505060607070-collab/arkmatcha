@@ -461,6 +461,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      redeem_discount_code: { Args: { _code: string }; Returns: undefined }
+      validate_discount_code: {
+        Args: { _code: string }
+        Returns: {
+          code: string
+          percent_off: number
+          reason: string
+          valid: boolean
+        }[]
+      }
     }
     Enums: {
       app_role: "admin"
