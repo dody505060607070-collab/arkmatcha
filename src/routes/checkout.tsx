@@ -8,7 +8,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { governoratesWithRates, shippingForWithRates } from "@/lib/egypt-governorates";
 import { toast } from "sonner";
 import { notifyAdmins } from "@/lib/push-client";
-import { redeemDiscountCode } from "@/lib/discount.functions";
+import { redeemDiscountCode } from "@/lib/discount";
 
 
 export const Route = createFileRoute("/checkout")({
@@ -91,7 +91,7 @@ function CheckoutPage() {
     });
     setLoading(false);
     if (error) { toast.error(error.message); return; }
-    if (applied) { void redeemDiscountCode({ data: { code: applied.code } }); }
+    if (applied) { void redeemDiscountCode(applied.code); }
     notifyAdmins("order", orderId);
     clear();
     setDone(true);

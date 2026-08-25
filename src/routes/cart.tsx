@@ -6,7 +6,7 @@ import { settingsQuery } from "@/lib/queries";
 import { useContent } from "@/lib/useContent";
 import { TinIllustration } from "@/components/site/TinIllustration";
 import { useState } from "react";
-import { validateDiscountCode } from "@/lib/discount.functions";
+import { validateDiscountCode } from "@/lib/discount";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/cart")({
@@ -42,7 +42,7 @@ function CartPage() {
     if (!code) return;
     setChecking(true);
     try {
-      const res = await validateDiscountCode({ data: { code } });
+      const res = await validateDiscountCode(code);
       if (!res.valid) {
         setDiscount(null);
         toast.error(res.reason ?? "Invalid discount code");
