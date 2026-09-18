@@ -543,6 +543,87 @@ function ProductsAdmin() {
   );
 }
 
+function ImagesManager({ images, onChange }: { images: string[]; onChange: (next: string[]) => void }) {
+  const [draft, setDraft] = useState("");
+
+  function move(index: number, dir: -1 | 1) {
+    const next = [...images];
+    const target = index + dir;
+    if (target < 0 || target >= next.length) return;
+    [next[index], next[target]] = [next[target], next[index]];
+    onChange(next);
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="space-y-2">
+        {images.map((url, i) => (
+          <div key={`${url}-${i}`} className="flex items-center gap-3 rounded-xl border border-[color:var(--border)] p-2">
+            <img src={url} alt="" className="h-14 w-14 rounded-lg object-cover bg-[color:var(--petal)]/40" />
+            <input
+              value={url}
+              onChange={(e) => {
+                const next = [...images];
+                next[i] = e.target.value;
+                onChange(next);
+              }}
+              className={`${inputClass} flex-1`}
+            />
+            <div className="flex items-center gap-1">
+              {i === 0 ? (
+                <span className="rounded-full bg-[color:var(--olive)]/10 px-2 py-1 text-[10px] uppercase tracking-widest text-[color:var(--olive)]">
+                  Main
+                </span>
+              ) : null}
+              <button type="button" title="Move up" onClick={() => move(i, -1)} disabled={i === 0} className="rounded-lg border border-[color:var(--border)] px-2 py-1 text-xs disabled:opacity-30">↑</button>
+              <button type="button" title="Move down" onClick={() => move(i, 1)} disabled={i === images.length - 1} className="rounded-lg border border-[color:var(--border)] px-2 py-1 text-xs disabled:opacity-30">↓</button>
+              {i > 0 && (
+                <button
+                  type="button"
+                  onClick={() => onChange([images[i], ...images.filter((_, j) => j !== i)])}
+                  className="rounded-lg border border-[color:var(--border)] px-2 py-1 text-xs"
+                >
+                  Make main
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => onChange(images.filter((_, j) => j !== i))}
+                className="rounded-lg border border-red-300 px-2 py-1 text-xs text-red-600"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        ))}
+        {images.length === 0 && (
+          <p className="text-xs text-[color:var(--muted-foreground)]">مفيش صور لسه — ضيف رابط صورة تحت.</p>
+        )}
+      </div>
+      <div className="flex gap-2">
+        <input
+          value={draft}
+          placeholder="https://... رابط صورة جديدة"
+          onChange={(e) => setDraft(e.target.value)}
+          className={`${inputClass} flex-1`}
+        />
+        <button
+          type="button"
+          onClick={() => {
+            const url = draft.trim();
+            if (!url) return;
+            onChange([...images, url]);
+            setDraft("");
+          }}
+          className="rounded-xl border border-[color:var(--border)] px-4 text-sm"
+        >
+          + Add image
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () => void }) {
   const qc = useQueryClient();
   const [form, setForm] = useState({
@@ -552,8 +633,7 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
     description: product.description,
     price: product.price == null ? "" : String(product.price),
     discount_percentage: String(product.discount_percentage ?? 0),
-    image_url: product.image_url,
-    gallery: (product.gallery ?? []).join("\n"),
+    images: [product.image_url, ...(product.gallery ?? [])].filter(Boolean) as string[],
     in_stock: product.in_stock,
     track_inventory: product.track_inventory ?? false,
     quantity: String(product.quantity ?? 0),
@@ -583,8 +663,8 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
         description: form.description,
         price: form.price === "" ? null : Number(form.price),
         discount_percentage: discountNum,
-        image_url: form.image_url,
-        gallery: form.gallery.split("\n").map((s) => s.trim()).filter(Boolean),
+        image_url: form.images[0] ?? "",
+        gallery: form.images.slice(1),
         in_stock: form.in_stock,
         track_inventory: form.track_inventory,
         quantity: Number(form.quantity) || 0,
@@ -650,8 +730,13 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
             )}
           </div>
         </Field>
-        <Field label="Image URL (main)" hint="رابط الصورة الرئيسية"><input value={form.image_url} placeholder="https://..." onChange={(e) => setForm({ ...form, image_url: e.target.value })} className={inputClass} /></Field>
-        <Field label="Gallery images (one URL per line)" hint="صور إضافية — كل رابط في سطر" className="md:col-span-2"><textarea rows={4} value={form.gallery} placeholder={"https://...\nhttps://..."} onChange={(e) => setForm({ ...form, gallery: e.target.value })} className={inputClass} /></Field>
+        <Field
+          label="Images & order"
+          hint="أول صورة هي الرئيسية اللي بتظهر في المتجر — رتّب الصور بالأسهم أو بزرار Make main"
+          className="md:col-span-2"
+        >
+          <ImagesManager images={form.images} onChange={(images) => setForm({ ...form, images })} />
+        </Field>
         <Field label="Short description" hint="وصف قصير يظهر تحت الاسم" className="md:col-span-2"><textarea rows={2} value={form.short_description} onChange={(e) => setForm({ ...form, short_description: e.target.value })} className={inputClass} /></Field>
         <Field label="Full description" hint="الوصف الكامل في صفحة المنتج" className="md:col-span-2"><textarea rows={4} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className={inputClass} /></Field>
         <Field label="Ingredients" hint="المكونات"><textarea rows={2} value={form.ingredients} onChange={(e) => setForm({ ...form, ingredients: e.target.value })} className={inputClass} /></Field>
