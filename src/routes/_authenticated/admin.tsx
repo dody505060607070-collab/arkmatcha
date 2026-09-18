@@ -649,8 +649,13 @@ function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () 
             )}
           </div>
         </Field>
-        <Field label="Image URL (main)" hint="رابط الصورة الرئيسية"><input value={form.image_url} placeholder="https://..." onChange={(e) => setForm({ ...form, image_url: e.target.value })} className={inputClass} /></Field>
-        <Field label="Gallery images (one URL per line)" hint="صور إضافية — كل رابط في سطر" className="md:col-span-2"><textarea rows={4} value={form.gallery} placeholder={"https://...\nhttps://..."} onChange={(e) => setForm({ ...form, gallery: e.target.value })} className={inputClass} /></Field>
+        <Field
+          label="Images & order"
+          hint="أول صورة هي الرئيسية اللي بتظهر في المتجر — رتّب الصور بالأسهم أو بزرار Make main"
+          className="md:col-span-2"
+        >
+          <ImagesManager images={form.images} onChange={(images) => setForm({ ...form, images })} />
+        </Field>
         <Field label="Short description" hint="وصف قصير يظهر تحت الاسم" className="md:col-span-2"><textarea rows={2} value={form.short_description} onChange={(e) => setForm({ ...form, short_description: e.target.value })} className={inputClass} /></Field>
         <Field label="Full description" hint="الوصف الكامل في صفحة المنتج" className="md:col-span-2"><textarea rows={4} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className={inputClass} /></Field>
         <Field label="Ingredients" hint="المكونات"><textarea rows={2} value={form.ingredients} onChange={(e) => setForm({ ...form, ingredients: e.target.value })} className={inputClass} /></Field>
