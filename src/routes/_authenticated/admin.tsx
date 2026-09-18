@@ -574,9 +574,7 @@ function ImagesManager({ images, onChange }: { images: string[]; onChange: (next
                 <span className="rounded-full bg-[color:var(--olive)]/10 px-2 py-1 text-[10px] uppercase tracking-widest text-[color:var(--olive)]">
                   Main
                 </span>
-              ) : (
-                <button type="button" onClick={() => move(i, -1 - (i - 1) as -1)} className="hidden" />
-              )}
+              ) : null}
               <button type="button" title="Move up" onClick={() => move(i, -1)} disabled={i === 0} className="rounded-lg border border-[color:var(--border)] px-2 py-1 text-xs disabled:opacity-30">↑</button>
               <button type="button" title="Move down" onClick={() => move(i, 1)} disabled={i === images.length - 1} className="rounded-lg border border-[color:var(--border)] px-2 py-1 text-xs disabled:opacity-30">↓</button>
               {i > 0 && (
