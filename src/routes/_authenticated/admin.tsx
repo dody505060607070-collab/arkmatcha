@@ -543,6 +543,89 @@ function ProductsAdmin() {
   );
 }
 
+function ImagesManager({ images, onChange }: { images: string[]; onChange: (next: string[]) => void }) {
+  const [draft, setDraft] = useState("");
+
+  function move(index: number, dir: -1 | 1) {
+    const next = [...images];
+    const target = index + dir;
+    if (target < 0 || target >= next.length) return;
+    [next[index], next[target]] = [next[target], next[index]];
+    onChange(next);
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="space-y-2">
+        {images.map((url, i) => (
+          <div key={`${url}-${i}`} className="flex items-center gap-3 rounded-xl border border-[color:var(--border)] p-2">
+            <img src={url} alt="" className="h-14 w-14 rounded-lg object-cover bg-[color:var(--petal)]/40" />
+            <input
+              value={url}
+              onChange={(e) => {
+                const next = [...images];
+                next[i] = e.target.value;
+                onChange(next);
+              }}
+              className={`${inputClass} flex-1`}
+            />
+            <div className="flex items-center gap-1">
+              {i === 0 ? (
+                <span className="rounded-full bg-[color:var(--olive)]/10 px-2 py-1 text-[10px] uppercase tracking-widest text-[color:var(--olive)]">
+                  Main
+                </span>
+              ) : (
+                <button type="button" onClick={() => move(i, -1 - (i - 1) as -1)} className="hidden" />
+              )}
+              <button type="button" title="Move up" onClick={() => move(i, -1)} disabled={i === 0} className="rounded-lg border border-[color:var(--border)] px-2 py-1 text-xs disabled:opacity-30">↑</button>
+              <button type="button" title="Move down" onClick={() => move(i, 1)} disabled={i === images.length - 1} className="rounded-lg border border-[color:var(--border)] px-2 py-1 text-xs disabled:opacity-30">↓</button>
+              {i > 0 && (
+                <button
+                  type="button"
+                  onClick={() => onChange([images[i], ...images.filter((_, j) => j !== i)])}
+                  className="rounded-lg border border-[color:var(--border)] px-2 py-1 text-xs"
+                >
+                  Make main
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => onChange(images.filter((_, j) => j !== i))}
+                className="rounded-lg border border-red-300 px-2 py-1 text-xs text-red-600"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        ))}
+        {images.length === 0 && (
+          <p className="text-xs text-[color:var(--muted-foreground)]">مفيش صور لسه — ضيف رابط صورة تحت.</p>
+        )}
+      </div>
+      <div className="flex gap-2">
+        <input
+          value={draft}
+          placeholder="https://... رابط صورة جديدة"
+          onChange={(e) => setDraft(e.target.value)}
+          className={`${inputClass} flex-1`}
+        />
+        <button
+          type="button"
+          onClick={() => {
+            const url = draft.trim();
+            if (!url) return;
+            onChange([...images, url]);
+            setDraft("");
+          }}
+          className="rounded-xl border border-[color:var(--border)] px-4 text-sm"
+        >
+          + Add image
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function ProductEditor({ product, onDelete }: { product: Product; onDelete?: () => void }) {
   const qc = useQueryClient();
   const [form, setForm] = useState({
