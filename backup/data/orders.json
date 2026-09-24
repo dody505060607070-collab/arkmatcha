@@ -1,34 +1,5 @@
 [
   {
-    "id": "46a36c09-e8bb-44c7-9c37-403cbbd339d0",
-    "order_number": 11,
-    "full_name": "Heba haitham",
-    "phone": "01514145559",
-    "whatsapp": "0151415559",
-    "email": "arkmatcha@gmail.com",
-    "city": "Shrouq city",
-    "address": "الحي الثالث شرق المجاوره السابعه شارع بليغ حمدي فيلا 120",
-    "building": "الحي الثالث",
-    "notes": null,
-    "items": [
-      {
-        "name": "Ark Matcha 30g",
-        "size": "30g / 1.06 oz",
-        "price": 660,
-        "quantity": 1,
-        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
-      }
-    ],
-    "subtotal": 660,
-    "shipping_fee": 100,
-    "total": 760,
-    "status": "delivered",
-    "created_at": "2026-08-01T21:11:38.400198+00:00",
-    "governorate": "Cairo",
-    "discount_code": null,
-    "discount_amount": 0
-  },
-  {
     "id": "7a342f82-ffb2-4a6e-910d-9701e233a0eb",
     "order_number": 10,
     "full_name": "Sherouq Reda",
@@ -48,9 +19,9 @@
         "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
       }
     ],
-    "subtotal": 968,
-    "shipping_fee": 100,
-    "total": 1068,
+    "subtotal": 968.0,
+    "shipping_fee": 100.0,
+    "total": 1068.0,
     "status": "delivered",
     "created_at": "2026-08-01T17:22:48.416623+00:00",
     "governorate": "Cairo",
@@ -84,9 +55,9 @@
         "product_id": "a768674e-94ac-4aa7-9d65-8b88aa1b53a3:butter"
       }
     ],
-    "subtotal": 2100,
-    "shipping_fee": 100,
-    "total": 2200,
+    "subtotal": 2100.0,
+    "shipping_fee": 100.0,
+    "total": 2200.0,
     "status": "confirmed",
     "created_at": "2026-08-06T19:45:41.162955+00:00",
     "governorate": "Cairo",
@@ -113,9 +84,9 @@
         "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
       }
     ],
-    "subtotal": 660,
-    "shipping_fee": 100,
-    "total": 760,
+    "subtotal": 660.0,
+    "shipping_fee": 100.0,
+    "total": 760.0,
     "status": "confirmed",
     "created_at": "2026-08-05T17:19:31.613562+00:00",
     "governorate": "Monufia",
@@ -149,9 +120,9 @@
         "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
       }
     ],
-    "subtotal": 2100,
-    "shipping_fee": 100,
-    "total": 2200,
+    "subtotal": 2100.0,
+    "shipping_fee": 100.0,
+    "total": 2200.0,
     "status": "confirmed",
     "created_at": "2026-08-05T16:34:34.773571+00:00",
     "governorate": "Alexandria",
@@ -178,9 +149,9 @@
         "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
       }
     ],
-    "subtotal": 968,
-    "shipping_fee": 100,
-    "total": 1068,
+    "subtotal": 968.0,
+    "shipping_fee": 100.0,
+    "total": 1068.0,
     "status": "confirmed",
     "created_at": "2026-08-02T07:31:37.896003+00:00",
     "governorate": "Sharqia",
@@ -209,40 +180,11 @@
         "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
       }
     ],
-    "subtotal": 660,
-    "shipping_fee": 100,
-    "total": 760,
+    "subtotal": 660.0,
+    "shipping_fee": 100.0,
+    "total": 760.0,
     "status": "delivered",
     "created_at": "2026-08-08T16:51:19.398651+00:00",
-    "governorate": "Cairo",
-    "discount_code": null,
-    "discount_amount": 0
-  },
-  {
-    "id": "2fda4b04-4bc9-46f8-8075-9c5bf53e0721",
-    "order_number": 12,
-    "full_name": "هلا وائل",
-    "phone": "01507926966",
-    "whatsapp": "01507926966",
-    "email": "hlawael76@gmail.com",
-    "city": "Nasr City",
-    "address": "عيتيرررينسمسمشنسرشمشمكش",
-    "building": null,
-    "notes": null,
-    "items": [
-      {
-        "name": "Ark Matcha 30g",
-        "size": "30g / 1.06 oz",
-        "price": 660,
-        "quantity": 1,
-        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
-      }
-    ],
-    "subtotal": 660,
-    "shipping_fee": 100,
-    "total": 760,
-    "status": "delivered",
-    "created_at": "2026-08-01T21:55:10.366776+00:00",
     "governorate": "Cairo",
     "discount_code": null,
     "discount_amount": 0
@@ -267,9 +209,9 @@
         "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
       }
     ],
-    "subtotal": 660,
-    "shipping_fee": 100,
-    "total": 760,
+    "subtotal": 660.0,
+    "shipping_fee": 100.0,
+    "total": 760.0,
     "status": "delivered",
     "created_at": "2026-08-01T22:43:09.958862+00:00",
     "governorate": "Giza",
@@ -298,9 +240,9 @@
         "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
       }
     ],
-    "subtotal": 1980,
-    "shipping_fee": 100,
-    "total": 2080,
+    "subtotal": 1980.0,
+    "shipping_fee": 100.0,
+    "total": 2080.0,
     "status": "confirmed",
     "created_at": "2026-08-13T14:12:02.59414+00:00",
     "governorate": "Cairo",
@@ -329,9 +271,9 @@
         "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
       }
     ],
-    "subtotal": 660,
-    "shipping_fee": 100,
-    "total": 760,
+    "subtotal": 660.0,
+    "shipping_fee": 100.0,
+    "total": 760.0,
     "status": "delivered",
     "created_at": "2026-08-09T05:14:48.561336+00:00",
     "governorate": "Sharqia",
@@ -360,9 +302,9 @@
         "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
       }
     ],
-    "subtotal": 675,
-    "shipping_fee": 100,
-    "total": 775,
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
     "status": "confirmed",
     "created_at": "2026-08-12T22:45:00.556848+00:00",
     "governorate": "Cairo",
@@ -400,9 +342,9 @@
         "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
       }
     ],
-    "subtotal": 1490,
-    "shipping_fee": 100,
-    "total": 1590,
+    "subtotal": 1490.0,
+    "shipping_fee": 100.0,
+    "total": 1590.0,
     "status": "confirmed",
     "created_at": "2026-08-13T03:09:20.430907+00:00",
     "governorate": "Giza",
@@ -431,9 +373,9 @@
         "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
       }
     ],
-    "subtotal": 990,
-    "shipping_fee": 100,
-    "total": 1090,
+    "subtotal": 990.0,
+    "shipping_fee": 100.0,
+    "total": 1090.0,
     "status": "confirmed",
     "created_at": "2026-08-23T18:03:15.218534+00:00",
     "governorate": "Cairo",
@@ -471,9 +413,9 @@
         "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
       }
     ],
-    "subtotal": 1665,
-    "shipping_fee": 100,
-    "total": 1765,
+    "subtotal": 1665.0,
+    "shipping_fee": 100.0,
+    "total": 1765.0,
     "status": "confirmed",
     "created_at": "2026-08-23T11:55:56.179468+00:00",
     "governorate": "Sharqia",
@@ -511,9 +453,9 @@
         "product_id": "a768674e-94ac-4aa7-9d65-8b88aa1b53a3"
       }
     ],
-    "subtotal": 2275,
-    "shipping_fee": 100,
-    "total": 2375,
+    "subtotal": 2275.0,
+    "shipping_fee": 100.0,
+    "total": 2375.0,
     "status": "confirmed",
     "created_at": "2026-08-22T00:54:08.872174+00:00",
     "governorate": "Dakahlia",
@@ -551,9 +493,9 @@
         "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
       }
     ],
-    "subtotal": 1665,
-    "shipping_fee": 100,
-    "total": 1765,
+    "subtotal": 1665.0,
+    "shipping_fee": 100.0,
+    "total": 1765.0,
     "status": "delivered",
     "created_at": "2026-08-20T20:18:04.338857+00:00",
     "governorate": "Dakahlia",
@@ -582,9 +524,9 @@
         "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
       }
     ],
-    "subtotal": 675,
-    "shipping_fee": 100,
-    "total": 775,
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
     "status": "delivered",
     "created_at": "2026-08-16T09:46:04.090465+00:00",
     "governorate": "Cairo",
@@ -613,12 +555,74 @@
         "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
       }
     ],
-    "subtotal": 675,
-    "shipping_fee": 100,
-    "total": 775,
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
     "status": "delivered",
     "created_at": "2026-08-16T08:30:18.041857+00:00",
     "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "2b49feab-3118-4ce1-8bd8-24e70f393647",
+    "order_number": 40,
+    "full_name": "Omnia khedr",
+    "phone": "+201062850777",
+    "whatsapp": null,
+    "email": "omnia0000khedr@gmail.com",
+    "city": "المنصورة",
+    "address": "آخر المشاية السفلية عمارة بلبن الدور السادس",
+    "building": "عمارة بلبن",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
+    "status": "out_for_delivery",
+    "created_at": "2026-08-27T22:55:24.054266+00:00",
+    "governorate": "Dakahlia",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "0d7fe71a-6811-42f9-83ff-98810abe4aee",
+    "order_number": 38,
+    "full_name": "تقى Gebril",
+    "phone": "01033495109",
+    "whatsapp": null,
+    "email": "toqa.gebril2005@icloud.com",
+    "city": "سرس الليان المنوفيه",
+    "address": "سرس الليان المنوفيه سكه العماره شارع بركات",
+    "building": "فيلا علاء جبريل",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
+    "status": "out_for_delivery",
+    "created_at": "2026-08-25T07:20:17.952141+00:00",
+    "governorate": "Monufia",
     "discount_code": null,
     "discount_amount": 0
   },
@@ -644,11 +648,1429 @@
         "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
       }
     ],
-    "subtotal": 990,
-    "shipping_fee": 100,
-    "total": 1090,
-    "status": "new",
+    "subtotal": 990.0,
+    "shipping_fee": 100.0,
+    "total": 1090.0,
+    "status": "out_for_delivery",
     "created_at": "2026-08-24T17:23:44.998679+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "c61d6552-a226-4312-823e-e55d70720f7a",
+    "order_number": 37,
+    "full_name": "Sherouq Reda",
+    "phone": "+201145446890",
+    "whatsapp": null,
+    "email": "sherouqreda9@gmail.com",
+    "city": "Cairo",
+    "address": "New Cairo - Compound Layan residence - G65",
+    "building": "Layan residence",
+    "notes": null,
+    "items": [
+      {
+        "id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2",
+        "name": "Ark Matcha 50g",
+        "size": "50g / 1.76 oz",
+        "price": 990,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
+      }
+    ],
+    "subtotal": 990.0,
+    "shipping_fee": 100.0,
+    "total": 1090.0,
+    "status": "out_for_delivery",
+    "created_at": "2026-08-25T01:40:10.872728+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "325cb7c4-cdc8-45db-82c5-fcbc9f9ecb06",
+    "order_number": 51,
+    "full_name": "فاطمة احمد",
+    "phone": "01500508178",
+    "whatsapp": null,
+    "email": "hatibo5050@icloud.com",
+    "city": "طنطا",
+    "address": "طنطا عند كبري  احافه من ناحيه الاستاد",
+    "building": "عند صيدليه أحمد رمضان",
+    "notes": "زودي عدد الأكواب",
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 2,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 1350.0,
+    "shipping_fee": 100.0,
+    "total": 1450.0,
+    "status": "delivered",
+    "created_at": "2026-09-01T19:55:22.712128+00:00",
+    "governorate": "Gharbia",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "4b2e6dde-fa4f-4dff-81d6-444efc16c91a",
+    "order_number": 53,
+    "full_name": "اسماء",
+    "phone": "01551281097",
+    "whatsapp": null,
+    "email": "asmaanajeeb2021@gmail.com",
+    "city": "القاهره - المنيل",
+    "address": "المنيل سراي الروضه شارع الملك مظفر عماره الي فيها بنك said أمام كافتريا فيروز",
+    "building": "انا هنزل استلم",
+    "notes": "اول مره بطلب  دلعيني بالأكواب والستيكرز  😋🤍",
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      },
+      {
+        "id": "6bc35982-b026-41a0-9b69-5b459366d22e",
+        "name": "Japanese Bamboo Matcha Whisk",
+        "size": "Chasen",
+        "price": 500,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "6bc35982-b026-41a0-9b69-5b459366d22e"
+      }
+    ],
+    "subtotal": 1175.0,
+    "shipping_fee": 100.0,
+    "total": 1275.0,
+    "status": "delivered",
+    "created_at": "2026-09-02T23:14:21.845373+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "1acf7975-0b46-44e2-b1ff-40625aba94a3",
+    "order_number": 50,
+    "full_name": "Mariam Ali",
+    "phone": "01015512555",
+    "whatsapp": null,
+    "email": null,
+    "city": "الدقي",
+    "address": "الدقي 105 شارع مصدق الدور السادس شقه 24",
+    "building": "105 شارع مصدق",
+    "notes": "كل علبه كرتون منفصل \nباخذهم هدايا للكويت ضبطيني 🤣❤️",
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 2,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 1350.0,
+    "shipping_fee": 100.0,
+    "total": 1450.0,
+    "status": "delivered",
+    "created_at": "2026-09-01T16:40:05.103021+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "4d21e314-e1fc-4828-9f36-97cdec99198c",
+    "order_number": 47,
+    "full_name": "Shorouk Tohamy Gomaa",
+    "phone": "01117768516",
+    "whatsapp": null,
+    "email": "mariamansor25@gmail.com",
+    "city": "الشرقية - منيا القمح",
+    "address": "الشرقيه منيا القمح شارع فرنه ابو سلام عند جامع ابو جوهر",
+    "building": null,
+    "notes": "Call the number when you arrive at the address",
+    "items": [
+      {
+        "id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2",
+        "name": "Ark Matcha 50g",
+        "size": "50g / 1.76 oz",
+        "price": 990,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
+      }
+    ],
+    "subtotal": 990.0,
+    "shipping_fee": 100.0,
+    "total": 882.1,
+    "status": "delivered",
+    "created_at": "2026-08-31T22:20:13.814019+00:00",
+    "governorate": "Sharqia",
+    "discount_code": "IST200",
+    "discount_amount": 207.9
+  },
+  {
+    "id": "abb582c4-6fd3-40e1-bb29-f4953e15049a",
+    "order_number": 45,
+    "full_name": "اريچ ابراهيم",
+    "phone": "01025227588",
+    "whatsapp": null,
+    "email": "iareej037@gmail.com",
+    "city": "كفر شكر",
+    "address": "اول الكوبرى شارع السمرى",
+    "building": "عياده الدكتوره ابراهيم ابو العنين",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
+    "status": "delivered",
+    "created_at": "2026-08-31T19:30:33.535831+00:00",
+    "governorate": "Qalyubia",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "f05d592f-d847-421c-b1ae-7bf40324264c",
+    "order_number": 43,
+    "full_name": "malak ramy",
+    "phone": "01116584475",
+    "whatsapp": null,
+    "email": "malakramy917@gmail.com",
+    "city": "dreamland",
+    "address": "dreamland 6th of october city building 327 4th floor flat 51",
+    "building": "building 327 4th floor flat 51",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
+    "status": "delivered",
+    "created_at": "2026-08-30T18:05:49.981635+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "f2b5d380-7e36-463a-9d10-0cfeb58183f5",
+    "order_number": 44,
+    "full_name": "Fatima Taha Mohammed",
+    "phone": "01290017109",
+    "whatsapp": null,
+    "email": "fatmatahamo@gmail.com",
+    "city": "٦ اكتوبر",
+    "address": "بجوار التأمينات الاجتماعية ومسجد المسبحين خلف سنتر الحلفاوي",
+    "building": "الحى ١١ مجاورة ٤ عمارة ١٩ شقة ٨ - مدينة ٦ اكتوبر",
+    "notes": "يكون مغلف بطريقة حلوو وكيوت وابغى سيكرات كثيرةةةة",
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      },
+      {
+        "id": "a768674e-94ac-4aa7-9d65-8b88aa1b53a3",
+        "name": "Matcha Kit — Pink",
+        "size": "Ritual set",
+        "price": 1600,
+        "variant": "Pink",
+        "quantity": 1,
+        "product_id": "a768674e-94ac-4aa7-9d65-8b88aa1b53a3"
+      }
+    ],
+    "subtotal": 2275.0,
+    "shipping_fee": 100.0,
+    "total": 2375.0,
+    "status": "delivered",
+    "created_at": "2026-08-31T16:42:19.752732+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "7a18b1ce-2b3b-4377-9c8e-748c31a028f1",
+    "order_number": 54,
+    "full_name": "Farah Ehab",
+    "phone": "0103 6500335",
+    "whatsapp": null,
+    "email": "farah.ehab205@gmail.com",
+    "city": "Helwan",
+    "address": "حلوان، شارع رياض برج حورس ١ بجانب مستشفى امان",
+    "building": "برج  حورس ١",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
+    "status": "confirmed",
+    "created_at": "2026-09-03T14:13:35.908987+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "7f809bc4-a0db-422b-b34b-4319f430c526",
+    "order_number": 42,
+    "full_name": "نها الباز",
+    "phone": "01040949064",
+    "whatsapp": null,
+    "email": "nohaelbaz113@gmail.com",
+    "city": "القاهرة  مدينة نصر",
+    "address": "53 هشام لبيب المنطقه الثامنه مدينه نصر",
+    "building": "53",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
+    "status": "delivered",
+    "created_at": "2026-08-29T14:43:50.511889+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "ffd8ec1a-6b66-4570-807f-7f4d2850e856",
+    "order_number": 57,
+    "full_name": "Elham",
+    "phone": "01228016798",
+    "whatsapp": null,
+    "email": "atheerrr.48@gmail.com",
+    "city": "Cairo",
+    "address": "شارع مراحق ابن عامر - عمارة ٨ ب الدور الاول شقه رقم ٤",
+    "building": "8b",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
+    "status": "delivered",
+    "created_at": "2026-09-07T18:51:05.229437+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "9ecbc2c4-faf2-4bbb-985e-5f997e6424c9",
+    "order_number": 65,
+    "full_name": "انهار رمضان",
+    "phone": "01214541848",
+    "whatsapp": null,
+    "email": "anharramadan9@gmail.com",
+    "city": "القاهره",
+    "address": "الدقي شارع المحلاوي عماره ١٠دور رابع شقه ١٦",
+    "building": "عماره ١٠",
+    "notes": "اول مره اطلبب ومتحمسه اجرببب الماتشا 😍",
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-18T20:36:02.032105+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "eb1344a2-f519-4ba5-85b9-da1a311346d4",
+    "order_number": 55,
+    "full_name": "Hana mesallam",
+    "phone": "01043813328",
+    "whatsapp": null,
+    "email": "hanamesallam638@gmail.com",
+    "city": "الزقازيق",
+    "address": "كفر محمد جاويش طريق الزنكلون انام مسجد الرحمن",
+    "building": "الفيلا الأستاذ مسلم",
+    "notes": "🥹دلعينييييي اول مرا اطلبب",
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
+    "status": "out_for_delivery",
+    "created_at": "2026-09-04T13:43:28.866414+00:00",
+    "governorate": "Sharqia",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "7e65cbd4-a486-466d-818d-b500beb7cfa7",
+    "order_number": 58,
+    "full_name": "Israa Yehia",
+    "phone": "+201270056441",
+    "whatsapp": null,
+    "email": "israayehia23@gmail.com",
+    "city": "Agouza",
+    "address": "4 Salem Salem Al Agouza in front of rodeo cafe",
+    "building": "Apartment no. 4",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 675,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 675.0,
+    "shipping_fee": 100.0,
+    "total": 775.0,
+    "status": "confirmed",
+    "created_at": "2026-09-10T15:28:03.756319+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "9f6b4bf7-b4f3-40ba-846f-64b15efae9e5",
+    "order_number": 59,
+    "full_name": "Malak alsanabsi",
+    "phone": "01223628905",
+    "whatsapp": null,
+    "email": null,
+    "city": "المنصوره",
+    "address": "شارع الجمهوريه عمارة بيانو الدور السابع شقهA",
+    "building": null,
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-18T13:32:29.28356+00:00",
+    "governorate": "Dakahlia",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "331aee49-0ffd-40ef-90d5-cfdfca41d488",
+    "order_number": 60,
+    "full_name": "Amanina Ragab",
+    "phone": "01025113568",
+    "whatsapp": null,
+    "email": "amaninaragab1970@gmail.com",
+    "city": "مدينه ابوحماد",
+    "address": "الشرقيه- مدينه ابوحماد- شارع مستشفي الصدر - بجوار مركز القمه التجاري",
+    "building": null,
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-18T13:50:28.11216+00:00",
+    "governorate": "Sharqia",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "02533a96-5695-4025-8552-81ac7ca70c2f",
+    "order_number": 61,
+    "full_name": "Sherouq Reda",
+    "phone": "+201145446890",
+    "whatsapp": null,
+    "email": "sherouqreda9@gmail.com",
+    "city": "Cairo",
+    "address": "New Cairo - Compound Layan Residence - G65",
+    "building": "G65",
+    "notes": "Next to (the drive2)",
+    "items": [
+      {
+        "id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec",
+        "name": "Vanilla Matcha",
+        "size": "30g",
+        "price": 850,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec"
+      }
+    ],
+    "subtotal": 850.0,
+    "shipping_fee": 100.0,
+    "total": 950.0,
+    "status": "confirmed",
+    "created_at": "2026-09-18T13:57:33.979042+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "582b6311-e449-478b-9139-ba3c78179124",
+    "order_number": 62,
+    "full_name": "Bodor hassan",
+    "phone": "01041536576",
+    "whatsapp": null,
+    "email": "boodor915@gmail.com",
+    "city": "6 أكتوبر",
+    "address": "الحي الاول مجاوره ٧ رقم العماره ١٣١٠",
+    "building": "الدور الاول شقه رقم ٦",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-18T15:57:42.165392+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "ddeff046-6b07-4c2c-ad15-87fb6c2b5e88",
+    "order_number": 63,
+    "full_name": "Nada Abdulfattah",
+    "phone": "01155572632",
+    "whatsapp": null,
+    "email": "nma90210@gmail.com",
+    "city": "Zayed",
+    "address": "الشيخ زايد، الحي التاسع، ڤيلا 116، بجانب المدرسة البريطانية",
+    "building": "116",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      },
+      {
+        "id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec",
+        "name": "Vanilla Matcha 30g",
+        "size": "30g",
+        "price": 850,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec"
+      }
+    ],
+    "subtotal": 1600.0,
+    "shipping_fee": 100.0,
+    "total": 1700.0,
+    "status": "confirmed",
+    "created_at": "2026-09-18T16:39:52.747342+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "33edb521-4561-4e7e-b081-e3c3d3e8b50f",
+    "order_number": 64,
+    "full_name": "Malak Shahin",
+    "phone": "01021121131",
+    "whatsapp": null,
+    "email": "malakshahin455@icloud.com",
+    "city": "Madinaty",
+    "address": "Madinaty b12 group 123 building 80 apartment 41",
+    "building": null,
+    "notes": null,
+    "items": [
+      {
+        "id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec",
+        "name": "Vanilla Matcha 30g",
+        "size": "30g",
+        "price": 850,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec"
+      }
+    ],
+    "subtotal": 850.0,
+    "shipping_fee": 100.0,
+    "total": 950.0,
+    "status": "confirmed",
+    "created_at": "2026-09-18T19:06:58.364184+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "e998ba52-4a97-45cf-a62e-9aa73a8d4505",
+    "order_number": 66,
+    "full_name": "Omnia khedr",
+    "phone": "+201062850777",
+    "whatsapp": null,
+    "email": "omnia0000khedr@gmail.com",
+    "city": "El Mansoura",
+    "address": "المنصورة آخر المشاية السفلية عمارة بلبن الدور السادس",
+    "building": "عمارة بلبن",
+    "notes": null,
+    "items": [
+      {
+        "id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec",
+        "name": "Vanilla Matcha 30g",
+        "size": "30g",
+        "price": 850,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec"
+      }
+    ],
+    "subtotal": 850.0,
+    "shipping_fee": 100.0,
+    "total": 950.0,
+    "status": "confirmed",
+    "created_at": "2026-09-18T23:15:24.906587+00:00",
+    "governorate": "Dakahlia",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "fe939404-1740-43ad-a54c-b39c7c2ea8a8",
+    "order_number": 68,
+    "full_name": "عثمان سعيد",
+    "phone": "01095562985",
+    "whatsapp": null,
+    "email": "ee-ee050@hotmail.com",
+    "city": "القاهره التجمع الخامس",
+    "address": "جاليريا مون فالي \nZ-6-e-3\nالشقه ١١",
+    "building": "جالريا مون فالي",
+    "notes": null,
+    "items": [
+      {
+        "id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2",
+        "name": "Ark Matcha 50g",
+        "size": "50g / 1.76 oz",
+        "price": 1100,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
+      }
+    ],
+    "subtotal": 1100.0,
+    "shipping_fee": 100.0,
+    "total": 1200.0,
+    "status": "confirmed",
+    "created_at": "2026-09-19T10:33:24.394169+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "23ae23ce-ccd6-4411-a8ab-791f59a7aa93",
+    "order_number": 69,
+    "full_name": "Yomna ahmed",
+    "phone": "+20 115 423 1154",
+    "whatsapp": null,
+    "email": "unnaumna37@gmail.com",
+    "city": "مدينه نصر خضر التوني",
+    "address": "مدينه نصر شارع خضر التوني عماره 145 شقه 114",
+    "building": "عماره 145 شقه 114",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-19T12:58:27.13935+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "2e686203-00e6-4be2-a5cf-56e467a5bde4",
+    "order_number": 70,
+    "full_name": "Reem Elsokkary",
+    "phone": "+201050041004",
+    "whatsapp": null,
+    "email": "reem.sokary17@gmail.com",
+    "city": "6october",
+    "address": "كمباوند رحاب اكتوبر سيتي حدايق اكتوبر",
+    "building": "أ١٥ شقة٥٠١ الدور الخامس",
+    "notes": "شفتكم علي تيك توك وتحمست اجرب الماتشا من عندكم شكرا مقدماً ❤️",
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-20T01:11:09.718609+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "fc147787-286b-4422-b21b-9dc7b0a65729",
+    "order_number": 71,
+    "full_name": "saja alhariri",
+    "phone": "‭٠١١٣ ٠٩٢٤٤٨٣‬",
+    "whatsapp": null,
+    "email": "saja1801alhariri@gmail.com",
+    "city": "طنطا",
+    "address": "Order notes\nYour order\n\nArk Matcha 50g × 1EGP 1100.00\nSubtotal\nEGP 1100.00\nShipping\nEGP 100.00\nTotal\nEGP 1200.00\nCash on Delivery\nPay when your order arrives.\n\nPlace Order\n© 2026, Ark Matcha\nPrivacy policy",
+    "building": "‏طنطا شارع الاستاد/ الجيش فوق البنك الاهلي",
+    "notes": "زيدي اكواب وستكرات لتصوير الجامعة 🥹😂",
+    "items": [
+      {
+        "id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2",
+        "name": "Ark Matcha 50g",
+        "size": "50g / 1.76 oz",
+        "price": 1100,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
+      }
+    ],
+    "subtotal": 1100.0,
+    "shipping_fee": 100.0,
+    "total": 1200.0,
+    "status": "confirmed",
+    "created_at": "2026-09-20T11:20:02.946876+00:00",
+    "governorate": "Gharbia",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "81195681-d210-401d-b1d6-6eec5af8be92",
+    "order_number": 73,
+    "full_name": "Tala nader",
+    "phone": "+20 155 5011799",
+    "whatsapp": null,
+    "email": "mo.talal518@gmail.com",
+    "city": "Madinat nasr",
+    "address": "17 A ahbab elrasool street\nBurj alnada \nFloor 3 apt 32",
+    "building": "برج النداء",
+    "notes": null,
+    "items": [
+      {
+        "id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2",
+        "name": "Ark Matcha 50g",
+        "size": "50g / 1.76 oz",
+        "price": 1100,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
+      },
+      {
+        "id": "6bc35982-b026-41a0-9b69-5b459366d22e",
+        "name": "Japanese Bamboo Matcha Whisk",
+        "size": "Chasen",
+        "price": 600,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "6bc35982-b026-41a0-9b69-5b459366d22e"
+      }
+    ],
+    "subtotal": 1700.0,
+    "shipping_fee": 100.0,
+    "total": 1800.0,
+    "status": "confirmed",
+    "created_at": "2026-09-22T17:16:52.037128+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "511b435e-1f5a-4964-ae76-05d2f5dce303",
+    "order_number": 72,
+    "full_name": "Jana",
+    "phone": "01203981543",
+    "whatsapp": null,
+    "email": "Jana_7557@hotmail.com",
+    "city": "الجيزه",
+    "address": "حدائق الاهرام البوابه الثانيه",
+    "building": "57هـ",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-22T16:23:55.214758+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "18f270b9-3424-4900-a3d1-e1b54672d315",
+    "order_number": 75,
+    "full_name": "AMINA HASSABO",
+    "phone": "01004680652",
+    "whatsapp": null,
+    "email": "amina.hassabo@yahoo.com",
+    "city": "6th Of October",
+    "address": "Villa 30\nPalm Hills\nPhase 1, Gate 2",
+    "building": null,
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-23T12:05:57.031432+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "2db1c010-8a15-4740-9bd5-27cdf30ca766",
+    "order_number": 74,
+    "full_name": "Basma Abdulgader",
+    "phone": "01123143483",
+    "whatsapp": null,
+    "email": "basmaabdulgader625@gmail.com",
+    "city": "Cairo",
+    "address": "6october الحي الثاني مجاوره الخامسه",
+    "building": "عماره 1165 شقه رقم 12",
+    "notes": "😚طلبت بس عشان الباكجينق والماتشا لونها خياللل",
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-23T11:47:20.53135+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "cdbf4a23-4ad4-40c4-ab92-d42f6aef9bd3",
+    "order_number": 77,
+    "full_name": "ملك علوي",
+    "phone": "01011104333",
+    "whatsapp": null,
+    "email": "malaksocial@gmail.com",
+    "city": "التجمع الخامس",
+    "address": "كمبوند ليك فيو ريزدانس عمارة ٦١أ شقة ٣\" الدور الثالث",
+    "building": null,
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-23T14:10:36.241569+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "4734b68e-fc80-4267-bd13-89b4a365b697",
+    "order_number": 76,
+    "full_name": "Aya Lotfi",
+    "phone": "01065037167",
+    "whatsapp": null,
+    "email": "aya.lotfy58@gmail.com",
+    "city": "Madinaty",
+    "address": "Madinaty b10, 102[57] 52",
+    "building": "102 building 57 apartment 52",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-23T13:43:45.227999+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "8578b69e-f9e2-44d6-8bd5-596e9e8a14ac",
+    "order_number": 78,
+    "full_name": "sandra ELBARNASHAWY",
+    "phone": "01272155554",
+    "whatsapp": null,
+    "email": "sandyatef@gmai.com",
+    "city": "Cairo",
+    "address": "Rehab group 52 bldg 5 apartment 11",
+    "building": null,
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-23T14:38:02.752951+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "a45b354f-7466-447f-ab77-935738498613",
+    "order_number": 79,
+    "full_name": "آلاء محمد",
+    "phone": "01001008969",
+    "whatsapp": null,
+    "email": "xalaa.muhammed22x@gmail.com",
+    "city": "360631",
+    "address": "١٤ المدينة المنورة بلوك ٨ المنطقة العاشرة مدينة نصر",
+    "building": null,
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-23T15:03:04.353864+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "f6f253b9-0de4-4d34-a099-d4fbdcbdc3b2",
+    "order_number": 80,
+    "full_name": "Menna Mahmoud",
+    "phone": "01011500241",
+    "whatsapp": null,
+    "email": null,
+    "city": "6th Of October , waslet dahshur , palm parks compound",
+    "address": "6th Of October , waslet dahshur , palm parks compound",
+    "building": "Building 66, apartment 5",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-23T15:43:47.948234+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "f33af439-af06-4ee3-83c5-9aecb05dec1c",
+    "order_number": 81,
+    "full_name": "Amira el kasrawy",
+    "phone": "01121222292",
+    "whatsapp": null,
+    "email": "amiraelkassrawy@gmail.com",
+    "city": "Sheikh Zayed,",
+    "address": "gate 1, villa 258, samy hegazy",
+    "building": "Compound el Yasmine,",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-23T16:40:41.162751+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "eec1db04-7aaa-4e46-9e91-16c15208160b",
+    "order_number": 82,
+    "full_name": "Fatema Hawash",
+    "phone": "01095552074",
+    "whatsapp": null,
+    "email": "fatemahawashh@gmail.com",
+    "city": "Cairo",
+    "address": "ElRehab City Block 27 Villa 10",
+    "building": null,
+    "notes": null,
+    "items": [
+      {
+        "id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec",
+        "name": "Vanilla Matcha 30g",
+        "size": "30g",
+        "price": 850,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec"
+      }
+    ],
+    "subtotal": 850.0,
+    "shipping_fee": 100.0,
+    "total": 950.0,
+    "status": "confirmed",
+    "created_at": "2026-09-23T17:08:24.114531+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "be9b08ae-d71b-4354-af23-9859fea5534f",
+    "order_number": 83,
+    "full_name": "Menna Saleh",
+    "phone": "01004754290",
+    "whatsapp": null,
+    "email": null,
+    "city": "New capital",
+    "address": "La vista city , new capital parsel 6 villa 4A",
+    "building": "Parsel 6 , villa 4A",
+    "notes": null,
+    "items": [
+      {
+        "id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec",
+        "name": "Vanilla Matcha 30g",
+        "size": "30g",
+        "price": 850,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec"
+      },
+      {
+        "id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2",
+        "name": "Ark Matcha 50g",
+        "size": "50g / 1.76 oz",
+        "price": 1100,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
+      }
+    ],
+    "subtotal": 1950.0,
+    "shipping_fee": 100.0,
+    "total": 2050.0,
+    "status": "confirmed",
+    "created_at": "2026-09-23T19:02:50.112336+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "64dd6a34-a265-4f3c-85b4-f47e873c61cb",
+    "order_number": 84,
+    "full_name": "Yassmina",
+    "phone": "Orban",
+    "whatsapp": null,
+    "email": "yassminaorban@aucegypt.edu",
+    "city": "New Cairo",
+    "address": "t15 layan compound new cairo تي١٥ كمبوند ليان",
+    "building": "T15",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "cancelled",
+    "created_at": "2026-09-23T21:42:26.735184+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "c86100e1-8201-4a39-80cf-6cd5b17ae15b",
+    "order_number": 86,
+    "full_name": "Habiba Amr",
+    "phone": "+201206743723",
+    "whatsapp": null,
+    "email": "janaaymansoliman3@gmail.com",
+    "city": "Alexandria",
+    "address": "10 ismalia st kafr abdo 2nd floor apartment 12",
+    "building": "10 ismalia st 2nd floor apartment 12",
+    "notes": null,
+    "items": [
+      {
+        "id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2",
+        "name": "Ark Matcha 50g",
+        "size": "50g / 1.76 oz",
+        "price": 1100,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
+      }
+    ],
+    "subtotal": 1100.0,
+    "shipping_fee": 100.0,
+    "total": 1200.0,
+    "status": "confirmed",
+    "created_at": "2026-09-24T09:58:51.63855+00:00",
+    "governorate": "Alexandria",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "5a458432-a5fd-48c9-b2b4-37faadfb87f5",
+    "order_number": 85,
+    "full_name": "Heind Moharam",
+    "phone": "01066667616",
+    "whatsapp": null,
+    "email": "heindmoharam@gmail.com",
+    "city": "Giza",
+    "address": "El karma 2 villa 55/1 Tamim el saady",
+    "building": "Karma 2 55/1",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-24T08:58:09.367147+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "e441cb05-653e-4e94-9a96-bb3b6c575174",
+    "order_number": 87,
+    "full_name": "laila essam",
+    "phone": "01222218274",
+    "whatsapp": null,
+    "email": "laila2010essam@gmail.com",
+    "city": "6th of october",
+    "address": "villa 199 el siyaha el oula",
+    "building": "villa 199",
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "confirmed",
+    "created_at": "2026-09-24T11:21:30.069925+00:00",
+    "governorate": "Giza",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "a9439b90-d452-4cbb-8ea2-ecc115dc8437",
+    "order_number": 88,
+    "full_name": "Farah Elamrawy",
+    "phone": "01000435050",
+    "whatsapp": null,
+    "email": "farah21@schutzschool.org.eg",
+    "city": "Alexandria",
+    "address": "3 yosry mounir el hadarawy kafr abdo",
+    "building": "Building 3 apartment 8 floor 4",
+    "notes": null,
+    "items": [
+      {
+        "id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec",
+        "name": "Vanilla Matcha 30g",
+        "size": "30g",
+        "price": 850,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "7f703da7-2ef7-4af8-a72b-6b4922a5cfec"
+      },
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 1600.0,
+    "shipping_fee": 100.0,
+    "total": 1700.0,
+    "status": "confirmed",
+    "created_at": "2026-09-24T13:58:19.661406+00:00",
+    "governorate": "Alexandria",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "9ee48dba-274b-4dff-87d4-16c0ad575ec0",
+    "order_number": 89,
+    "full_name": "Hala Meshaal",
+    "phone": "01112457954",
+    "whatsapp": null,
+    "email": "mashaalhala0@gmail.com",
+    "city": "New Cairo",
+    "address": "Palm Hills Katameya Extension PK2, Villa 22/6",
+    "building": null,
+    "notes": null,
+    "items": [
+      {
+        "id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42",
+        "name": "Ark Matcha 30g",
+        "size": "30g / 1.06 oz",
+        "price": 750,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "b205ccc9-2b7b-4d00-8f5b-b61f0ba8cb42"
+      }
+    ],
+    "subtotal": 750.0,
+    "shipping_fee": 100.0,
+    "total": 850.0,
+    "status": "new",
+    "created_at": "2026-09-24T14:21:35.406894+00:00",
+    "governorate": "Cairo",
+    "discount_code": null,
+    "discount_amount": 0
+  },
+  {
+    "id": "587acf39-569e-4657-b7bf-fe73d4afff35",
+    "order_number": 90,
+    "full_name": "shahed ahmed",
+    "phone": "+201285649175",
+    "whatsapp": null,
+    "email": "shahedahmad2004@icloud.com",
+    "city": "patio ori",
+    "address": "new cairo",
+    "building": "villa 121b",
+    "notes": null,
+    "items": [
+      {
+        "id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2",
+        "name": "Ark Matcha 50g",
+        "size": "50g / 1.76 oz",
+        "price": 1100,
+        "variant": null,
+        "quantity": 1,
+        "product_id": "053d80bb-1c8d-430b-92be-bbc0ff8fabb2"
+      }
+    ],
+    "subtotal": 1100.0,
+    "shipping_fee": 100.0,
+    "total": 1200.0,
+    "status": "new",
+    "created_at": "2026-09-24T14:27:14.074721+00:00",
     "governorate": "Cairo",
     "discount_code": null,
     "discount_amount": 0

@@ -17,6 +17,8 @@ Everything here is committed to the repo, so connecting GitHub takes it all with
 
 ## Restoring into a new project
 
+Fastest: run `supabase/migrations`, then run `backup/restore.sql` once (restores products, prices, orders, customers, settings, codes, reviews, messages).
+
 1. Enable Cloud in the new project — migrations rebuild all tables.
 2. Re-insert rows from `data/*.json` (JSON arrays match the table columns 1:1).
 3. Re-upload files from `images/` and update the URLs in `products` /
