@@ -1,11 +1,11 @@
-Backup generated: 2026-08-25T00:23:38.732Z
-products: 4 rows
+Backup generated: 2026-09-24T17:52:10.994980+00:00
+products: 5 rows
 site_settings: 1 rows
-orders: 20 rows
+orders: 64 rows
 reviews: 3 rows
 discount_codes: 1 rows
-newsletter_subscribers: 3 rows
-contact_messages: 0 rows
+newsletter_subscribers: 11 rows
+contact_messages: 3 rows
 user_roles: 2 rows
 push_subscriptions: 0 rows
-images: 8
+images: 9

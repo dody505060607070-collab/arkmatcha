@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "id": "b8c7147e-1170-423f-9813-3b9cc2af500c",
+    "name": "Bdoor",
+    "email": "boodor915@gmail.com",
+    "phone": "01041536576",
+    "message": "Love you❤️",
+    "is_read": false,
+    "created_at": "2026-09-18T15:54:45.383708+00:00"
+  },
+  {
+    "id": "25535b1b-a3c0-4a3a-8d96-4ab57c9ae7b3",
+    "name": "Rodian",
+    "email": "matchastarv@gmail.com",
+    "phone": null,
+    "message": "Hi ark matcha! I’m a new content creator with a deep passion for all things matcha, currently building a dedicated community around aesthetic recipes, honest reviews, and daily matcha videos. While my account is still kinda new, my engagement is decent and my audience is exceptionally targeted for matcha recommendations. I love ark matcha’s focus on the quality of their matcha, authenticity and bright green color. I’d love to create videos for your brand and feature your products in my upcoming posts. Let me know if theres any spots available for a collaboration!\n\nTiktok: @matchastart\n\nhttps://www.tiktok.com/@matchastart?_r=1&_t=ZS-99lsrbFypIz",
+    "is_read": false,
+    "created_at": "2026-09-18T19:13:54.065491+00:00"
+  },
+  {
+    "id": "bdac66f5-5152-49bc-ab22-2f719150d1c9",
+    "name": "جنى مهدي حمزة",
+    "email": "jana204020@icloud.com",
+    "phone": "01100959383",
+    "message": "حابه اسال عن كم شيء خصوص عن أشياء الماتشا الصحن",
+    "is_read": false,
+    "created_at": "2026-09-23T19:52:24.563126+00:00"
+  }
+]
